@@ -158,7 +158,7 @@ void Sp2Scene::Init()
 	}
 
 
-	translateY = 0;
+	translateY = -60;
 	translateX = 0;
 	translateX = 0;
 }
