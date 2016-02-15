@@ -1,7 +1,10 @@
 #include "Camera3.h"
 #include "Application.h"
 #include "Mtx44.h"
-#include "GLFW\glfw3.h"
+#include <GLFW/glfw3.h>
+
+Application a;
+extern GLFWwindow* m_window;
 
 Camera3::Camera3() :
 cameraRotationX(0),
@@ -25,14 +28,113 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	Vector3 camerarotation = (0, 0, 0);
 	speed = 100;
 	location= position;
+	//delay = 0;
+	delay2 = 0;
+	//cd = 10;
+
+	//mouseSpeed = 0.005f;
 }
 
 void Camera3::Update(double dt)
 {
-	static const float CAMERA_SPEED = 100.f;
+	static const float CAMERA_SPEED = 50.f;
 	prevPosition = position;
+	Vector3 view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
+	if (Application::IsKeyPressed('Q') && mouseControl == false && delay2 == 0)
+	{
+		mouseControl = true;
+		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		delay2 = 10;
+	}
+	else if (Application::IsKeyPressed('Q') && mouseControl == true && delay2 == 0)
+	{
+		mouseControl = false;
+		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		delay2 = 10;
+	}
+	if (delay2 > 0)
+	{
+		delay2--;
+	}
+	if (mouseControl == true)
+	{
+		xpos, ypos = a.Mouse(xpos, ypos);
 
-	if (Application::IsKeyPressed(VK_LEFT))
+		if (xpos < 390)
+		{
+			Mtx44 rotation;
+			rotation.SetToRotation(3, up.x, up.y, up.z);
+			view = rotation * view;
+			target = position + view;
+		}
+		if (xpos > 410)
+		{
+			Mtx44 rotation;
+			rotation.SetToRotation(-3, up.x, up.y, up.z);
+			view = rotation * view;
+			target = position + view;
+		}
+		if (ypos < 290)
+		{
+			if (view.y < 0.5)
+			{
+				Mtx44 rotation;
+				rotation.SetToRotation(2, right.x, right.y, right.z);
+				view = rotation * view;
+				target = position + view;
+			}
+		}
+		if (ypos > 310)
+		{
+			if (view.y > -0.5)
+			{
+				Mtx44 rotation;
+				rotation.SetToRotation(-2, right.x, right.y, right.z);
+				view = rotation * view;
+				target = position + view;
+			}
+		}
+	}
+	else
+	{
+		if (Application::IsKeyPressed(VK_LEFT))
+		{
+			Mtx44 rotation;
+			rotation.SetToRotation(2, up.x, up.y, up.z);
+			view = rotation * view;
+			target = position + view;
+		}
+		if (Application::IsKeyPressed(VK_RIGHT))
+		{
+			Mtx44 rotation;
+			rotation.SetToRotation(-2, up.x, up.y, up.z);
+			view = rotation * view;
+			target = position + view;
+		}
+		if (Application::IsKeyPressed(VK_UP))
+		{
+
+			if (view.y < 0.5)
+			{
+				Mtx44 rotation;
+				rotation.SetToRotation(1.5, right.x, right.y, right.z);
+				view = rotation * view;
+				target = position + view;
+			}
+		}
+		if (Application::IsKeyPressed(VK_DOWN))
+		{
+			if (view.y > -0.5)
+			{
+				Mtx44 rotation;
+				rotation.SetToRotation(-1.5, right.x, right.y, right.z);
+				view = rotation * view;
+				target = position + view;
+			}
+		}
+	}
+	/*if (Application::IsKeyPressed(VK_LEFT))
 	{
 		Vector3 view = (target - position).Normalized();
 		Mtx44 rotation;
@@ -71,7 +173,7 @@ void Camera3::Update(double dt)
 			view = rotation * view;
 			target = position + view;
 		}
-	}
+	}*/
 
 	if (Application::IsKeyPressed('W'))
 	{

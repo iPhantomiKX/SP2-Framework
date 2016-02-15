@@ -30,6 +30,10 @@ public:
 	static bool test;
 	static bool test2;
 	static bool test3;
+	static bool mouseControl;
+	int delay2;
+	static double xpos;
+	static double ypos;
 	static Vector3 location;
 
 	Vector3 diffx;

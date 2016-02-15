@@ -20,6 +20,9 @@
 //bool Sp2Scene::test5 = false;
 
 Vector3 Camera3::location = (0, 0, 0);
+bool Camera3::mouseControl = false;
+double Camera3::xpos = 0;
+double Camera3::ypos = 0;
 
 Sp2Scene::Sp2Scene()
 {
