@@ -13,11 +13,13 @@
 
 //test
 
-bool Camera3::test = false;
-bool Camera3::test2 = false;
-bool Camera3::test3 = false;
-bool Sp2Scene::test4 = false;
-bool Sp2Scene::test5 = false;
+//bool Camera3::test = false;
+//bool Camera3::test2 = false;
+//bool Camera3::test3 = false;
+//bool Sp2Scene::test4 = false;
+//bool Sp2Scene::test5 = false;
+
+Vector3 location = (-170, 5, -230);
 
 Sp2Scene::Sp2Scene()
 {
@@ -141,6 +143,7 @@ void Sp2Scene::Init()
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 	meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Tricker.obj");
 	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");
+	meshList[GEO_TEST] = MeshBuilder::GenerateOBJ("test", "OBJ//test.obj");
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
@@ -249,10 +252,10 @@ void Sp2Scene::Update(double dt)
 		{
 			rainpositiony[i] -= (float)(100 * dt);
 		}
-		Camera3::test2 = false;
+		/*Camera3::test2 = false;
 		Camera3::test = false;
 		Camera3::test3 = true;
-		Sp2Scene::test4 = false;
+		Sp2Scene::test4 = false;*/
 	}
 
 	if (camera.checkcollisionwithTricker(Vector3(40, 100, 90), 7, 7, 7))
@@ -278,20 +281,20 @@ void Sp2Scene::Update(double dt)
 			rainpositiony[i] -= (float)(200 * dt);
 		}
 
-		Camera3::test2 = false;
+		/*Camera3::test2 = false;
 		Camera3::test = false;
 		Camera3::test3 = false;
-		Sp2Scene::test4 = true;
+		Sp2Scene::test4 = true;*/
 
 	}
 
 	if (camera.checkcollisionwithTricker(Vector3(-150, 50, -200), 30, 5, 40))
 	{
-		Camera3::test2 = false;
+		/*Camera3::test2 = false;
 		Camera3::test = false;
 		Camera3::test3 = false;
 		Sp2Scene::test4 = false;
-		Sp2Scene::test5 = true;
+		Sp2Scene::test5 = true;*/
 	}
 
 	if (Application::IsKeyPressed('1')) //enable back face culling
@@ -651,7 +654,7 @@ void Sp2Scene::Render()
 	modelStack.PopMatrix();
 
 
-	if (Sp2Scene::test5 == true)
+	/*if (Sp2Scene::test5 == true)
 	{
 		for (int i = 0; i < 1000; i++)
 		{
@@ -661,7 +664,7 @@ void Sp2Scene::Render()
 			RenderMesh(meshList[GEO_HEAD], false);
 			modelStack.PopMatrix();
 		}
-	}
+	}*/
 
 	for (int i = 0; i < 50; i++)
 	{
@@ -685,73 +688,79 @@ void Sp2Scene::Render()
 	RenderText(meshList[GEO_TEXT], "HIT ME FOR CHANGE OF WEATHER", Color(1, 0, 0));
 	modelStack.PopMatrix();
 
-	if (Camera3::test == true)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(-80, 0, -50);
-		modelStack.Scale(5, 5, 5);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_OBJECT], false);
-		modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	modelStack.Translate(0,0,0);
+	modelStack.Scale(10, 10, 10);
+	RenderMesh(meshList[GEO_TEST], true);
+	modelStack.PopMatrix();
 
-		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Find Tricker", Color(1, 0, 0), 0, 0, 0);
-		modelStack.PopMatrix();
+	//if (Camera3::test == true)
+	//{
+	//	modelStack.PushMatrix();
+	//	modelStack.Translate(-80, 0, -50);
+	//	modelStack.Scale(5, 5, 5);
+	//	modelStack.Rotate(180, 0, 1, 0);
+	//	RenderMesh(meshList[GEO_OBJECT], false);
+	//	modelStack.PopMatrix();
 
-		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Find Sword", Color(1, 0, 0), 3.5, 7, 12);
-		modelStack.PopMatrix();
+	//	modelStack.PushMatrix();
+	//	RenderTextOnScreen(meshList[GEO_TEXT], "Find Tricker", Color(1, 0, 0), 0, 0, 0);
+	//	modelStack.PopMatrix();
 
-	}
+	//	modelStack.PushMatrix();
+	//	RenderTextOnScreen(meshList[GEO_TEXT], "Find Sword", Color(1, 0, 0), 3.5, 7, 12);
+	//	modelStack.PopMatrix();
 
-	//to test if player walk into tree
-	if (Camera3::test2 == true)
-	{
-		Camera3::test = false;
+	//}
 
-		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "GAME OVER, YOU DIED", Color(1, 0, 0), 3.5, 3.5, 10);
-		modelStack.PopMatrix();
-	}
+	////to test if player walk into tree
+	//if (Camera3::test2 == true)
+	//{
+	//	Camera3::test = false;
 
-	if (Camera3::test3 == true)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(40, 100, 90);
-		modelStack.Scale(5, 5, 5);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_OBJECT], false);
-		modelStack.PopMatrix();
+	//	modelStack.PushMatrix();
+	//	RenderTextOnScreen(meshList[GEO_TEXT], "GAME OVER, YOU DIED", Color(1, 0, 0), 3.5, 3.5, 10);
+	//	modelStack.PopMatrix();
+	//}
 
-		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Find Stone", Color(1, 0, 0), 3.5, 7, 10);
-		modelStack.PopMatrix();
-	}
+	//if (Camera3::test3 == true)
+	//{
+	//	modelStack.PushMatrix();
+	//	modelStack.Translate(40, 100, 90);
+	//	modelStack.Scale(5, 5, 5);
+	//	modelStack.Rotate(180, 0, 1, 0);
+	//	RenderMesh(meshList[GEO_OBJECT], false);
+	//	modelStack.PopMatrix();
 
-	if (Sp2Scene::test4 == true)
-	{
-		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Congratulations", Color(1, 0, 0), 3.5, 4, 10);
-		modelStack.PopMatrix();
+	//	modelStack.PushMatrix();
+	//	RenderTextOnScreen(meshList[GEO_TEXT], "Find Stone", Color(1, 0, 0), 3.5, 7, 10);
+	//	modelStack.PopMatrix();
+	//}
 
-		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "YOU WIN", Color(1, 0, 0), 3.5, 4, 8);
-		modelStack.PopMatrix();
-	}
+	//if (Sp2Scene::test4 == true)
+	//{
+	//	modelStack.PushMatrix();
+	//	RenderTextOnScreen(meshList[GEO_TEXT], "Congratulations", Color(1, 0, 0), 3.5, 4, 10);
+	//	modelStack.PopMatrix();
 
-	else
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(0, 0, -100);
-		modelStack.Scale(5, 5, 5);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_OBJECT], false);
-		modelStack.PopMatrix();
+	//	modelStack.PushMatrix();
+	//	RenderTextOnScreen(meshList[GEO_TEXT], "YOU WIN", Color(1, 0, 0), 3.5, 4, 8);
+	//	modelStack.PopMatrix();
+	//}
 
-		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Find Tricker", Color(1, 0, 0), 3.5, 7, 15);
-		modelStack.PopMatrix();
-	}
+	//else
+	//{
+	//	modelStack.PushMatrix();
+	//	modelStack.Translate(0, 0, -100);
+	//	modelStack.Scale(5, 5, 5);
+	//	modelStack.Rotate(180, 0, 1, 0);
+	//	RenderMesh(meshList[GEO_OBJECT], false);
+	//	modelStack.PopMatrix();
+
+	//	modelStack.PushMatrix();
+	//	RenderTextOnScreen(meshList[GEO_TEXT], "Find Tricker", Color(1, 0, 0), 3.5, 7, 15);
+	//	modelStack.PopMatrix();
+	//}
 
 	modelStack.PushMatrix();
 	RenderTextOnScreen(meshList[GEO_TEXT], "framerate: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 1);

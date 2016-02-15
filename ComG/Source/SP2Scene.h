@@ -59,6 +59,7 @@ class Sp2Scene : public Scene
 		GEO_BLOODY_BOTTOM,
 		GEO_BLOODY_FRONT,
 		GEO_OBJECT,
+		GEO_TEST,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -127,8 +128,8 @@ private:
 	float translateX;
 	float translateZ;
 
-	static bool test4;
-	static bool test5;
+	/*static bool test4;
+	static bool test5;*/
 
 	Vector3 treeposition[150];
 

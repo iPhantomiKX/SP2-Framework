@@ -24,6 +24,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	this->up = defaultUp = right.Cross(view).Normalized();
 	Vector3 camerarotation = (0, 0, 0);
 	speed = 100;
+	//location= position;
 }
 
 void Camera3::Update(double dt)
@@ -141,6 +142,8 @@ void Camera3::Update(double dt)
 		}
 	}
 
+	//location = position;
+
 	if (Application::IsKeyPressed('R'))
 	{
 		Reset();
@@ -149,14 +152,14 @@ void Camera3::Update(double dt)
 
 bool Camera3::testhitbox(const Vector3& lowest, const Vector3& highest, double move)
 {
-	if (position.x + 5 + move > lowest.x && position.x - 5 + move < highest.x && position.y + 5 + move > lowest.y && position.y - 5 + move < highest.y && position.z + 5 + move > lowest.z && position.z - 5 + move < highest.z)
+	/*if (position.x + 5 + move > lowest.x && position.x - 5 + move < highest.x && position.y + 5 + move > lowest.y && position.y - 5 + move < highest.y && position.z + 5 + move > lowest.z && position.z - 5 + move < highest.z)
 	{
 		return true;
 	}
 	else
-	{
+	{*/
 		return false;
-	}
+	//}
 }
 
 bool Camera3::hitbox(double move)
