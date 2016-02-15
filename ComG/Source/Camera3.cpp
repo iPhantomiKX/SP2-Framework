@@ -24,7 +24,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	this->up = defaultUp = right.Cross(view).Normalized();
 	Vector3 camerarotation = (0, 0, 0);
 	speed = 100;
-	//location= position;
+	location= position;
 }
 
 void Camera3::Update(double dt)
@@ -142,7 +142,7 @@ void Camera3::Update(double dt)
 		}
 	}
 
-	//location = position;
+	location = position;
 
 	if (Application::IsKeyPressed('R'))
 	{
@@ -186,46 +186,48 @@ bool Camera3::checkcollisionwithObject(Vector3& otherObjectposition, float sizex
 	// Do SAT Test on all axis)
 	// eg (if (position.x < min) return false; // (Outside!)
 	//		Repeat for Max, Repeat Min + Max for Y and Z axis
-	float minX = otherObjectposition.x - (sizex / 2);
-	float maxX = otherObjectposition.x + (sizex / 2);
+	//float minX = otherObjectposition.x - (sizex / 2);
+	//float maxX = otherObjectposition.x + (sizex / 2);
 
-	//float minY = otherObjectposition.y - (sizey / 2);
-	//float maxY = otherObjectposition.y + (sizey / 2);
+	////float minY = otherObjectposition.y - (sizey / 2);
+	////float maxY = otherObjectposition.y + (sizey / 2);
 
-	float minZ = otherObjectposition.z - (sizez / 2);
-	float maxZ = otherObjectposition.z + (sizez / 2);
-	if (position.x < minX || position.x > maxX)
-	{
-		return false;
-	}
-	/*if (position.y < minY || position.y > maxY)
-	{
-		return false;
-	}*/
-	if (position.z < minZ || position.z > maxZ)
-	{
-		return false;
-	}
-	test2 = true;
-	return true;
+	//float minZ = otherObjectposition.z - (sizez / 2);
+	//float maxZ = otherObjectposition.z + (sizez / 2);
+	//if (position.x < minX || position.x > maxX)
+	//{
+	//	return false;
+	//}
+	///*if (position.y < minY || position.y > maxY)
+	//{
+	//	return false;
+	//}*/
+	//if (position.z < minZ || position.z > maxZ)
+	//{
+	//	return false;
+	//}
+	//test2 = true;
+	//return true;
+	return false;
 }
 
 bool Camera3::checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez)
 {
-	float minX = otherObjectposition.x - (sizex / 2);
-	float maxX = otherObjectposition.x + (sizex / 2);
-	float minZ = otherObjectposition.z - (sizez / 2);
-	float maxZ = otherObjectposition.z + (sizez / 2);
-	if (position.x < minX || position.x > maxX)
-	{
-		return false;
-	}
-	if (position.z < minZ || position.z > maxZ)
-	{
-		return false;
-	}
-	test = true;
-	return true;
+	//float minX = otherObjectposition.x - (sizex / 2);
+	//float maxX = otherObjectposition.x + (sizex / 2);
+	//float minZ = otherObjectposition.z - (sizez / 2);
+	//float maxZ = otherObjectposition.z + (sizez / 2);
+	//if (position.x < minX || position.x > maxX)
+	//{
+	//	return false;
+	//}
+	//if (position.z < minZ || position.z > maxZ)
+	//{
+	//	return false;
+	//}
+	//test = true;
+	//return true;
+	return false;
 }
 
 

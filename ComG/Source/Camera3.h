@@ -30,7 +30,7 @@ public:
 	static bool test;
 	static bool test2;
 	static bool test3;
-	//static Vector3 location;
+	static Vector3 location;
 
 	Vector3 diffx;
 	Vector3 diffz;

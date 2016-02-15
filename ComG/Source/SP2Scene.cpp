@@ -19,7 +19,7 @@
 //bool Sp2Scene::test4 = false;
 //bool Sp2Scene::test5 = false;
 
-Vector3 location = (-170, 5, -230);
+Vector3 Camera3::location = (0, 0, 0);
 
 Sp2Scene::Sp2Scene()
 {
@@ -111,25 +111,25 @@ void Sp2Scene::Init()
 	planet1RotAngle = planet1RevAngle = moon1RotAngle = 0;
 
 	//Initialize camera settings
-	camera.Init(Vector3(-170, 5, -230), Vector3(0, 5, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(-170, 10, -230), Vector3(0, 10, 0), Vector3(0, 1, 0));
 
 
 	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
-	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-	meshList[GEO_QUAD]->textureID = LoadTGA("Image//snow_dn.tga");
+	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("bottom", Color(.3, .3, .3), 1000, 1000);
+	//meshList[GEO_QUAD]->textureID = LoadTGA("Image//purplenebula_dn.tga");
 	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-	meshList[GEO_TOP]->textureID = LoadTGA("Image//snow_up.tga");
+	meshList[GEO_TOP]->textureID = LoadTGA("Image//purplenebula_up.tga");
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//snow_dn.tga");
+	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//purplenebula_dn.tga");
 	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-	meshList[GEO_FRONT]->textureID = LoadTGA("Image//snow_ft.tga");
+	meshList[GEO_FRONT]->textureID = LoadTGA("Image//purplenebula_ft.tga");
 	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-	meshList[GEO_BACK]->textureID = LoadTGA("Image//snow_bk.tga");
+	meshList[GEO_BACK]->textureID = LoadTGA("Image//purplenebula_bk.tga");
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-	meshList[GEO_LEFT]->textureID = LoadTGA("Image//snow_lf.tga");
+	meshList[GEO_LEFT]->textureID = LoadTGA("Image//purplenebula_lf.tga");
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//snow_rt.tga");
+	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//purplenebula_rt.tga");
 	meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("model1", "OBJ//chair.obj");
 	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//chair.tga");
 	meshList[GEO_LAND] = MeshBuilder::GenerateOBJ("land", "OBJ//landvehicle.obj");
@@ -434,7 +434,7 @@ void Sp2Scene::RenderSkybox()
 {
 	//bottom
 	modelStack.PushMatrix();
-	modelStack.Translate(0, -499, 0);
+	modelStack.Translate(0 + Camera3::location.x, -499 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Scale(-1, 1, 1);
@@ -443,7 +443,7 @@ void Sp2Scene::RenderSkybox()
 
 	//top
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 499, 0);
+	modelStack.Translate(0 + Camera3::location.x, 499 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Scale(1, -1, 1);
@@ -452,7 +452,7 @@ void Sp2Scene::RenderSkybox()
 
 	//left
 	modelStack.PushMatrix();
-	modelStack.Translate(499, 0, 0);
+	modelStack.Translate(499 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Rotate(-90, 0, 0, 1);
 	RenderMesh(meshList[GEO_LEFT], false);
@@ -460,7 +460,7 @@ void Sp2Scene::RenderSkybox()
 
 	//right
 	modelStack.PushMatrix();
-	modelStack.Translate(-499, 0, 0);
+	modelStack.Translate(-499 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Rotate(-90, 0, 0, 1);
@@ -469,7 +469,7 @@ void Sp2Scene::RenderSkybox()
 
 	//back
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 0, 499);
+	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, 499 + Camera3::location.z);
 	modelStack.Rotate(-90, 0, 0, 1);
 	modelStack.Rotate(90, 1, 0, 0);
 	modelStack.Scale(1000, 1000, 1000);
@@ -478,7 +478,7 @@ void Sp2Scene::RenderSkybox()
 
 	//Front
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 0, -499);
+	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, -499 + Camera3::location.z);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Rotate(-90, 0, 0, 1);
 	modelStack.Rotate(90, 1, 0, 0);
@@ -666,20 +666,26 @@ void Sp2Scene::Render()
 		}
 	}*/
 
-	for (int i = 0; i < 50; i++)
+	/*for (int i = 0; i < 50; i++)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(treex[i], translateY, treez[i]);
 		modelStack.Scale(10, 30, 10);
 		RenderMesh(meshList[GEO_DEADTREE], true);
 		modelStack.PopMatrix();
-	}
+	}*/
 
-	modelStack.PushMatrix();
+	/*modelStack.PushMatrix();
 	modelStack.Translate(0, -50, 0);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Scale(-1, 1, 1);
 	RenderMesh(meshList[GEO_BOTTOM], false);
+	modelStack.PopMatrix();*/
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, 0);
+	modelStack.Scale(1000, 1000, 1000);
+	RenderMesh(meshList[GEO_QUAD], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -689,8 +695,8 @@ void Sp2Scene::Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(0,0,0);
-	modelStack.Scale(10, 10, 10);
+	modelStack.Translate(0,5,0);
+	modelStack.Scale(1, 1, 1);
 	RenderMesh(meshList[GEO_TEST], true);
 	modelStack.PopMatrix();
 
