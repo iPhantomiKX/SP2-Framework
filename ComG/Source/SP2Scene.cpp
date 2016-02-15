@@ -112,12 +112,15 @@ void Sp2Scene::Init()
 	//variable to rotate geometry
 	rotateAngle = 0;
 	planet1RotAngle = planet1RevAngle = moon1RotAngle = 0;
+	rotateGunX = 0;
+	rotateGunY = 0;
 
 	//Initialize camera settings
 	camera.Init(Vector3(-170, 10, -230), Vector3(0, 10, 0), Vector3(0, 1, 0));
 
 
 	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
+	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
 	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("bottom", Color(.3, .3, .3), 1000, 1000);
 	//meshList[GEO_QUAD]->textureID = LoadTGA("Image//purplenebula_dn.tga");
@@ -148,6 +151,9 @@ void Sp2Scene::Init()
 	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");
 	meshList[GEO_TEST] = MeshBuilder::GenerateOBJ("test", "OBJ//test.obj");
 
+	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
+	meshList[GEO_PISTOL1]->textureID = LoadTGA("Image//pistol1texture.tga");
+
 	Mtx44 projection;
 	projection.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -177,6 +183,34 @@ static float SCALE_LIMIT = 5.f;
 
 void Sp2Scene::Update(double dt)
 {
+	//Gun rotation
+	if (Application::IsKeyPressed(VK_LEFT))
+	{
+		rotateGunY += 1;
+	}
+	if (Application::IsKeyPressed(VK_RIGHT))
+	{
+		rotateGunY -= 1;
+	}
+	if (Application::IsKeyPressed(VK_UP))
+	{
+		rotateGunX -= 1;
+	}
+	if (Application::IsKeyPressed(VK_DOWN))
+	{
+		rotateGunX += 1;
+	}
+
+	//Boundaries for gun rotation
+	if (rotateGunX > 30)
+	{
+		rotateGunX = 30;
+	}
+	else if (rotateGunX < -30)
+	{
+		rotateGunX = -30;
+	}
+
 	camera.Update(dt);
 	for (int i = 0; i < 50; ++i)
 	{
@@ -299,6 +333,8 @@ void Sp2Scene::Update(double dt)
 		Sp2Scene::test4 = false;
 		Sp2Scene::test5 = true;*/
 	}
+
+
 
 	if (Application::IsKeyPressed('1')) //enable back face culling
 		glDisable(GL_CULL_FACE);
@@ -643,7 +679,7 @@ void Sp2Scene::Render()
 		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightposition_cameraspace.x);
 	}
 
-	//RenderMesh(meshList[GEO_AXES], false);
+	RenderMesh(meshList[GEO_AXES], false);
 
 
 	modelStack.PushMatrix();
@@ -653,7 +689,7 @@ void Sp2Scene::Render()
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 499, 0);
 	modelStack.Scale(10, 10, 10);
-	RenderMesh(meshList[GEO_LIGHTBALL], true);
+	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();
 
 
@@ -703,6 +739,7 @@ void Sp2Scene::Render()
 	RenderMesh(meshList[GEO_TEST], true);
 	modelStack.PopMatrix();
 
+	RenderGun();
 	//if (Camera3::test == true)
 	//{
 	//	modelStack.PushMatrix();
@@ -775,7 +812,22 @@ void Sp2Scene::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], "framerate: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 1);
 	modelStack.PopMatrix();
 }
+void Sp2Scene::RenderGun()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
+	modelStack.Rotate(rotateGunY, 0, 1, 0);
+	modelStack.Rotate(rotateGunX, 1, 0, 0);
+	modelStack.Scale(0.5, 0.5, 0.5);
 
+	modelStack.PushMatrix();
+	modelStack.Translate(5, -8, 15);
+	modelStack.Rotate(-240, 0, 1, 0);
+	RenderMesh(meshList[GEO_PISTOL1], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+}
 void Sp2Scene::Exit()
 {
 	glDeleteVertexArrays(1, &m_vertexArrayID);
