@@ -738,7 +738,7 @@ void Sp2Scene::Render()
 
 	RenderGun();
 	//if (Camera3::test == true)
-	//{
+	//{aaaqaaaaaa
 	//	modelStack.PushMatrix();
 	//	modelStack.Translate(-80, 0, -50);
 	//	modelStack.Scale(5, 5, 5);

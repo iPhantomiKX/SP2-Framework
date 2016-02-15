@@ -134,7 +134,7 @@ private:
 
 	void RenderGun();
 	/*static bool test4;
-	static bool test5;*/
+	static bool test5;lolol9ololo,*/
 
 	Vector3 treeposition[150];
 
