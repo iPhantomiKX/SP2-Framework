@@ -11,6 +11,8 @@
 #include "LoadTGA.h"
 #include "LoadOBJ.h"
 
+//test
+
 bool Camera3::test = false;
 bool Camera3::test2 = false;
 bool Camera3::test3 = false;
