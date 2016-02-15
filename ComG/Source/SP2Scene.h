@@ -60,7 +60,6 @@ class Sp2Scene : public Scene
 		GEO_BLOODY_FRONT,
 		GEO_BLOODY_BACK,
 		GEO_OBJECT,
-		GEO_EMERALDOBJ1,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE

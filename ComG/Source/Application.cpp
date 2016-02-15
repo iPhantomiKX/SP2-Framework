@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Scene1.h"
 #include "Scene2.h"
 #include "Assignment1.h"
 #include "Scene3.h"
