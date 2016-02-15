@@ -60,6 +60,7 @@ class Sp2Scene : public Scene
 		GEO_BLOODY_FRONT,
 		GEO_OBJECT,
 		GEO_TEST,
+		GEO_PISTOL1,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -128,6 +129,10 @@ private:
 	float translateX;
 	float translateZ;
 
+	float rotateGunX;
+	float rotateGunY;
+
+	void RenderGun();
 	/*static bool test4;
 	static bool test5;*/
 
