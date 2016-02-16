@@ -220,11 +220,11 @@ void Sp2Scene::Update(double dt)
 			rotateGunX += 2;
 		}
 
-		if (rotateGunX > 30)
+		if (rotateGunX > 50)
 		{
 			rotateGunX = 50;
 		}
-		else if (rotateGunX < -30)
+		else if (rotateGunX < -50)
 		{
 			rotateGunX = -50;
 		}
@@ -249,13 +249,13 @@ void Sp2Scene::Update(double dt)
 		}
 
 		//Boundaries for gun rotation
-		if (rotateGunX > 30)
+		if (rotateGunX > 50)
 		{
-			rotateGunX = 30;
+			rotateGunX = 50;
 		}
-		else if (rotateGunX < -30)
+		else if (rotateGunX < -50)
 		{
-			rotateGunX = -30;
+			rotateGunX = -50;
 		}
 	}
 
