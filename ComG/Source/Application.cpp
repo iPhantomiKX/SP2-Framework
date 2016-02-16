@@ -131,14 +131,6 @@ void Application::Run()
 	delete scene;
 }
 
-double Application::Mouse(double &xpos, double &ypos)
-{
-
-	glfwGetCursorPos(m_window, &xpos, &ypos);
-	glfwSetCursorPos(m_window, 800 / 2, 600 / 2);
-	return xpos, ypos;
-}
-
 void Application::Exit()
 {
 	//Close OpenGL window and terminate GLFW

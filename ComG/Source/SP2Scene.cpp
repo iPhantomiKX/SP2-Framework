@@ -115,10 +115,9 @@ void Sp2Scene::Init()
 	planet1RotAngle = planet1RevAngle = moon1RotAngle = 0;
 	rotateGunX = 0;
 	rotateGunY = 0;
-	test = (0, 0, 0);
 
 	//Initialize camera settings
-	camera.Init(Vector3(0, 10, 0), Vector3(10, 10, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(-170, 10, -230), Vector3(0, 10, 0), Vector3(0, 1, 0));
 
 
 	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
@@ -152,8 +151,6 @@ void Sp2Scene::Init()
 	meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Tricker.obj");
 	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");
 	meshList[GEO_TEST] = MeshBuilder::GenerateOBJ("test", "OBJ//test.obj");
-
-	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(1,0,0), 2,4);
 
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
 	meshList[GEO_PISTOL1]->textureID = LoadTGA("Image//pistol1texture.tga");
@@ -246,7 +243,7 @@ void Sp2Scene::Update(double dt)
 		if (Application::IsKeyPressed(VK_DOWN))
 		{
 			rotateGunX += 2;
-		}
+	}
 
 		//Boundaries for gun rotation
 		if (rotateGunX > 50)
@@ -859,16 +856,6 @@ void Sp2Scene::Render()
 	modelStack.PushMatrix();
 	RenderTextOnScreen(meshList[GEO_TEXT], "framerate: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 1);
 	modelStack.PopMatrix();
-
-	if (Application::IsKeyPressed(VK_LBUTTON))
-	{
-		modelStack.PushMatrix();
-		modelStack.Scale(3, 3, 3);
-		modelStack.Translate( test.x, test.y + 3,  test.z);
-		//modelStack.Rotate(Camera3::direction, 0, 0, 1);
-		RenderMesh(meshList[GEO_SHOT], false);
-		modelStack.PopMatrix();
-	}
 }
 void Sp2Scene::RenderGun()
 {
