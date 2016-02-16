@@ -1,8 +1,9 @@
-#ifndef CAMERA3_H
-#define CAMERA3_H
+#ifndef CAMERA_3_H
+#define CAMERA_3_H
 
 #include "Camera.h"
 #include "MyMath.h"
+
 using Math::DegreeToRadian;
 
 class Camera3 : public Camera
@@ -16,7 +17,6 @@ public:
 	Vector3 defaultPosition;
 	Vector3 defaultTarget;
 	Vector3 defaultUp;
-	Vector3 cameraRotate;
 	Vector3 camerarotation;
 	float cameraRotationX, cameraRotationY;
 	float walkSpeed;
@@ -51,18 +51,6 @@ public:
 	bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	virtual void Reset();
-
-	float maxCameraX;
-	float cameraSpeed;
-	float maxX;
-	float minX;
-	float maxZ;
-	float minZ;
-
-	float maxX2;
-	float minX2;
-	float maxZ2;
-	float minZ2;
 
 };
 

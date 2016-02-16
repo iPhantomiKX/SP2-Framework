@@ -187,18 +187,6 @@ static float SCALE_LIMIT = 5.f;
 
 void Sp2Scene::Update(double dt)
 {
-	//Gun rotation
-	if (Application::IsKeyPressed(VK_LEFT))
-	{
-		rotateGunY += 2;
-	}
-	if (Application::IsKeyPressed(VK_RIGHT))
-	{
-		rotateGunY -= 2;
-	}
-	if (Application::IsKeyPressed(VK_UP))
-	{
-		rotateGunX += 2;
 	if (Application::IsKeyPressed(VK_LBUTTON))
 	{
 		test.x += (Camera3::direction.x - Camera3::location.x);
@@ -207,14 +195,10 @@ void Sp2Scene::Update(double dt)
 	}
 	else
 	{
-
-		rotateGunX -= 2;
 		test = (0, 0, 0);
 	}
 	//Gun rotation
 
-	//Boundaries for gun rotation
-	
 	if (Camera3::mouseControl == true)
 	{
 		//Camera3::xpos, Camera3::ypos = a.Mouse(Camera3::xpos, Camera3::ypos);
@@ -264,20 +248,19 @@ void Sp2Scene::Update(double dt)
 			rotateGunX += 2;
 		}
 
-	//Boundaries for gun rotation
-	if (rotateGunX > 50)
-	{
-		rotateGunX = 50;
-	}
-	else if (rotateGunX < -50)
-	{
-		rotateGunX = -50;
+		//Boundaries for gun rotation
+		if (rotateGunX > 50)
+		{
+			rotateGunX = 50;
 		}
->>>>>>> origin/master
+		else if (rotateGunX < -50)
+		{
+			rotateGunX = -50;
+		}
 	}
 
 	camera.Update(dt);
-	/*for (int i = 0; i < 50; ++i)
+	for (int i = 0; i < 50; ++i)
 	{
 		if (camera.checkcollisionwithObject(Vector3(treex[i], 0, treez[i]), 20, 40, 20) == true)
 		{
@@ -357,7 +340,7 @@ void Sp2Scene::Update(double dt)
 		/*Camera3::test2 = false;
 		Camera3::test = false;
 		Camera3::test3 = true;
-		Sp2Scene::test4 = false;
+		Sp2Scene::test4 = false;*/
 	}
 
 	if (camera.checkcollisionwithTricker(Vector3(40, 100, 90), 7, 7, 7))
@@ -386,7 +369,7 @@ void Sp2Scene::Update(double dt)
 		/*Camera3::test2 = false;
 		Camera3::test = false;
 		Camera3::test3 = false;
-		Sp2Scene::test4 = true;
+		Sp2Scene::test4 = true;*/
 
 	}
 
@@ -396,8 +379,8 @@ void Sp2Scene::Update(double dt)
 		Camera3::test = false;
 		Camera3::test3 = false;
 		Sp2Scene::test4 = false;
-		Sp2Scene::test5 = true;
-	}*/
+		Sp2Scene::test5 = true;*/
+	}
 
 
 
@@ -532,63 +515,62 @@ void Sp2Scene::Update(double dt)
 			rainpositionx[i] += (float)(150 * dt);
 		}
 	}
-	
 }
 
 void Sp2Scene::RenderSkybox()
 {
 	//bottom
 	modelStack.PushMatrix();
-	//scale, translate, rotate
-	modelStack.Translate(0, 0, -1998);
-	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(4000, 1, 4000);
-	RenderMesh(meshList[GEO_FRONT], false);
+	modelStack.Translate(0 + Camera3::location.x, -499 + Camera3::location.y, 0 + Camera3::location.z);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Scale(1000, 1000, 1000);
+	modelStack.Scale(-1, 1, 1);
+	RenderMesh(meshList[GEO_BOTTOM], false);
 	modelStack.PopMatrix();
 
 	//top
 	modelStack.PushMatrix();
-	//scale, translate, rotate
-	modelStack.Translate(0, 0, 1998);
+	modelStack.Translate(0 + Camera3::location.x, 499 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Rotate(180, 0, 1, 0);
-	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(4000, 1, 4000);
-	RenderMesh(meshList[GEO_BACK], false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	//scale, translate, rotate
-	modelStack.Translate(0, 1998, 0);
-	modelStack.Rotate(-270, 0, 1, 0);
-	modelStack.Rotate(180, 1, 0, 0);
-	modelStack.Scale(4000, 1, 4000);
+	modelStack.Scale(1000, 1000, 1000);
+	modelStack.Scale(1, -1, 1);
 	RenderMesh(meshList[GEO_TOP], false);
 	modelStack.PopMatrix();
 
+	//left
 	modelStack.PushMatrix();
-	//scale, translate, rotate
-	modelStack.Translate(0, -1998, 0);
-	modelStack.Rotate(180, 0, 1, 0);
-	modelStack.Scale(4000, 1, 4000);
-	RenderMesh(meshList[GEO_BOTTOM], false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	//scale, translate, rotate
-	modelStack.Translate(-1998, 0, 0);
-	modelStack.Rotate(90, 0, 1, 0);
-	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(4000, 1, 4000);
+	modelStack.Translate(499 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
+	modelStack.Scale(1000, 1000, 1000);
+	modelStack.Rotate(-90, 0, 0, 1);
 	RenderMesh(meshList[GEO_LEFT], false);
 	modelStack.PopMatrix();
 
+	//right
 	modelStack.PushMatrix();
-	//scale, translate, rotate
-	modelStack.Translate(1998, 0, 0);
-	modelStack.Rotate(-90, 0, 1, 0);
-	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(4000, 1, 4000);
+	modelStack.Translate(-499 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
+	modelStack.Scale(1000, 1000, 1000);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Rotate(-90, 0, 0, 1);
 	RenderMesh(meshList[GEO_RIGHT], false);
+	modelStack.PopMatrix();
+
+	//back
+	modelStack.PushMatrix();
+	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, 499 + Camera3::location.z);
+	modelStack.Rotate(-90, 0, 0, 1);
+	modelStack.Rotate(90, 1, 0, 0);
+	modelStack.Scale(1000, 1000, 1000);
+	RenderMesh(meshList[GEO_BACK], false);
+	modelStack.PopMatrix();
+
+	//Front
+	modelStack.PushMatrix();
+	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, -499 + Camera3::location.z);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Rotate(-90, 0, 0, 1);
+	modelStack.Rotate(90, 1, 0, 0);
+	modelStack.Scale(1000, 1000, 1000);
+	RenderMesh(meshList[GEO_FRONT], false);
 	modelStack.PopMatrix();
 }
 
@@ -897,8 +879,6 @@ void Sp2Scene::RenderGun()
 	modelStack.Scale(0.5, 0.5, 0.5);
 
 	modelStack.PushMatrix();
-	modelStack.Translate(3, -8, -8);
-	modelStack.Rotate(-90, 0, 1, 0);
 	if (Application::IsKeyPressed(VK_RBUTTON) == true)
 	{
 		modelStack.Translate(15, -7, 0);
