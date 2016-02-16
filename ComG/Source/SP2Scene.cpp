@@ -115,10 +115,9 @@ void Sp2Scene::Init()
 	planet1RotAngle = planet1RevAngle = moon1RotAngle = 0;
 	rotateGunX = 0;
 	rotateGunY = 0;
-	test = (0, 0, 0);
 
 	//Initialize camera settings
-	camera.Init(Vector3(0, 10, 0), Vector3(10, 10, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0,10,0), Vector3(10, 10, 0), Vector3(0, 1, 0));
 
 
 	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
@@ -138,22 +137,21 @@ void Sp2Scene::Init()
 	meshList[GEO_LEFT]->textureID = LoadTGA("Image//purplenebula_lf.tga");
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
 	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//purplenebula_rt.tga");
-	meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("model1", "OBJ//chair.obj");
-	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//chair.tga");
-	meshList[GEO_LAND] = MeshBuilder::GenerateOBJ("land", "OBJ//landvehicle.obj");
-	meshList[GEO_LAND]->textureID = LoadTGA("Image//landvehicleUV3.tga");
-	meshList[GEO_AIR] = MeshBuilder::GenerateOBJ("air", "OBJ//airvehicle.obj");
-	meshList[GEO_AIR]->textureID = LoadTGA("Image//uvairvehicletexture.tga");
-	meshList[GEO_DEADTREE] = MeshBuilder::GenerateOBJ("deadtree", "OBJ//deadtree.obj");
-	meshList[GEO_DEADTREE]->textureID = LoadTGA("Image//deadtree.tga");
+	//meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("model1", "OBJ//chair.obj");
+	//meshList[GEO_MODEL1]->textureID = LoadTGA("Image//chair.tga");
+	//meshList[GEO_LAND] = MeshBuilder::GenerateOBJ("land", "OBJ//landvehicle.obj");
+	//meshList[GEO_LAND]->textureID = LoadTGA("Image//landvehicleUV3.tga");
+	//meshList[GEO_AIR] = MeshBuilder::GenerateOBJ("air", "OBJ//airvehicle.obj");
+	//meshList[GEO_AIR]->textureID = LoadTGA("Image//uvairvehicletexture.tga");
+	//meshList[GEO_DEADTREE] = MeshBuilder::GenerateOBJ("deadtree", "OBJ//deadtree.obj");
+	//meshList[GEO_DEADTREE]->textureID = LoadTGA("Image//deadtree.tga");
 	meshList[GEO_CONE] = MeshBuilder::GenerateCone("cone", Color(1, 1, 0), 20);
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Tricker.obj");
-	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");
+	//meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Tricker.obj");
+	//meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");
 	meshList[GEO_TEST] = MeshBuilder::GenerateOBJ("test", "OBJ//test.obj");
-
-	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(1,0,0), 2,4);
+	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(1, 0, 0), 10, 20);
 
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
 	meshList[GEO_PISTOL1]->textureID = LoadTGA("Image//pistol1texture.tga");
@@ -259,127 +257,128 @@ void Sp2Scene::Update(double dt)
 		}
 	}
 
-	for (int i = 0; i < 50; ++i)
-	{
-		if (camera.checkcollisionwithObject(Vector3(treex[i], 0, treez[i]), 20, 40, 20) == true)
-		{
-			camera.position = camera.prevPosition;
-			meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_TOP]->textureID = LoadTGA("Image//hell_up.tga");
-			meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//hell_dn.tga");
-			meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_FRONT]->textureID = LoadTGA("Image//hell_ft.tga");
-			meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_BACK]->textureID = LoadTGA("Image//hell_bk.tga");
-			meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_LEFT]->textureID = LoadTGA("Image//hell_lf.tga");
-			meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_RIGHT]->textureID = LoadTGA("Image//hell_rt.tga");
+	camera.Update(dt);
+	//for (int i = 0; i < 50; ++i)
+	//{
+	//	if (camera.checkcollisionwithObject(Vector3(treex[i], 0, treez[i]), 20, 40, 20) == true)
+	//	{
+	//		camera.position = camera.prevPosition;
+	//		meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
+	//		meshList[GEO_TOP]->textureID = LoadTGA("Image//hell_up.tga");
+	//		meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
+	//		meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//hell_dn.tga");
+	//		meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
+	//		meshList[GEO_FRONT]->textureID = LoadTGA("Image//hell_ft.tga");
+	//		meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
+	//		meshList[GEO_BACK]->textureID = LoadTGA("Image//hell_bk.tga");
+	//		meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
+	//		meshList[GEO_LEFT]->textureID = LoadTGA("Image//hell_lf.tga");
+	//		meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
+	//		meshList[GEO_RIGHT]->textureID = LoadTGA("Image//hell_rt.tga");
 
-			meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(0, 0, 0), 10, 40);
-			light[0].color.Set(0, 0, 0);
-			for (int i = 0; i < 1000; i++)
-			{
-				rainpositiony[i] -= (float)(200 * dt);
-			}
-		}
-	}
+	//		meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(0, 0, 0), 10, 40);
+	//		light[0].color.Set(0, 0, 0);
+	//		for (int i = 0; i < 1000; i++)
+	//		{
+	//			rainpositiony[i] -= (float)(200 * dt);
+	//		}
+	//	}
+	//}
 
-	if (camera.checkcollisionwithTricker(Vector3(0, 0, -100), 7, 7, 7))
-	{
-		camera.position = camera.prevPosition;
-		meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_TOP]->textureID = LoadTGA("Image//icyhell_up.tga");
-		meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//icyhell_dn.tga");
-		meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_FRONT]->textureID = LoadTGA("Image//icyhell_ft.tga");
-		meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_BACK]->textureID = LoadTGA("Image//icyhell_bk.tga");
-		meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_LEFT]->textureID = LoadTGA("Image//icyhell_lf.tga");
-		meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_RIGHT]->textureID = LoadTGA("Image//icyhell_rt.tga");
-		meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(0.5, 0.5, 0.5), 10, 40);
-		meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(0.5, 0.5, 0.5), 10, 20);
-		light[0].color.Set(0.5, 0.5, 0.5);
+	//if (camera.checkcollisionwithTricker(Vector3(0, 0, -100), 7, 7, 7))
+	//{
+	//	camera.position = camera.prevPosition;
+	//	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_TOP]->textureID = LoadTGA("Image//icyhell_up.tga");
+	//	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//icyhell_dn.tga");
+	//	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_FRONT]->textureID = LoadTGA("Image//icyhell_ft.tga");
+	//	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_BACK]->textureID = LoadTGA("Image//icyhell_bk.tga");
+	//	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_LEFT]->textureID = LoadTGA("Image//icyhell_lf.tga");
+	//	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//icyhell_rt.tga");
+	//	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(0.5, 0.5, 0.5), 10, 40);
+	//	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(0.5, 0.5, 0.5), 10, 20);
+	//	light[0].color.Set(0.5, 0.5, 0.5);
 
-		meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//sword.obj");
-		meshList[GEO_OBJECT]->textureID = LoadTGA("Image//SwordUV.tga");
-	}
+	//	meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//sword.obj");
+	//	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//SwordUV.tga");
+	//}
 
-	if (camera.checkcollisionwithTricker(Vector3(-80, 0, -50), 7, 7, 7))
-	{
-		camera.position = camera.prevPosition;
-		meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_TOP]->textureID = LoadTGA("Image//blood_up.tga");
-		meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//blood_dn.tga");
-		meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_FRONT]->textureID = LoadTGA("Image//blood_ft.tga");
-		meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_BACK]->textureID = LoadTGA("Image//blood_bk.tga");
-		meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_LEFT]->textureID = LoadTGA("Image//blood_lf.tga");
-		meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_RIGHT]->textureID = LoadTGA("Image//blood_rt.tga");
+	//if (camera.checkcollisionwithTricker(Vector3(-80, 0, -50), 7, 7, 7))
+	//{
+	//	camera.position = camera.prevPosition;
+	//	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_TOP]->textureID = LoadTGA("Image//blood_up.tga");
+	//	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//blood_dn.tga");
+	//	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_FRONT]->textureID = LoadTGA("Image//blood_ft.tga");
+	//	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_BACK]->textureID = LoadTGA("Image//blood_bk.tga");
+	//	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_LEFT]->textureID = LoadTGA("Image//blood_lf.tga");
+	//	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//blood_rt.tga");
 
-		meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 10, 40);
-		meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 0, 0), 10, 20);
+	//	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 10, 40);
+	//	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 0, 0), 10, 20);
 
-		meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Rock.obj");
-		meshList[GEO_OBJECT]->textureID = LoadTGA("Image//chair.tga");
+	//	meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Rock.obj");
+	//	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//chair.tga");
 
-		light[0].color.Set(1, 0, 0);
-		for (int i = 0; i < 1000; i++)
-		{
-			rainpositiony[i] -= (float)(100 * dt);
-		}
-		/*Camera3::test2 = false;
-		Camera3::test = false;
-		Camera3::test3 = true;
-		Sp2Scene::test4 = false;*/
-	}
+	//	light[0].color.Set(1, 0, 0);
+	//	for (int i = 0; i < 1000; i++)
+	//	{
+	//		rainpositiony[i] -= (float)(100 * dt);
+	//	}
+	//	/*Camera3::test2 = false;
+	//	Camera3::test = false;
+	//	Camera3::test3 = true;
+	//	Sp2Scene::test4 = false;*/
+	//}
 
-	if (camera.checkcollisionwithTricker(Vector3(40, 100, 90), 7, 7, 7))
-	{
-		camera.position = camera.prevPosition;
-		meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_TOP]->textureID = LoadTGA("Image//snow_up.tga");
-		meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//snow_dn.tga");
-		meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_FRONT]->textureID = LoadTGA("Image//snow_ft.tga");
-		meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_BACK]->textureID = LoadTGA("Image//snow_bk.tga");
-		meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_LEFT]->textureID = LoadTGA("Image//snow_lf.tga");
-		meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_RIGHT]->textureID = LoadTGA("Image//snow_rt.tga");
+	//if (camera.checkcollisionwithTricker(Vector3(40, 100, 90), 7, 7, 7))
+	//{
+	//	camera.position = camera.prevPosition;
+	//	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_TOP]->textureID = LoadTGA("Image//snow_up.tga");
+	//	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//snow_dn.tga");
+	//	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_FRONT]->textureID = LoadTGA("Image//snow_ft.tga");
+	//	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_BACK]->textureID = LoadTGA("Image//snow_bk.tga");
+	//	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_LEFT]->textureID = LoadTGA("Image//snow_lf.tga");
+	//	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
+	//	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//snow_rt.tga");
 
-		meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 10, 40);
-		light[0].color.Set(0, 0, 0);
-		for (int i = 0; i < 1000; i++)
-		{
-			rainpositiony[i] -= (float)(200 * dt);
-		}
+	//	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 10, 40);
+	//	light[0].color.Set(0, 0, 0);
+	//	for (int i = 0; i < 1000; i++)
+	//	{
+	//		rainpositiony[i] -= (float)(200 * dt);
+	//	}
 
-		/*Camera3::test2 = false;
-		Camera3::test = false;
-		Camera3::test3 = false;
-		Sp2Scene::test4 = true;*/
+	//	/*Camera3::test2 = false;
+	//	Camera3::test = false;
+	//	Camera3::test3 = false;
+	//	Sp2Scene::test4 = true;*/
 
-	}
+	//}
 
-	if (camera.checkcollisionwithTricker(Vector3(-150, 50, -200), 30, 5, 40))
-	{
-		/*Camera3::test2 = false;
-		Camera3::test = false;
-		Camera3::test3 = false;
-		Sp2Scene::test4 = false;
-		Sp2Scene::test5 = true;*/
-	}
+	//if (camera.checkcollisionwithTricker(Vector3(-150, 50, -200), 30, 5, 40))
+	//{
+	//	/*Camera3::test2 = false;
+	//	Camera3::test = false;
+	//	Camera3::test3 = false;
+	//	Sp2Scene::test4 = false;
+	//	Sp2Scene::test5 = true;*/
+	//}
 
 
 
@@ -415,7 +414,7 @@ void Sp2Scene::Update(double dt)
 	}
 
 
-	if (Application::IsKeyPressed('5'))
+	/*if (Application::IsKeyPressed('5'))
 	{
 		meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
 		meshList[GEO_TOP]->textureID = LoadTGA("Image//snow_up.tga");
@@ -475,7 +474,7 @@ void Sp2Scene::Update(double dt)
 		{
 			rainpositiony[i] -= (float)(100 * dt);
 		}
-	}
+	}*/
 
 	rotateAngle += (float)(10 * dt);
 	planet1RotAngle += (float)(5 * dt);
@@ -864,7 +863,7 @@ void Sp2Scene::Render()
 	{
 		modelStack.PushMatrix();
 		modelStack.Scale(3, 3, 3);
-		modelStack.Translate( test.x, test.y + 3,  test.z);
+		modelStack.Translate(test.x, test.y + 3, test.z);
 		//modelStack.Rotate(Camera3::direction, 0, 0, 1);
 		RenderMesh(meshList[GEO_SHOT], false);
 		modelStack.PopMatrix();

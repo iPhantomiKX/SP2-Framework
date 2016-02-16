@@ -63,6 +63,7 @@
     <ClInclude Include="Source\SceneText.h" />
     <ClInclude Include="Source\SceneTexture.h" />
     <ClInclude Include="Source\shader.hpp" />
+    <ClInclude Include="Source\SP2Scene.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />
   </ItemGroup>

@@ -13,7 +13,6 @@ public:
 	//Vector3 target;
 	//Vector3 up;
 
-	Vector3 target, up, right, view;
 	Vector3 defaultPosition;
 	Vector3 defaultTarget;
 	Vector3 defaultUp;
@@ -46,12 +45,11 @@ public:
 	Camera3();
 	~Camera3();
 	virtual void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
+	//bool testhitbox(const Vector3& lowest, const Vector3& highest, double move);
+	//bool hitbox(double move);
+	//bool checkcollisionwithObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
+
 	virtual void Update(double dt);
-	bool testhitbox(const Vector3& lowest, const Vector3& highest, double move);
-	bool hitbox(double move);
-	bool checkcollisionwithObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
-	bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
-	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	virtual void Reset();
 
 };

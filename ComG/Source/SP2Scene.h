@@ -35,9 +35,9 @@ class Sp2Scene : public Scene
 		GEO_BOTTOM,
 		GEO_FRONT,
 		GEO_BACK,
-		GEO_MODEL1,
-		GEO_LAND,
-		GEO_AIR,
+		//GEO_MODEL1,
+		/*GEO_LAND,
+		GEO_AIR,*/
 		GEO_TEXT,
 		GEO_DEADTREE,
 		GEO_HEAD,
