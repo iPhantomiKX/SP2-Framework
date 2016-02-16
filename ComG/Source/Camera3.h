@@ -35,6 +35,8 @@ public:
 	static double xpos;
 	static double ypos;
 	static Vector3 location;
+	static Vector3 direction;
+
 
 	Vector3 diffx;
 	Vector3 diffz;

@@ -38,6 +38,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 void Camera3::Update(double dt)
 {
 	static const float CAMERA_SPEED = 50.f;
+	direction = target;
 	prevPosition = position;
 	Vector3 view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
@@ -57,20 +58,19 @@ void Camera3::Update(double dt)
 	{
 		delay2--;
 	}
+	Mtx44 rotation;
 	if (mouseControl == true)
 	{
 		xpos, ypos = a.Mouse(xpos, ypos);
 
 		if (xpos < 390)
 		{
-			Mtx44 rotation;
 			rotation.SetToRotation(3, up.x, up.y, up.z);
 			view = rotation * view;
 			target = position + view;
 		}
 		if (xpos > 410)
 		{
-			Mtx44 rotation;
 			rotation.SetToRotation(-3, up.x, up.y, up.z);
 			view = rotation * view;
 			target = position + view;
@@ -79,7 +79,6 @@ void Camera3::Update(double dt)
 		{
 			if (view.y < 0.5)
 			{
-				Mtx44 rotation;
 				rotation.SetToRotation(2, right.x, right.y, right.z);
 				view = rotation * view;
 				target = position + view;
@@ -89,7 +88,6 @@ void Camera3::Update(double dt)
 		{
 			if (view.y > -0.5)
 			{
-				Mtx44 rotation;
 				rotation.SetToRotation(-2, right.x, right.y, right.z);
 				view = rotation * view;
 				target = position + view;
@@ -100,14 +98,12 @@ void Camera3::Update(double dt)
 	{
 		if (Application::IsKeyPressed(VK_LEFT))
 		{
-			Mtx44 rotation;
 			rotation.SetToRotation(2, up.x, up.y, up.z);
 			view = rotation * view;
 			target = position + view;
 		}
 		if (Application::IsKeyPressed(VK_RIGHT))
 		{
-			Mtx44 rotation;
 			rotation.SetToRotation(-2, up.x, up.y, up.z);
 			view = rotation * view;
 			target = position + view;
@@ -117,7 +113,6 @@ void Camera3::Update(double dt)
 
 			if (view.y < 0.5)
 			{
-				Mtx44 rotation;
 				rotation.SetToRotation(1.5, right.x, right.y, right.z);
 				view = rotation * view;
 				target = position + view;
@@ -127,7 +122,6 @@ void Camera3::Update(double dt)
 		{
 			if (view.y > -0.5)
 			{
-				Mtx44 rotation;
 				rotation.SetToRotation(-1.5, right.x, right.y, right.z);
 				view = rotation * view;
 				target = position + view;
@@ -245,6 +239,9 @@ void Camera3::Update(double dt)
 	}
 
 	location = position;
+	//std::cout << direction.x - position.x << std::endl;
+	//std::cout << direction.y - position.y << std::endl;
+	//std::cout << direction.z - position.z << std::endl;
 
 	if (Application::IsKeyPressed('R'))
 	{
