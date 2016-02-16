@@ -35,9 +35,9 @@ class Sp2Scene : public Scene
 		GEO_BOTTOM,
 		GEO_FRONT,
 		GEO_BACK,
-		GEO_MODEL1,
-		GEO_LAND,
-		GEO_AIR,
+		//GEO_MODEL1,
+		/*GEO_LAND,
+		GEO_AIR,*/
 		GEO_TEXT,
 		GEO_DEADTREE,
 		GEO_HEAD,
@@ -61,6 +61,7 @@ class Sp2Scene : public Scene
 		GEO_OBJECT,
 		GEO_TEST,
 		GEO_PISTOL1,
+		GEO_SHOT,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -137,6 +138,7 @@ private:
 	static bool test5;*/
 
 	Vector3 treeposition[150];
+	Vector3 test;
 
 
 	Camera3 camera;

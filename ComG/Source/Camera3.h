@@ -43,6 +43,10 @@ public:
 	Camera3();
 	~Camera3();
 	virtual void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
+	//bool testhitbox(const Vector3& lowest, const Vector3& highest, double move);
+	//bool hitbox(double move);
+	//bool checkcollisionwithObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
+
 	virtual void Update(double dt);
 	virtual void Reset();
 
