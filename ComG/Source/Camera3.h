@@ -19,6 +19,8 @@ public:
 	Vector3 defaultUp;
 	Vector3 camerarotation;
 	float cameraRotationX, cameraRotationY;
+	float maxCameraX;
+	float cameraSpeed;
 	float walkSpeed;
 	int screenMidX;
 	int screenMidY;

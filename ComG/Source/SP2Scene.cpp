@@ -205,19 +205,19 @@ void Sp2Scene::Update(double dt)
 
 		if (Camera3::xpos < 390)
 		{
-			rotateGunY += 3;
+			rotateGunY += 2;
 		}
 		if (Camera3::xpos > 410)
 		{
-			rotateGunY -= 3;
+			rotateGunY -= 2;
 		}
 		if (Camera3::ypos < 290)
 		{
-			rotateGunX -= 2;
+			rotateGunX += 2;
 		}
 		if (Camera3::ypos > 310)
 		{
-			rotateGunX += 2;
+			rotateGunX -= 2;
 		}
 
 		if (rotateGunX > 50)
@@ -241,11 +241,11 @@ void Sp2Scene::Update(double dt)
 		}
 		if (Application::IsKeyPressed(VK_UP))
 		{
-			rotateGunX -= 2;
+			rotateGunX += 2;
 		}
 		if (Application::IsKeyPressed(VK_DOWN))
 		{
-			rotateGunX += 2;
+			rotateGunX -= 2;
 		}
 
 		//Boundaries for gun rotation
@@ -259,7 +259,6 @@ void Sp2Scene::Update(double dt)
 		}
 	}
 
-	camera.Update(dt);
 	for (int i = 0; i < 50; ++i)
 	{
 		if (camera.checkcollisionwithObject(Vector3(treex[i], 0, treez[i]), 20, 40, 20) == true)
@@ -515,6 +514,7 @@ void Sp2Scene::Update(double dt)
 			rainpositionx[i] += (float)(150 * dt);
 		}
 	}
+	camera.Update(dt);
 }
 
 void Sp2Scene::RenderSkybox()
@@ -887,7 +887,11 @@ void Sp2Scene::RenderGun()
 	{
 		modelStack.Translate(15, -9, 5);
 	}
-	modelStack.Rotate(-180, 0, 1, 0);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(3, -8, -8);
+	modelStack.Rotate(-90, 0, 1, 0);
 	RenderMesh(meshList[GEO_PISTOL1], true);
 	modelStack.PopMatrix();
 

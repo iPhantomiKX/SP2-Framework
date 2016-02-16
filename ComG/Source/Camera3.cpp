@@ -18,6 +18,9 @@ Camera3::~Camera3()
 
 void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 {
+	maxCameraX = 49.99f;
+	cameraSpeed = 2.5f;
+
 	this->position = defaultPosition = pos;
 	this->target = defaultTarget = target;
 	Vector3 view = (target - position).Normalized();
@@ -25,7 +28,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	right.y = 0;
 	right.Normalize();
 	this->up = defaultUp = right.Cross(view).Normalized();
-	Vector3 camerarotation = (0, 0, 0);
+	camerarotation = Vector3(0, -180, 0);
 	speed = 100;
 	location= position;
 	//delay = 0;
@@ -65,32 +68,36 @@ void Camera3::Update(double dt)
 
 		if (xpos < 390)
 		{
-			rotation.SetToRotation(3, up.x, up.y, up.z);
-			view = rotation * view;
-			target = position + view;
+			//rotation.SetToRotation(3, up.x, up.y, up.z);
+			//view = rotation * view;
+			//target = position + view;
+			camerarotation.y += 2;
 		}
 		if (xpos > 410)
 		{
-			rotation.SetToRotation(-3, up.x, up.y, up.z);
-			view = rotation * view;
-			target = position + view;
+			//rotation.SetToRotation(-3, up.x, up.y, up.z);
+			//view = rotation * view;
+			//target = position + view;
+			camerarotation.y -= 2;
 		}
 		if (ypos < 290)
 		{
-			if (view.y < 0.5)
+			if (view.y < 0.7)
 			{
-				rotation.SetToRotation(2, right.x, right.y, right.z);
-				view = rotation * view;
-				target = position + view;
+				//rotation.SetToRotation(2, right.x, right.y, right.z);
+				//view = rotation * view;
+				//target = position + view;
+				camerarotation.x -= 2;
 			}
 		}
 		if (ypos > 310)
 		{
-			if (view.y > -0.5)
+			if (view.y > -0.7)
 			{
-				rotation.SetToRotation(-2, right.x, right.y, right.z);
-				view = rotation * view;
-				target = position + view;
+				//rotation.SetToRotation(-2, right.x, right.y, right.z);
+				//view = rotation * view;
+				//target = position + view;
+				camerarotation.x += 2;
 			}
 		}
 	}
@@ -98,34 +105,38 @@ void Camera3::Update(double dt)
 	{
 		if (Application::IsKeyPressed(VK_LEFT))
 		{
-			rotation.SetToRotation(2, up.x, up.y, up.z);
-			view = rotation * view;
-			target = position + view;
+			//rotation.SetToRotation(2, up.x, up.y, up.z);
+			//view = rotation * view;
+			//target = position + view;
+			camerarotation.y += 2;
 		}
 		if (Application::IsKeyPressed(VK_RIGHT))
 		{
-			rotation.SetToRotation(-2, up.x, up.y, up.z);
-			view = rotation * view;
-			target = position + view;
+			//rotation.SetToRotation(-2, up.x, up.y, up.z);
+			//view = rotation * view;
+			//target = position + view;
+			camerarotation.y -= 2;
 		}
 		if (Application::IsKeyPressed(VK_UP))
 		{
 
-			if (view.y < 0.5)
+			/*if (view.y < 0.5)
 			{
 				rotation.SetToRotation(1.5, right.x, right.y, right.z);
 				view = rotation * view;
 				target = position + view;
-			}
+			}*/
+			camerarotation.x -= 2;
 		}
 		if (Application::IsKeyPressed(VK_DOWN))
 		{
-			if (view.y > -0.5)
+			/*if (view.y > -0.5)
 			{
 				rotation.SetToRotation(-1.5, right.x, right.y, right.z);
 				view = rotation * view;
 				target = position + view;
-			}
+			}*/
+			camerarotation.x += 2;
 		}
 	}
 	/*if (Application::IsKeyPressed(VK_LEFT))
@@ -243,10 +254,23 @@ void Camera3::Update(double dt)
 	//std::cout << direction.y - position.y << std::endl;
 	//std::cout << direction.z - position.z << std::endl;
 
+	if (camerarotation.x > maxCameraX)
+	{
+		camerarotation.x = maxCameraX;
+	}
+	else if (camerarotation.x < -maxCameraX)
+	{
+		camerarotation.x = -maxCameraX;
+	}
+
 	if (Application::IsKeyPressed('R'))
 	{
 		Reset();
 	}
+
+	//Changing target
+	target = Vector3(sin(DegreeToRadian(camerarotation.y))*cos(DegreeToRadian(camerarotation.x)) + this->position.x, -sin(DegreeToRadian(camerarotation.x)) + this->position.y,
+		cos(DegreeToRadian(camerarotation.y))*cos(DegreeToRadian(camerarotation.x)) + this->position.z);
 }
 
 bool Camera3::testhitbox(const Vector3& lowest, const Vector3& highest, double move)
