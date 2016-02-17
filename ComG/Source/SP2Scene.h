@@ -133,6 +133,9 @@ private:
 	float rotateGunX;
 	float rotateGunY;
 
+	bool bullet1;
+	double range;
+
 	void RenderGun();
 	/*static bool test4;
 	static bool test5;*/

@@ -19,6 +19,7 @@
 //bool Sp2Scene::test4 = false;
 //bool Sp2Scene::test5 = false;
 
+
 Vector3 Camera3::location = (0, 0, 0);
 bool Camera3::mouseControl = false;
 double Camera3::xpos = 0;
@@ -116,6 +117,8 @@ void Sp2Scene::Init()
 	rotateGunX = 0;
 	rotateGunY = 0;
 	test = (0, 0, 0);
+	bullet1 = false;
+	range = 0;
 
 	//Initialize camera settings
 	camera.Init(Vector3(0, 10, 0), Vector3(10, 10, 0), Vector3(0, 1, 0));
@@ -153,7 +156,7 @@ void Sp2Scene::Init()
 	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");
 	meshList[GEO_TEST] = MeshBuilder::GenerateOBJ("test", "OBJ//test.obj");
 
-	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(1,0,0), 2,4);
+	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(1,0,0), 10,20);
 
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
 	meshList[GEO_PISTOL1]->textureID = LoadTGA("Image//pistol1texture.tga");
@@ -187,29 +190,46 @@ static float SCALE_LIMIT = 5.f;
 
 void Sp2Scene::Update(double dt)
 {
-	if (Application::IsKeyPressed(VK_LBUTTON))
+	std::cout << range << std::endl;
+	//std::cout << Camera3::location << std::endl;
+	if (Application::IsKeyPressed(VK_LBUTTON) && bullet1 == false)
 	{
-		test.x += (Camera3::direction.x - Camera3::location.x);
-		test.y += (Camera3::direction.y - Camera3::location.y);
-		test.z += (Camera3::direction.z - Camera3::location.z);
+		bullet1 = true;
+		range = 100;
 	}
-	else
+
+	if (bullet1 == true)
 	{
-		test = (0, 0, 0);
+		test.x += (Camera3::direction.x);
+		test.y += (Camera3::direction.y);
+		test.z += (Camera3::direction.z);
+		range -= 1;
 	}
+	else if (bullet1 == false)
+	{
+		test = Camera3::location;
+	}
+	if (range <= 0)
+	{
+		bullet1 = false;
+	}
+
+	std::cout << test << std::endl;
+
+	//std::cout << test << std::endl;
 	//Gun rotation
+
+	//std::cout << Camera3::xpos << std::endl;
 
 	if (Camera3::mouseControl == true)
 	{
-		//Camera3::xpos, Camera3::ypos = a.Mouse(Camera3::xpos, Camera3::ypos);
-
 		if (Camera3::xpos < 390)
 		{
-			rotateGunY += 2;
+			rotateGunY += 3;
 		}
 		if (Camera3::xpos > 410)
 		{
-			rotateGunY -= 2;
+			rotateGunY -= 3;
 		}
 		if (Camera3::ypos < 290)
 		{
@@ -860,14 +880,15 @@ void Sp2Scene::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], "framerate: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 1);
 	modelStack.PopMatrix();
 
-	if (Application::IsKeyPressed(VK_LBUTTON))
+	if (bullet1 == true)
 	{
 		modelStack.PushMatrix();
 		modelStack.Scale(3, 3, 3);
-		modelStack.Translate( test.x, test.y + 3,  test.z);
+		modelStack.Translate( test.x, test.y - 7, test.z);
 		//modelStack.Rotate(Camera3::direction, 0, 0, 1);
 		RenderMesh(meshList[GEO_SHOT], false);
 		modelStack.PopMatrix();
+		//std::cout << test << std::endl;
 	}
 }
 void Sp2Scene::RenderGun()
@@ -881,16 +902,12 @@ void Sp2Scene::RenderGun()
 	modelStack.PushMatrix();
 	if (Application::IsKeyPressed(VK_RBUTTON) == true)
 	{
-		modelStack.Translate(15, -7, 0);
+		modelStack.Translate(0,-7,-10);
 	}
 	else
 	{
-		modelStack.Translate(15, -9, 5);
+		modelStack.Translate(5, -10, -15);
 	}
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(3, -8, -8);
 	modelStack.Rotate(-90, 0, 1, 0);
 	RenderMesh(meshList[GEO_PISTOL1], true);
 	modelStack.PopMatrix();

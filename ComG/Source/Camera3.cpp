@@ -41,7 +41,6 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 void Camera3::Update(double dt)
 {
 	static const float CAMERA_SPEED = 50.f;
-	direction = target;
 	prevPosition = position;
 	Vector3 view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
@@ -62,6 +61,7 @@ void Camera3::Update(double dt)
 		delay2--;
 	}
 	Mtx44 rotation;
+	//std::cout << xpos << " " << ypos << std::endl;
 	if (mouseControl == true)
 	{
 		xpos, ypos = a.Mouse(xpos, ypos);
@@ -71,14 +71,14 @@ void Camera3::Update(double dt)
 			//rotation.SetToRotation(3, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
-			camerarotation.y += 2;
+			camerarotation.y += 3;
 		}
 		if (xpos > 410)
 		{
 			//rotation.SetToRotation(-3, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
-			camerarotation.y -= 2;
+			camerarotation.y -= 3;
 		}
 		if (ypos < 290)
 		{
@@ -87,7 +87,7 @@ void Camera3::Update(double dt)
 				//rotation.SetToRotation(2, right.x, right.y, right.z);
 				//view = rotation * view;
 				//target = position + view;
-				camerarotation.x -= 2;
+				camerarotation.x -= 3;
 			}
 		}
 		if (ypos > 310)
@@ -97,7 +97,7 @@ void Camera3::Update(double dt)
 				//rotation.SetToRotation(-2, right.x, right.y, right.z);
 				//view = rotation * view;
 				//target = position + view;
-				camerarotation.x += 2;
+				camerarotation.x += 3;
 			}
 		}
 	}
@@ -250,6 +250,7 @@ void Camera3::Update(double dt)
 	}
 
 	location = position;
+	direction = view * dt * speed;
 	//std::cout << direction.x - position.x << std::endl;
 	//std::cout << direction.y - position.y << std::endl;
 	//std::cout << direction.z - position.z << std::endl;
@@ -271,6 +272,8 @@ void Camera3::Update(double dt)
 	//Changing target
 	target = Vector3(sin(DegreeToRadian(camerarotation.y))*cos(DegreeToRadian(camerarotation.x)) + this->position.x, -sin(DegreeToRadian(camerarotation.x)) + this->position.y,
 		cos(DegreeToRadian(camerarotation.y))*cos(DegreeToRadian(camerarotation.x)) + this->position.z);
+
+	std::cout << target << std::endl;
 }
 
 bool Camera3::testhitbox(const Vector3& lowest, const Vector3& highest, double move)
