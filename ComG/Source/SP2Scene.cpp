@@ -143,8 +143,6 @@ void Sp2Scene::Init()
 	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//purplenebula_rt.tga");
 	/*meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("model1", "OBJ//chair.obj");
 	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//chair.tga");
-	meshList[GEO_LAND] = MeshBuilder::GenerateOBJ("land", "OBJ//landvehicle.obj");
-	meshList[GEO_LAND]->textureID = LoadTGA("Image//landvehicleUV3.tga");
 	meshList[GEO_AIR] = MeshBuilder::GenerateOBJ("air", "OBJ//airvehicle.obj");
 	meshList[GEO_AIR]->textureID = LoadTGA("Image//uvairvehicletexture.tga");
 	meshList[GEO_DEADTREE] = MeshBuilder::GenerateOBJ("deadtree", "OBJ//deadtree.obj");
@@ -162,6 +160,12 @@ void Sp2Scene::Init()
 
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
 	meshList[GEO_PISTOL1]->textureID = LoadTGA("Image//pistol1texture.tga");
+
+	meshList[GEO_RIFLE1] = MeshBuilder::GenerateOBJ("rifle1model", "OBJ//AR.obj");
+	meshList[GEO_RIFLE1]->textureID = LoadTGA("Image//AR_UV.tga");
+
+	meshList[GEO_SNIPER1] = MeshBuilder::GenerateOBJ("sniper1model", "OBJ//AK47.obj");
+	meshList[GEO_SNIPER1]->textureID = LoadTGA("Image//AK47UV.tga");
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
@@ -281,6 +285,28 @@ void Sp2Scene::Update(double dt)
 		}
 	}
 
+	//If pressed '1', switch to Pistol1
+	if (Application::IsKeyPressed('1') && equipPistol1 == false)
+	{
+		equipPistol1 = true;
+		equipRifle1 = false;
+		equipSniper1 = false;
+	}
+	//If pressed '2', switch to Rifle1
+	if (Application::IsKeyPressed('2') && equipRifle1 == false)
+	{
+		equipPistol1 = false;
+		equipRifle1 = true;
+		equipSniper1 = false;
+	}
+	//If pressed '3', switch to Sniper1
+	if (Application::IsKeyPressed('3') && equipSniper1 == false)
+	{
+		equipPistol1 = false;
+		equipRifle1 = false;
+		equipSniper1 = true;
+	}
+
 	for (int i = 0; i < 50; ++i)
 	{
 		if (camera.checkcollisionwithObject(Vector3(treex[i], 0, treez[i]), 20, 40, 20) == true)
@@ -351,7 +377,7 @@ void Sp2Scene::Update(double dt)
 		meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 0, 0), 10, 20);
 
 		meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Rock.obj");
-		meshList[GEO_OBJECT]->textureID = LoadTGA("Image//chair.tga");
+		//meshList[GEO_OBJECT]->textureID = LoadTGA("Image//chair.tga");
 
 		light[0].color.Set(1, 0, 0);
 		for (int i = 0; i < 1000; i++)
@@ -405,7 +431,7 @@ void Sp2Scene::Update(double dt)
 
 
 
-	if (Application::IsKeyPressed('1')) //enable back face culling
+	/*if (Application::IsKeyPressed('1')) //enable back face culling
 		glDisable(GL_CULL_FACE);
 	if (Application::IsKeyPressed('2')) //disable back face culling
 		glEnable(GL_CULL_FACE);
@@ -413,6 +439,7 @@ void Sp2Scene::Update(double dt)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+		*/
 
 	if (Application::IsKeyPressed('I'))
 		light[0].position.z -= (float)(LSPEED * dt);
@@ -809,7 +836,20 @@ void Sp2Scene::Render()
 	RenderMesh(meshList[GEO_TEST], true);
 	modelStack.PopMatrix();
 
-	RenderGun();
+	//Check if button has pressed
+	if (equipPistol1 == true)
+	{
+		RenderPistol1();
+	}
+	else if (equipRifle1 == true)
+	{
+		RenderRifle1();
+	}
+	else if (equipSniper1 == true)
+	{
+		RenderSniper1();
+	}
+
 	//if (Camera3::test == true)
 	//{
 	//	modelStack.PushMatrix();
@@ -892,8 +932,9 @@ void Sp2Scene::Render()
 		modelStack.PopMatrix();
 		//std::cout << test << std::endl;
 	}
+
 }
-void Sp2Scene::RenderGun()
+void Sp2Scene::RenderPistol1()
 {
 	modelStack.PushMatrix();
 	modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
@@ -912,6 +953,55 @@ void Sp2Scene::RenderGun()
 	}
 	modelStack.Rotate(-90, 0, 1, 0);
 	RenderMesh(meshList[GEO_PISTOL1], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+}
+void Sp2Scene::RenderRifle1()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
+	modelStack.Rotate(rotateGunY, 0, 1, 0);
+	modelStack.Rotate(rotateGunX, 1, 0, 0);
+
+	modelStack.PushMatrix();
+	if (Application::IsKeyPressed(VK_RBUTTON) == true)
+	{
+		modelStack.Translate(0, -8, -10);
+	}
+	else
+	{
+		modelStack.Translate(5, -10, -15);
+	}
+
+	modelStack.Translate(0, 5, 0);
+	//modelStack.Rotate(-90, 0, 1, 0);
+	modelStack.Scale(5, 5, 5);
+	RenderMesh(meshList[GEO_RIFLE1], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+}
+void Sp2Scene::RenderSniper1()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
+	modelStack.Rotate(rotateGunY, 0, 1, 0);
+	modelStack.Rotate(rotateGunX, 1, 0, 0);
+	modelStack.Scale(0.05, 0.05, 0.05);
+
+	modelStack.PushMatrix();
+	if (Application::IsKeyPressed(VK_RBUTTON) == true)
+	{
+		modelStack.Translate(0, -7, -10);
+	}
+	else
+	{
+		modelStack.Translate(5, -10, -15);
+	}
+	modelStack.Translate(10, -15, -60);
+	modelStack.Rotate(5, 0, 1, 0);
+	RenderMesh(meshList[GEO_SNIPER1], true);
 	modelStack.PopMatrix();
 
 	modelStack.PopMatrix();

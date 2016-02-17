@@ -60,9 +60,13 @@ class Sp2Scene : public Scene
 		GEO_BLOODY_FRONT,
 		GEO_OBJECT,
 		GEO_TEST,
-		GEO_PISTOL1,
+		
 		GEO_SHOT,
 		GEO_SPACESHIPQUAD,
+
+		GEO_PISTOL1,
+		GEO_RIFLE1,
+		GEO_SNIPER1,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -137,7 +141,13 @@ private:
 	bool bullet1;
 	double range;
 
-	void RenderGun();
+	bool equipPistol1 = true;
+	bool equipRifle1 = false;
+	bool equipSniper1 = false;
+
+	void RenderPistol1();
+	void RenderRifle1();
+	void RenderSniper1();
 	/*static bool test4;
 	static bool test5;*/
 
