@@ -127,8 +127,8 @@ void Sp2Scene::Init()
 	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
-	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("bottom", Color(.3, .3, .3), 1000, 1000);
-	//meshList[GEO_QUAD]->textureID = LoadTGA("Image//purplenebula_dn.tga");
+	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad2("bottom", Color(.3, .3, .3), TexCoord(50, 50));
+	meshList[GEO_QUAD]->textureID = LoadTGA("Image//Moon_texture.tga");
 	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
 	meshList[GEO_TOP]->textureID = LoadTGA("Image//purplenebula_up.tga");
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
@@ -141,7 +141,7 @@ void Sp2Scene::Init()
 	meshList[GEO_LEFT]->textureID = LoadTGA("Image//purplenebula_lf.tga");
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
 	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//purplenebula_rt.tga");
-	meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("model1", "OBJ//chair.obj");
+	/*meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("model1", "OBJ//chair.obj");
 	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//chair.tga");
 	meshList[GEO_LAND] = MeshBuilder::GenerateOBJ("land", "OBJ//landvehicle.obj");
 	meshList[GEO_LAND]->textureID = LoadTGA("Image//landvehicleUV3.tga");
@@ -149,12 +149,14 @@ void Sp2Scene::Init()
 	meshList[GEO_AIR]->textureID = LoadTGA("Image//uvairvehicletexture.tga");
 	meshList[GEO_DEADTREE] = MeshBuilder::GenerateOBJ("deadtree", "OBJ//deadtree.obj");
 	meshList[GEO_DEADTREE]->textureID = LoadTGA("Image//deadtree.tga");
-	meshList[GEO_CONE] = MeshBuilder::GenerateCone("cone", Color(1, 1, 0), 20);
+	meshList[GEO_CONE] = MeshBuilder::GenerateCone("cone", Color(1, 1, 0), 20);*/
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Tricker.obj");
-	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");
+	/*meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Tricker.obj");
+	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");*/
 	meshList[GEO_TEST] = MeshBuilder::GenerateOBJ("test", "OBJ//test.obj");
+
+	
 
 	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(1,0,0), 10,20);
 
@@ -798,7 +800,7 @@ void Sp2Scene::Render()
 	modelStack.PushMatrix();
 	modelStack.Translate(-150, 50, -200);
 	modelStack.Scale(10, 10, 10);
-	RenderText(meshList[GEO_TEXT], "HIT ME FOR CHANGE OF WEATHER", Color(1, 0, 0));
+	RenderText(meshList[GEO_TEXT], "Welcome To The Moon", Color(1, 0, 0));
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();

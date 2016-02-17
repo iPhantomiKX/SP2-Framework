@@ -16,6 +16,9 @@ class MeshBuilder
 public:
 	static Mesh* GenerateAxes(const std::string &meshName, float lengthX, float lengthY, float lengthZ);
 	static Mesh* GenerateQuad(const std::string &meshName, Color color, float lengthX, float lengthY);
+
+	static Mesh* GenerateQuad2(const std::string &meshName, Color color, TexCoord texCoord);
+
 	static Mesh* GenerateCube(const std::string &meshName, Color color);
 	static Mesh* GenerateCircle(const std::string &meshName, Color color, unsigned numSlice);
 	static Mesh* GenerateRing(const std::string &meshName, Color color, float innerRadius, unsigned numSlice = 36);

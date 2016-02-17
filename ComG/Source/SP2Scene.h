@@ -62,6 +62,7 @@ class Sp2Scene : public Scene
 		GEO_TEST,
 		GEO_PISTOL1,
 		GEO_SHOT,
+		GEO_SPACESHIPQUAD,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
