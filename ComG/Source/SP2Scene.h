@@ -151,6 +151,8 @@ private:
 	/*static bool test4;
 	static bool test5;*/
 
+	void RenderSpaceshipQuad();
+
 	Vector3 treeposition[150];
 	Vector3 test;
 

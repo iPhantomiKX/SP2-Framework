@@ -154,7 +154,8 @@ void Sp2Scene::Init()
 	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");*/
 	meshList[GEO_TEST] = MeshBuilder::GenerateOBJ("test", "OBJ//test.obj");
 
-	
+	meshList[GEO_SPACESHIPQUAD] = MeshBuilder::GenerateQuad("spaceshipquad", Color(1, 1, 1), 100, 100);
+	meshList[GEO_SPACESHIPQUAD]->textureID = LoadTGA("Image//spaceship_floor.tga");
 
 	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(1,0,0), 10,20);
 
@@ -310,54 +311,18 @@ void Sp2Scene::Update(double dt)
 	for (int i = 0; i < 50; ++i)
 	{
 		if (camera.checkcollisionwithObject(Vector3(treex[i], 0, treez[i]), 20, 40, 20) == true)
-		{
-			camera.position = camera.prevPosition;
-			meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_TOP]->textureID = LoadTGA("Image//hell_up.tga");
-			meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//hell_dn.tga");
-			meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_FRONT]->textureID = LoadTGA("Image//hell_ft.tga");
-			meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_BACK]->textureID = LoadTGA("Image//hell_bk.tga");
-			meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_LEFT]->textureID = LoadTGA("Image//hell_lf.tga");
-			meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_RIGHT]->textureID = LoadTGA("Image//hell_rt.tga");
-
-			meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(0, 0, 0), 10, 40);
-			light[0].color.Set(0, 0, 0);
-			for (int i = 0; i < 1000; i++)
-			{
-				rainpositiony[i] -= (float)(200 * dt);
-			}
-		}
-	}
-
-	if (camera.checkcollisionwithTricker(Vector3(0, 0, -100), 7, 7, 7))
 	{
 		camera.position = camera.prevPosition;
-		meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_TOP]->textureID = LoadTGA("Image//icyhell_up.tga");
-		meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//icyhell_dn.tga");
-		meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_FRONT]->textureID = LoadTGA("Image//icyhell_ft.tga");
-		meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_BACK]->textureID = LoadTGA("Image//icyhell_bk.tga");
-		meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_LEFT]->textureID = LoadTGA("Image//icyhell_lf.tga");
-		meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_RIGHT]->textureID = LoadTGA("Image//icyhell_rt.tga");
-		meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(0.5, 0.5, 0.5), 10, 40);
-		meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(0.5, 0.5, 0.5), 10, 20);
-		light[0].color.Set(0.5, 0.5, 0.5);
-
-		meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//sword.obj");
-		meshList[GEO_OBJECT]->textureID = LoadTGA("Image//SwordUV.tga");
 	}
 
-	if (camera.checkcollisionwithTricker(Vector3(-80, 0, -50), 7, 7, 7))
+	//collision for spaceship floor 2
+	if (camera.checkcollisionwithObject(Vector3(400, 60, 100), 100, 15, 100))
+	{
+		camera.position = camera.prevPosition;
+	}
+
+	//collision for spaceship wall length 1
+	if (camera.checkcollisionwithObject(Vector3(450, 110, 0), 15, 100, 100))
 	{
 		camera.position = camera.prevPosition;
 		meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
@@ -387,49 +352,49 @@ void Sp2Scene::Update(double dt)
 		/*Camera3::test2 = false;
 		Camera3::test = false;
 		Camera3::test3 = true;
-		Sp2Scene::test4 = false;*/
 	}
 
-	if (camera.checkcollisionwithTricker(Vector3(40, 100, 90), 7, 7, 7))
+	//collision for spaceship wall length 2
+	if (camera.checkcollisionwithObject(Vector3(450, 110, 100), 15, 100, 100))
 	{
 		camera.position = camera.prevPosition;
-		meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_TOP]->textureID = LoadTGA("Image//snow_up.tga");
-		meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//snow_dn.tga");
-		meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_FRONT]->textureID = LoadTGA("Image//snow_ft.tga");
-		meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_BACK]->textureID = LoadTGA("Image//snow_bk.tga");
-		meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_LEFT]->textureID = LoadTGA("Image//snow_lf.tga");
-		meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-		meshList[GEO_RIGHT]->textureID = LoadTGA("Image//snow_rt.tga");
-
-		meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 10, 40);
-		light[0].color.Set(0, 0, 0);
-		for (int i = 0; i < 1000; i++)
-		{
-			rainpositiony[i] -= (float)(200 * dt);
-		}
-
-		/*Camera3::test2 = false;
-		Camera3::test = false;
-		Camera3::test3 = false;
-		Sp2Scene::test4 = true;*/
-
 	}
 
-	if (camera.checkcollisionwithTricker(Vector3(-150, 50, -200), 30, 5, 40))
+	//collision for spaceship wall length 3
+	if (camera.checkcollisionwithObject(Vector3(350, 110, 0), 15, 100, 100))
 	{
-		/*Camera3::test2 = false;
-		Camera3::test = false;
-		Camera3::test3 = false;
-		Sp2Scene::test4 = false;
-		Sp2Scene::test5 = true;*/
+		camera.position = camera.prevPosition;
 	}
 
+	//collision for spaceship wall length 4
+	if (camera.checkcollisionwithObject(Vector3(350, 110, 100), 15, 100, 100))
+	{
+		camera.position = camera.prevPosition;
+	}
 
+	//collision for spaceship wall width 1
+	if (camera.checkcollisionwithObject(Vector3(400, 110, -50), 100, 100, 15))
+	{
+		camera.position = camera.prevPosition;
+	}
+
+	//collision for spaceship wall width 2
+	if (camera.checkcollisionwithObject(Vector3(400, 110, 150), 100, 100, 15))
+	{
+		camera.position = camera.prevPosition;
+	}
+
+	//collision for spaceship roof 1
+	if (camera.checkcollisionwithObject(Vector3(400, 160, 0), 100, 15, 100))
+	{
+		camera.position = camera.prevPosition;
+	}
+
+	//collision for spaceship roof 2
+	if (camera.checkcollisionwithObject(Vector3(400, 160, 100), 100, 15, 100))
+	{
+		camera.position = camera.prevPosition;
+	}
 
 	/*if (Application::IsKeyPressed('1')) //enable back face culling
 		glDisable(GL_CULL_FACE);
@@ -739,6 +704,85 @@ void Sp2Scene::RenderMesh(Mesh *mesh, bool enablelight)
 	}
 }
 
+void Sp2Scene::RenderSpaceshipQuad()
+{
+	//spaceship floor 1
+	modelStack.PushMatrix();
+	modelStack.Translate(400, 60, 0);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
+	//spaceship floor 2
+	modelStack.PushMatrix();
+	modelStack.Translate(400, 60, 100);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
+	//spaceship wall length 1
+	modelStack.PushMatrix();
+	modelStack.Translate(450, 110, 0);
+	modelStack.Rotate(90,0, 0, 1);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+	
+	//spaceship wall length 2
+	modelStack.PushMatrix();
+	modelStack.Translate(450, 110, 100);
+	modelStack.Rotate(90, 0, 0, 1);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
+	//spaceship wall length 3
+	modelStack.PushMatrix();
+	modelStack.Translate(350, 110, 0);
+	modelStack.Rotate(90, 0, 0, 1);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
+	//spaceship wall length 4
+	modelStack.PushMatrix();
+	modelStack.Translate(350, 110, 100);
+	modelStack.Rotate(90, 0, 0, 1);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
+	//spaceship wall width 1
+	modelStack.PushMatrix();
+	modelStack.Translate(400, 110, -50);
+	modelStack.Rotate(90, 1, 0, 0);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
+	//spaceship wall width 2
+	modelStack.PushMatrix();
+	modelStack.Translate(400, 110, 150);
+	modelStack.Rotate(90, 1, 0, 0);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
+	//spaceship roof 1
+	modelStack.PushMatrix();
+	modelStack.Translate(400, 160, 0);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
+
+	//spaceship roof 2
+	modelStack.PushMatrix();
+	modelStack.Translate(400, 160, 100);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+};
 
 
 void Sp2Scene::Render()
@@ -781,6 +825,8 @@ void Sp2Scene::Render()
 
 	modelStack.PushMatrix();
 	RenderSkybox();
+	RenderGun();
+	RenderSpaceshipQuad();
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -818,6 +864,7 @@ void Sp2Scene::Render()
 	RenderMesh(meshList[GEO_BOTTOM], false);
 	modelStack.PopMatrix();*/
 
+	//Moon texture 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, 0);
 	modelStack.Scale(1000, 1000, 1000);
