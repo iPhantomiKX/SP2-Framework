@@ -312,29 +312,29 @@ bool Camera3::checkcollisionwithObject(Vector3& otherObjectposition, float sizex
 	// Do SAT Test on all axis)
 	// eg (if (position.x < min) return false; // (Outside!)
 	//		Repeat for Max, Repeat Min + Max for Y and Z axis
-	//float minX = otherObjectposition.x - (sizex / 2);
-	//float maxX = otherObjectposition.x + (sizex / 2);
+	float minX = otherObjectposition.x - (sizex / 2);
+	float maxX = otherObjectposition.x + (sizex / 2);
 
-	////float minY = otherObjectposition.y - (sizey / 2);
-	////float maxY = otherObjectposition.y + (sizey / 2);
+	float minY = otherObjectposition.y - (sizey / 2);
+	float maxY = otherObjectposition.y + (sizey / 2);
 
-	//float minZ = otherObjectposition.z - (sizez / 2);
-	//float maxZ = otherObjectposition.z + (sizez / 2);
-	//if (position.x < minX || position.x > maxX)
-	//{
-	//	return false;
-	//}
-	///*if (position.y < minY || position.y > maxY)
-	//{
-	//	return false;
-	//}*/
-	//if (position.z < minZ || position.z > maxZ)
-	//{
-	//	return false;
-	//}
+	float minZ = otherObjectposition.z - (sizez / 2);
+	float maxZ = otherObjectposition.z + (sizez / 2);
+	if (position.x < minX || position.x > maxX)
+	{
+		return false;
+	}
+	if (position.y < minY || position.y > maxY)
+	{
+		return false;
+	}
+	if (position.z < minZ || position.z > maxZ)
+	{
+		return false;
+	}
 	//test2 = true;
-	//return true;
-	return false;
+	return true;
+	//return false;
 }
 
 bool Camera3::checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez)

@@ -3,6 +3,7 @@
 
 #include "Camera.h"
 #include "MyMath.h"
+#include "Vector3.h"
 
 using Math::DegreeToRadian;
 
