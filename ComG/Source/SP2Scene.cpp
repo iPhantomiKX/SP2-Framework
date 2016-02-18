@@ -1277,7 +1277,7 @@ void Sp2Scene::Render()
 	//}
 
 	//else
-	//{
+	//{aaaaa
 	//	modelStack.PushMatrix();
 	//	modelStack.Translate(0, 0, -100);
 	//	modelStack.Scale(5, 5, 5);
