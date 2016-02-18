@@ -178,6 +178,9 @@ void Sp2Scene::Init()
 	meshList[GEO_CRAFTINGPANEL] = MeshBuilder::GenerateOBJ("craftingpanelmodel", "OBJ//Crafting_Panel.obj");
 	meshList[GEO_CRAFTINGPANEL]->textureID = LoadTGA("Image//craft_bench_UV.tga");
 
+	meshList[GEO_SPACEHOUSE] = MeshBuilder::GenerateOBJ("spacehouse", "OBJ//SpaceHouse.obj");
+	meshList[GEO_SPACEHOUSE]->textureID = LoadTGA("Image//SpaceHouseUV.tga");
+
 	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(1,0,0), 10,20);
 
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
@@ -478,7 +481,7 @@ void Sp2Scene::Update(double dt)
 				camera.position = camera.prevPosition;
 			}
 
-			//collision for spaceship roof 1
+			/*//collision for spaceship roof 1
 			if (camera.checkcollisionwithObject(Vector3(400, 160, 0), 100, 15, 100))
 			{
 			camera.position = camera.prevPosition;
@@ -500,7 +503,39 @@ void Sp2Scene::Update(double dt)
 			if (camera.checkcollisionwithObject(Vector3(300, 160, 100), 100, 15, 100))
 			{
 				camera.position = camera.prevPosition;
+			}*/
+
+			//collision for spacedome width 1
+			if (camera.checkcollisionwithObject(Vector3(-320, 0, 0), 18, 50, 80))
+			{
+				camera.position = camera.prevPosition;
 			}
+
+			//collision for spacedome width 2
+			if (camera.checkcollisionwithObject(Vector3(-480, 0, 0), 18, 50, 80))
+			{
+				camera.position = camera.prevPosition;
+			}
+
+			//collision for spacedome back wall 
+			if (camera.checkcollisionwithObject(Vector3(-400, 0, 40), 155, 50, 15))
+			{
+				camera.position = camera.prevPosition;
+			}
+
+			//collision for front wall 1
+			if (camera.checkcollisionwithObject(Vector3(-350, 0, -40), 75, 50, 15))
+			{
+				camera.position = camera.prevPosition;
+			}
+
+			//collision for front wall 2
+			if (camera.checkcollisionwithObject(Vector3(-450, 0, -40), 75, 50, 15))
+			{
+				camera.position = camera.prevPosition;
+			}
+
+
 
 
 			/*if (Application::IsKeyPressed('1')) //enable back face culling
@@ -1025,6 +1060,16 @@ void Sp2Scene::RenderCraftingPanel()
 
 };
 
+void Sp2Scene::RenderSpaceHouse()
+{
+	//space house
+	modelStack.PushMatrix();
+	modelStack.Translate(-400, 0, 0);
+	modelStack.Scale(20, 20, 20);
+	RenderMesh(meshList[GEO_SPACEHOUSE], true);
+	modelStack.PopMatrix();
+};
+
 
 void Sp2Scene::Render()
 {
@@ -1071,6 +1116,7 @@ void Sp2Scene::Render()
 	//RenderSniper1();
 	RenderSpaceshipQuad();
 	RenderCraftingPanel();
+	RenderSpaceHouse();
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
