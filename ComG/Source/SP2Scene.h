@@ -72,14 +72,11 @@ class Sp2Scene : public Scene
 		GEO_RIFLE1,
 		GEO_SNIPER1,
 
-<<<<<<< Updated upstream
 		GEO_PISTOL1_IMAGE,
 		GEO_RIFLE1_IMAGE,
 		GEO_SNIPER1_IMAGE,
 
-=======
 		GEO_AMMO,
->>>>>>> Stashed changes
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
