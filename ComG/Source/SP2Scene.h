@@ -6,7 +6,6 @@
 #include "Mesh.h"
 #include "MatrixStack.h"
 #include "Light.h"
-#include "bullet.h"
 #include <vector>
 
 using std::vector;
@@ -73,10 +72,14 @@ class Sp2Scene : public Scene
 		GEO_RIFLE1,
 		GEO_SNIPER1,
 
+<<<<<<< Updated upstream
 		GEO_PISTOL1_IMAGE,
 		GEO_RIFLE1_IMAGE,
 		GEO_SNIPER1_IMAGE,
 
+=======
+		GEO_AMMO,
+>>>>>>> Stashed changes
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -149,10 +152,13 @@ private:
 	float rotateGunY;
 
 	double range;
+	double gunCd;
+	double gunReload;
 
 	bool equipPistol1 = true;
 	bool equipRifle1 = false;
 	bool equipSniper1 = false;
+	bool reloaded = false;
 
 	void RenderPistol1();
 	void RenderRifle1();
@@ -172,6 +178,7 @@ private:
 	std::vector<int> shotsRange;
 	//vector<> shotsFired;
 
+	
 
 	Camera3 camera;
 

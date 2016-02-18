@@ -181,9 +181,9 @@ void Camera3::Update(double dt)
 		}
 	}*/
 
-	location2.x = position.x;
-	location2.z = position.z;
-	location2.y = position.y;
+	location2 = position + view*dt*speed;
+	location = position;
+
 	direction = view*dt*speed;
 
 	if (Application::IsKeyPressed('W'))
@@ -276,10 +276,10 @@ void Camera3::Update(double dt)
 
 	
 
-	if (Application::IsKeyPressed('R'))
+	/*if (Application::IsKeyPressed('R'))
 	{
 		Reset();
-	}
+	}*/
 
 	
 	//Changing target
