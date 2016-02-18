@@ -1217,8 +1217,6 @@ void Sp2Scene::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], "framerate: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 1);
 	modelStack.PopMatrix();
 
-	//test
-
 	for (std::vector<Vector3>::iterator count = shotsFired.begin(); count != shotsFired.end(); ++count)
 	{
 		test = *count;
