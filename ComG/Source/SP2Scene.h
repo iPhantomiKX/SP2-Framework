@@ -72,6 +72,11 @@ class Sp2Scene : public Scene
 		GEO_PISTOL1,
 		GEO_RIFLE1,
 		GEO_SNIPER1,
+
+		GEO_PISTOL1_IMAGE,
+		GEO_RIFLE1_IMAGE,
+		GEO_SNIPER1_IMAGE,
+
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -115,7 +120,7 @@ private:
 	void RenderSkybox();
 	void RenderText(Mesh * mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh * mesh, std::string text, Color color, float size, float x, float y);
-
+	void RenderImageOnScreen(Mesh * mesh, float size, float x, float y);
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];
 

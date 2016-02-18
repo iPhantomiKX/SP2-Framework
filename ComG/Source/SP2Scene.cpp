@@ -151,6 +151,19 @@ void Sp2Scene::Init()
 	meshList[GEO_CONE] = MeshBuilder::GenerateCone("cone", Color(1, 1, 0), 20);*/
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+
+	//Pistol 1 Ui image
+	meshList[GEO_PISTOL1_IMAGE] = MeshBuilder::GenerateText("DE_image", 16, 16);
+	meshList[GEO_PISTOL1_IMAGE]->textureID = LoadTGA("Image//DE_image.tga");
+
+	//Rifle 1 UI image
+	meshList[GEO_RIFLE1_IMAGE] = MeshBuilder::GenerateText("AR_image", 16, 16);
+	meshList[GEO_RIFLE1_IMAGE]->textureID = LoadTGA("Image//AR_Image.tga");
+
+	//Sniper 1 UI Image
+	meshList[GEO_SNIPER1_IMAGE] = MeshBuilder::GenerateText("AK47_image", 16, 16);
+	meshList[GEO_SNIPER1_IMAGE]->textureID = LoadTGA("Image//AK47_image.tga");
+
 	/*meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Tricker.obj");
 	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");*/
 	meshList[GEO_TEST] = MeshBuilder::GenerateOBJ("test", "OBJ//test.obj");
@@ -274,20 +287,20 @@ void Sp2Scene::Update(double dt)
 		}
 		if (Camera3::ypos < 290)
 		{
-			rotateGunX += 2;
+			rotateGunX += 3;
 		}
 		if (Camera3::ypos > 310)
 		{
-			rotateGunX -= 2;
+			rotateGunX -= 3 ;
 		}
 
-		if (rotateGunX > 50)
+		if (rotateGunX > 40)
 		{
-			rotateGunX = 50;
+			rotateGunX = 40;
 		}
-		else if (rotateGunX < -50)
+		else if (rotateGunX < -40)
 		{
-			rotateGunX = -50;
+			rotateGunX = -40;
 		}
 	}
 	else if (Camera3::mouseControl == false)
@@ -787,6 +800,39 @@ void Sp2Scene::RenderTextOnScreen(Mesh * mesh, std::string text, Color color, fl
 	glEnable(GL_DEPTH_TEST);
 }
 
+void Sp2Scene::RenderImageOnScreen(Mesh * mesh, float size, float x, float y)
+{
+	glDisable(GL_DEPTH_TEST);
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -10, 10); //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity(); //No need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity(); //Reset modelStack
+	modelStack.Scale(size, size, size);
+	//modelStack.Rotate(20, 1, 0, 0);
+	modelStack.Translate(x, y, 1);
+	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+
+	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+	mesh->Render();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+	glEnable(GL_DEPTH_TEST);
+}
+
 void Sp2Scene::RenderMesh(Mesh *mesh, bool enablelight)
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
@@ -1072,14 +1118,17 @@ void Sp2Scene::Render()
 	if (equipPistol1 == true)
 	{
 		RenderPistol1();
+		RenderImageOnScreen(meshList[GEO_PISTOL1], 0.5, 25, 15);
 	}
 	else if (equipRifle1 == true)
 	{
 		RenderRifle1();
+		RenderImageOnScreen(meshList[GEO_RIFLE1], 4, 4, 2.5);
 	}
 	else if (equipSniper1 == true)
 	{
 		RenderSniper1();
+		RenderImageOnScreen(meshList[GEO_SNIPER1], 1, 15, 10);
 	}
 
 	//if (Camera3::test == true)
@@ -1149,7 +1198,8 @@ void Sp2Scene::Render()
 	//	RenderTextOnScreen(meshList[GEO_TEXT], "Find Tricker", Color(1, 0, 0), 3.5, 7, 15);
 	//	modelStack.PopMatrix();
 	//}
-
+	
+	
 	modelStack.PushMatrix();
 	RenderTextOnScreen(meshList[GEO_TEXT], "framerate: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 1);
 	modelStack.PopMatrix();
@@ -1208,7 +1258,7 @@ void Sp2Scene::RenderRifle1()
 	}
 
 	modelStack.Translate(0, 5, 0);
-	//modelStack.Rotate(-90, 0, 1, 0);
+	modelStack.Rotate(-90, 0, 1, 0);
 	modelStack.Scale(5, 5, 5);
 	RenderMesh(meshList[GEO_RIFLE1], true);
 	modelStack.PopMatrix();
@@ -1221,7 +1271,6 @@ void Sp2Scene::RenderSniper1()
 	modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
 	modelStack.Rotate(rotateGunY, 0, 1, 0);
 	modelStack.Rotate(rotateGunX, 1, 0, 0);
-	modelStack.Scale(0.05, 0.05, 0.05);
 
 	modelStack.PushMatrix();
 	if (Application::IsKeyPressed(VK_RBUTTON) == true)
@@ -1232,8 +1281,9 @@ void Sp2Scene::RenderSniper1()
 	{
 		modelStack.Translate(5, -10, -15);
 	}
-	modelStack.Translate(10, -15, -60);
-	modelStack.Rotate(5, 0, 1, 0);
+	modelStack.Translate(0, 0, -10);
+	modelStack.Rotate(-90, 0, 1, 0);
+	modelStack.Scale(3, 3, 3);
 	RenderMesh(meshList[GEO_SNIPER1], true);
 	modelStack.PopMatrix();
 
