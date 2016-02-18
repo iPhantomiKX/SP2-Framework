@@ -165,6 +165,7 @@ private:
 
 	void RenderSpaceshipQuad();
 	void RenderCraftingPanel();
+	void bulletPos();
 
 	Vector3 treeposition[150];
 	Vector3 test;

@@ -28,6 +28,7 @@ Vector3 Camera3::location = (0, 0, 0);
 Vector3 Camera3::location2 = (0, 0, 0);
 Vector3 Camera3::direction = (0, 0, 0);
 pistol pis;
+rifle rif;
 
 
 Sp2Scene::Sp2Scene()
@@ -295,64 +296,64 @@ void Sp2Scene::Update(double dt)
 		}
 		if (Camera3::ypos > 310)
 		{
-			rotateGunX -= 3 ;
+			rotateGunX -= 3;
 		}
 
-		if (rotateGunX > 40)
+		if (rotateGunX > 45)
 		{
-			rotateGunX = 40;
+			rotateGunX = 45;
 		}
-		else if (rotateGunX < -40)
+		else if (rotateGunX < -45)
 		{
-			rotateGunX = -40;
+			rotateGunX = -45;
 		}
 	}
 	else if (Camera3::mouseControl == false)
 	{
 		if (Application::IsKeyPressed(VK_LEFT))
 		{
-			rotateGunY += 2;
+			rotateGunY += 3;
 		}
 		if (Application::IsKeyPressed(VK_RIGHT))
 		{
-			rotateGunY -= 2;
+			rotateGunY -= 3;
 		}
 		if (Application::IsKeyPressed(VK_UP))
 		{
-			rotateGunX += 2;
+			rotateGunX += 3;
 		}
 		if (Application::IsKeyPressed(VK_DOWN))
 		{
-			rotateGunX -= 2;
+			rotateGunX -= 3;
 		}
 
 		//Boundaries for gun rotation
-		if (rotateGunX > 50)
+		if (rotateGunX > 45)
 		{
-			rotateGunX = 50;
+			rotateGunX = 45;
 		}
-		else if (rotateGunX < -50)
+		else if (rotateGunX < -45)
 		{
-			rotateGunX = -50;
+			rotateGunX = -45;
 		}
 	}
 
 	//If pressed '1', switch to Pistol1
-	if (Application::IsKeyPressed('1') && equipPistol1 == false)
+	if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
 	{
 		equipPistol1 = true;
 		equipRifle1 = false;
 		equipSniper1 = false;
 	}
 	//If pressed '2', switch to Rifle1
-	else if (Application::IsKeyPressed('2') && equipRifle1 == false)
+	else if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true)
 	{
 		equipPistol1 = false;
 		equipRifle1 = true;
 		equipSniper1 = false;
 	}
 	//If pressed '3', switch to Sniper1
-	else if (Application::IsKeyPressed('3') && equipSniper1 == false)
+	else if (Application::IsKeyPressed('3') && equipSniper1 == false && reloaded == true)
 	{
 		equipPistol1 = false;
 		equipRifle1 = false;
@@ -605,7 +606,7 @@ void Sp2Scene::Update(double dt)
 
 			framerate = 1 / dt;
 
-			for (int i = 0; i < 1000; i++)
+		/*	for (int i = 0; i < 1000; i++)
 			{
 				rainpositiony[i] -= (float)(50 * dt);
 				if (rainpositiony[i] < -499.0f)
@@ -634,7 +635,7 @@ void Sp2Scene::Update(double dt)
 				{
 					rainpositionx[i] += (float)(150 * dt);
 				}
-			}
+			}*/
 			//test = c3.getShotsFired();
 			//std::cout << c3.getShotsFired() << "bang" <<  std::endl; // why 0
 			if (equipPistol1 == true)
@@ -643,23 +644,11 @@ void Sp2Scene::Update(double dt)
 				{
 					shotsFired.push_back(Camera3::location2);
 					shotsDir.push_back(Camera3::direction);
-					std::cout << Camera3::location << "here " << std::endl;
 					gunCd = pis.RoF;
 					pis.ammo--;
 				}
 
-				std::vector<Vector3>::iterator count = shotsFired.begin();
-				std::vector<Vector3>::iterator count1 = shotsDir.begin();
-				std::vector<int>::iterator count2 = shotsRange.begin();
-
-				//int count3 = 0;
-
-				while (count != shotsFired.end())
-				{
-					*count += *count1;
-					*count++;
-					*count1++;
-				}
+				bulletPos();
 				gunCd--;
 
 				if (Application::IsKeyPressed('R') && pis.ammo < pis.maxAmmo|| pis.ammo == 0 && reloaded == true)
@@ -678,10 +667,53 @@ void Sp2Scene::Update(double dt)
 					}
 				}
 			}
+
+			if (equipRifle1 == true)
+			{
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && rif.ammo > 0 && gunReload <= 0 && reloaded == true)
+				{
+					shotsFired.push_back(Camera3::location2);
+					shotsDir.push_back(Camera3::direction);
+					gunCd = rif.RoF;
+					rif.ammo--;
+				}
+
+				bulletPos();
+				gunCd--;
+
+				if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo || rif.ammo == 0 && reloaded == true)
+				{
+					gunReload = rif.reloadSpd;
+					reloaded = false;
+				}
+
+				if (gunReload > 0)
+				{
+					gunReload--;
+					if (gunReload <= 0)
+					{
+						rif.ammo = rif.maxAmmo;
+						reloaded = true;
+					}
+				}
+			}
+			
 			std::cout << gunReload << std::endl;
 }
 	
+void Sp2Scene::bulletPos()
+{
+	std::vector<Vector3>::iterator count = shotsFired.begin();
+	std::vector<Vector3>::iterator count1 = shotsDir.begin();
+	std::vector<int>::iterator count2 = shotsRange.begin();
 
+	while (count != shotsFired.end())
+	{
+		*count += *count1;
+		*count++;
+		*count1++;
+	}
+}
 
 void Sp2Scene::RenderSkybox()
 {
@@ -1222,7 +1254,7 @@ void Sp2Scene::Render()
 		test = *count;
 		modelStack.PushMatrix();
 		modelStack.Translate(test.x, test.y, test.z);
-		modelStack.Scale(0.1, 0.1, 0.1);
+		modelStack.Scale(0.3, 0.3, 0.3);
 		RenderMesh(meshList[GEO_SHOT], false);
 		modelStack.PopMatrix();
 	}
@@ -1272,12 +1304,6 @@ void Sp2Scene::RenderRifle1()
 		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
 		modelStack.Rotate(rotateGunY, 0, 1, 0);
 		modelStack.Rotate(rotateGunX, 1, 0, 0);
-
-	modelStack.Translate(0, 5, 0);
-	modelStack.Rotate(-90, 0, 1, 0);
-	modelStack.Scale(5, 5, 5);
-	RenderMesh(meshList[GEO_RIFLE1], true);
-	modelStack.PopMatrix();
 	
 		modelStack.PushMatrix();
 		if (Application::IsKeyPressed(VK_RBUTTON) == true)
@@ -1290,13 +1316,15 @@ void Sp2Scene::RenderRifle1()
 		}
 
 		modelStack.Translate(0, 5, 0);
-		//modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Rotate(-90, 0, 1, 0);
 		modelStack.Scale(5, 5, 5);
 		RenderMesh(meshList[GEO_RIFLE1], true);
 		modelStack.PopMatrix();
-
 		modelStack.PopMatrix();
 	}
+	modelStack.PushMatrix();
+	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0, 1, 0), 2, 30, 1);
+	modelStack.PopMatrix();
 }
 void Sp2Scene::RenderSniper1()
 {

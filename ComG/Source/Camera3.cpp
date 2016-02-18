@@ -83,22 +83,22 @@ void Camera3::Update(double dt)
 		}
 		if (ypos < 290)
 		{
-			if (view.y < 0.7)
+			if (camerarotation.x > -45)
 			{
 				//rotation.SetToRotation(2, right.x, right.y, right.z);
 				//view = rotation * view;
 				//target = position + view;
-				camerarotation.x -= 2;
+				camerarotation.x -= 3;
 			}
 		}
 		if (ypos > 310)
 		{
-			if (view.y > -0.7)
+			if (camerarotation.x < 45)
 			{
 				//rotation.SetToRotation(-2, right.x, right.y, right.z);
 				//view = rotation * view;
 				//target = position + view;
-				camerarotation.x += 2;
+				camerarotation.x += 3;
 			}
 		}
 	}
@@ -109,14 +109,14 @@ void Camera3::Update(double dt)
 			//rotation.SetToRotation(2, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
-			camerarotation.y += 2;
+			camerarotation.y += 3;
 		}
 		if (Application::IsKeyPressed(VK_RIGHT))
 		{
 			//rotation.SetToRotation(-2, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
-			camerarotation.y -= 2;
+			camerarotation.y -= 3;
 		}
 		if (Application::IsKeyPressed(VK_UP))
 		{
@@ -127,7 +127,12 @@ void Camera3::Update(double dt)
 				view = rotation * view;
 				target = position + view;
 			}*/
-			camerarotation.x -= 2;
+			if (camerarotation.x > -45)
+			{
+				camerarotation.x -= 3;
+			}
+			
+			
 		}
 		if (Application::IsKeyPressed(VK_DOWN))
 		{
@@ -137,7 +142,11 @@ void Camera3::Update(double dt)
 				view = rotation * view;
 				target = position + view;
 			}*/
-			camerarotation.x += 2;
+			
+			if (camerarotation.x < 45)
+			{
+				camerarotation.x += 3;
+			}
 		}
 	}
 	/*if (Application::IsKeyPressed(VK_LEFT))
@@ -184,7 +193,7 @@ void Camera3::Update(double dt)
 	location2 = position + view*dt*speed;
 	location = position;
 
-	direction = view*dt*speed;
+	direction = (view*dt*speed)*2;
 
 	if (Application::IsKeyPressed('W'))
 	{
