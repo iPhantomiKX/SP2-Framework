@@ -356,21 +356,52 @@ void Sp2Scene::Update(double dt)
 	//		Camera3::test = false;
 	//		Camera3::test3 = true;
 	//		}*/
+			
+			//collision for spaceship floor 1
+			if (camera.checkcollisionwithObject(Vector3(400, 60, 0), 100, 15, 100))
+			{
+				camera.position = camera.prevPosition;
+			}
 
-		/*	//collision for spaceship wall length 2
+			//collision for spaceship floor 2
+			if (camera.checkcollisionwithObject(Vector3(400, 60, 100), 100, 15, 100))
+			{
+				camera.position = camera.prevPosition;
+			}
+
+			//collision for spaceship floor 3
+			if (camera.checkcollisionwithObject(Vector3(300, 60, 0), 100, 15, 100))
+			{
+				camera.position = camera.prevPosition;
+			}
+
+			//collision for spaceship floor 4
+			if (camera.checkcollisionwithObject(Vector3(300, 60, 100), 100, 15, 100))
+			{
+				camera.position = camera.prevPosition;
+			}
+
+			//collision for spaceship wall length 1
+			if (camera.checkcollisionwithObject(Vector3(450, 110, 0), 15, 100, 100))
+			{
+				camera.position = camera.prevPosition;
+			}
+
+			//collision for spaceship wall length 2
 			if (camera.checkcollisionwithObject(Vector3(450, 110, 100), 15, 100, 100))
 			{
 			camera.position = camera.prevPosition;
 			}
 
+			/*
 			//collision for spaceship wall length 3
-			if (camera.checkcollisionwithObject(Vector3(350, 110, 0), 15, 100, 100))
+			if (camera.checkcollisionwithObject(Vector3(250, 110, 0), 15, 100, 100))
 			{
 			camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spaceship wall length 4
-			if (camera.checkcollisionwithObject(Vector3(350, 110, 100), 15, 100, 100))
+			if (camera.checkcollisionwithObject(Vector3(250, 110, 100), 15, 100, 100))
 			{
 			camera.position = camera.prevPosition;
 			}
@@ -387,6 +418,18 @@ void Sp2Scene::Update(double dt)
 			camera.position = camera.prevPosition;
 			}
 
+			//collision for spaceship wall width 3
+			if (camera.checkcollisionwithObject(Vector3(300, 110, -50), 100, 100, 15))
+			{
+				camera.position = camera.prevPosition;
+			}
+
+			//collision for spaceship wall width 4
+			if (camera.checkcollisionwithObject(Vector3(300, 110, 150), 100, 100, 15))
+			{
+				camera.position = camera.prevPosition;
+			}
+
 			//collision for spaceship roof 1
 			if (camera.checkcollisionwithObject(Vector3(400, 160, 0), 100, 15, 100))
 			{
@@ -397,7 +440,20 @@ void Sp2Scene::Update(double dt)
 			if (camera.checkcollisionwithObject(Vector3(400, 160, 100), 100, 15, 100))
 			{
 			camera.position = camera.prevPosition;
-			}*/
+			}
+
+			//collision for spaceship roof 3
+			if (camera.checkcollisionwithObject(Vector3(300, 160, 0), 100, 15, 100))
+			{
+				camera.position = camera.prevPosition;
+			}
+
+			//collision for spaceship roof 4
+			if (camera.checkcollisionwithObject(Vector3(300, 160, 100), 100, 15, 100))
+			{
+				camera.position = camera.prevPosition;
+			}
+
 
 			/*if (Application::IsKeyPressed('1')) //enable back face culling
 			glDisable(GL_CULL_FACE);
@@ -725,6 +781,20 @@ void Sp2Scene::RenderSpaceshipQuad()
 	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
 	modelStack.PopMatrix();
 
+	//spaceship floor 3
+	modelStack.PushMatrix();
+	modelStack.Translate(300, 60, 0);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
+	//spaceship floor 4
+	modelStack.PushMatrix();
+	modelStack.Translate(300, 60, 100);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
 	//spaceship wall length 1
 	modelStack.PushMatrix();
 	modelStack.Translate(450, 110, 0);
@@ -743,7 +813,7 @@ void Sp2Scene::RenderSpaceshipQuad()
 
 	//spaceship wall length 3
 	modelStack.PushMatrix();
-	modelStack.Translate(350, 110, 0);
+	modelStack.Translate(250, 110, 0);
 	modelStack.Rotate(90, 0, 0, 1);
 	modelStack.Scale(100, 1, 100);
 	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
@@ -751,7 +821,7 @@ void Sp2Scene::RenderSpaceshipQuad()
 
 	//spaceship wall length 4
 	modelStack.PushMatrix();
-	modelStack.Translate(350, 110, 100);
+	modelStack.Translate(250, 110, 100);
 	modelStack.Rotate(90, 0, 0, 1);
 	modelStack.Scale(100, 1, 100);
 	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
@@ -773,6 +843,22 @@ void Sp2Scene::RenderSpaceshipQuad()
 	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
 	modelStack.PopMatrix();
 
+	//spaceship wall width 3 
+	modelStack.PushMatrix();
+	modelStack.Translate(300, 110, -50);
+	modelStack.Rotate(90, 1, 0, 0);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
+	//spaceship wall width 4
+	modelStack.PushMatrix();
+	modelStack.Translate(300, 110, 150);
+	modelStack.Rotate(90, 1, 0, 0);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
 	//spaceship roof 1
 	modelStack.PushMatrix();
 	modelStack.Translate(400, 160, 0);
@@ -787,6 +873,20 @@ void Sp2Scene::RenderSpaceshipQuad()
 	modelStack.Scale(100, 1, 100);
 	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
 	modelStack.PopMatrix();
+
+	//spaceship roof 3
+	modelStack.PushMatrix();
+	modelStack.Translate(300, 160, 0);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
+
+	//spaceship roof 4
+	modelStack.PushMatrix();
+	modelStack.Translate(300, 160, 100);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.PopMatrix();
 };
 
 void Sp2Scene::RenderCraftingPanel()
@@ -794,7 +894,7 @@ void Sp2Scene::RenderCraftingPanel()
 	//crafting panel 
 	modelStack.PushMatrix();
 	modelStack.Translate(400, 65, -49);
-	modelStack.Scale(2, 2, 2);
+	modelStack.Scale(2, 2, 1);
 	RenderMesh(meshList[GEO_CRAFTINGPANEL], true);
 	modelStack.PopMatrix();
 
