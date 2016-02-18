@@ -208,7 +208,7 @@ void Camera3::Update(double dt)
 			position.z += (view.z * dt * speed) / 2;
 			target.z += (view.z * dt * speed) / 2;
 		}	
-		if (Application::IsKeyPressed(VK_SHIFT) && position.y + (view.y * dt * speed)/2 <= 495 && position.y + (view.y * dt * speed)/2 >= -45 && hitbox((position.y * dt * speed)/2) == false)
+		if (Application::IsKeyPressed(VK_SHIFT) && position.y + (view.y * dt * speed)/2 <= 495 && position.y + (view.y * dt * speed)/2 >= 10 && hitbox((position.y * dt * speed)/2) == false)
 		{
 			position.y += (view.y * dt * speed) / 2;
 			target.y += (view.y * dt * speed) / 2;
@@ -227,7 +227,7 @@ void Camera3::Update(double dt)
 			position.z -= (view.z * dt * speed) / 2;
 			target.z -= (view.z * dt * speed) / 2;
 		}
-		if (Application::IsKeyPressed(VK_SHIFT) && position.y - (view.y * dt * speed) / 2 <= 495 && position.y - (view.y * dt * speed) / 2 >= -45 && hitbox(-(view.y * dt * speed) / 2) == false)
+		if (Application::IsKeyPressed(VK_SHIFT) && position.y - (view.y * dt * speed) / 2 <= 495 && position.y - (view.y * dt * speed) / 2 >= 10 && hitbox(-(view.y * dt * speed) / 2) == false)
 		{
 			position.y -= (view.y * dt * speed) / 2;
 			target.y -= (view.y * dt * speed) / 2;
