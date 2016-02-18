@@ -67,6 +67,7 @@ class Sp2Scene : public Scene
 		GEO_SHOT,
 		GEO_SPACESHIPQUAD,
 		GEO_CRAFTINGPANEL,
+		GEO_SPACEHOUSE,
 
 		GEO_PISTOL1,
 		GEO_RIFLE1,
@@ -166,6 +167,7 @@ private:
 	void RenderSpaceshipQuad();
 	void RenderCraftingPanel();
 	void bulletPos();
+	void RenderSpaceHouse();
 
 	Vector3 treeposition[150];
 	Vector3 test;
