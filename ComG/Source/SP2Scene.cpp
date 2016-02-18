@@ -1381,7 +1381,6 @@ void Sp2Scene::RenderSniper1()
 		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
 		modelStack.Rotate(rotateGunY, 0, 1, 0);
 		modelStack.Rotate(rotateGunX, 1, 0, 0);
-		modelStack.Scale(0.05, 0.05, 0.05);
 
 		modelStack.PushMatrix();
 		if (Application::IsKeyPressed(VK_RBUTTON) == true)
@@ -1392,8 +1391,9 @@ void Sp2Scene::RenderSniper1()
 		{
 			modelStack.Translate(5, -10, -15);
 		}
-		modelStack.Translate(10, -15, -60);
-		modelStack.Rotate(5, 0, 1, 0);
+		modelStack.Translate(0, 1.5, 0);
+		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Scale(2, 2, 2);
 		RenderMesh(meshList[GEO_SNIPER1], true);
 		modelStack.PopMatrix();
 
