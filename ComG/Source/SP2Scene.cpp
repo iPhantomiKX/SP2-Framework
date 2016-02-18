@@ -157,6 +157,9 @@ void Sp2Scene::Init()
 	meshList[GEO_SPACESHIPQUAD] = MeshBuilder::GenerateQuad("spaceshipquad", Color(1, 1, 1), 100, 100);
 	meshList[GEO_SPACESHIPQUAD]->textureID = LoadTGA("Image//spaceship_floor.tga");
 
+	meshList[GEO_CRAFTINGPANEL] = MeshBuilder::GenerateOBJ("craftingpanelmodel", "OBJ//Crafting_Panel.obj");
+	meshList[GEO_CRAFTINGPANEL]->textureID = LoadTGA("Image//craft_bench_UV.tga");
+
 	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(1,0,0), 10,20);
 
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
@@ -354,7 +357,7 @@ void Sp2Scene::Update(double dt)
 	//		Camera3::test3 = true;
 	//		}*/
 
-			//collision for spaceship wall length 2
+		/*	//collision for spaceship wall length 2
 			if (camera.checkcollisionwithObject(Vector3(450, 110, 100), 15, 100, 100))
 			{
 			camera.position = camera.prevPosition;
@@ -394,7 +397,7 @@ void Sp2Scene::Update(double dt)
 			if (camera.checkcollisionwithObject(Vector3(400, 160, 100), 100, 15, 100))
 			{
 			camera.position = camera.prevPosition;
-			}
+			}*/
 
 			/*if (Application::IsKeyPressed('1')) //enable back face culling
 			glDisable(GL_CULL_FACE);
@@ -786,6 +789,17 @@ void Sp2Scene::RenderSpaceshipQuad()
 	modelStack.PopMatrix();
 };
 
+void Sp2Scene::RenderCraftingPanel()
+{
+	//crafting panel 
+	modelStack.PushMatrix();
+	modelStack.Translate(400, 65, -49);
+	modelStack.Scale(2, 2, 2);
+	RenderMesh(meshList[GEO_CRAFTINGPANEL], true);
+	modelStack.PopMatrix();
+
+};
+
 
 void Sp2Scene::Render()
 {
@@ -831,6 +845,7 @@ void Sp2Scene::Render()
 	//RenderRifle1();
 	//RenderSniper1();
 	RenderSpaceshipQuad();
+	RenderCraftingPanel();
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
