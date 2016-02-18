@@ -30,7 +30,8 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	this->up = defaultUp = right.Cross(view).Normalized();
 	camerarotation = Vector3(0, -180, 0);
 	speed = 100;
-	location= position;
+	location = (0,0,0);
+	location2 = (0, 0, 0);
 	//delay = 0;
 	delay2 = 0;
 	//cd = 10;
@@ -87,7 +88,7 @@ void Camera3::Update(double dt)
 				//rotation.SetToRotation(2, right.x, right.y, right.z);
 				//view = rotation * view;
 				//target = position + view;
-				camerarotation.x -= 3;
+				camerarotation.x -= 2;
 			}
 		}
 		if (ypos > 310)
@@ -97,7 +98,7 @@ void Camera3::Update(double dt)
 				//rotation.SetToRotation(-2, right.x, right.y, right.z);
 				//view = rotation * view;
 				//target = position + view;
-				camerarotation.x += 3;
+				camerarotation.x += 2;
 			}
 		}
 	}
@@ -180,6 +181,11 @@ void Camera3::Update(double dt)
 		}
 	}*/
 
+	location2.x = position.x;
+	location2.z = position.z;
+	location2.y = position.y;
+	direction = view*dt*speed;
+
 	if (Application::IsKeyPressed('W'))
 	{
 		Vector3 view = (target - position).Normalized();
@@ -249,11 +255,15 @@ void Camera3::Update(double dt)
 		}
 	}
 
-	location = position;
-	direction = view * dt * speed;
 	//std::cout << direction.x - position.x << std::endl;
 	//std::cout << direction.y - position.y << std::endl;
 	//std::cout << direction.z - position.z << std::endl;
+
+	if (Application::IsKeyPressed(VK_LBUTTON))
+	{
+		std::cout << position << "cam" << std::endl;
+		std::cout << view << "view" << std::endl;
+	}
 
 	if (camerarotation.x > maxCameraX)
 	{
@@ -264,16 +274,24 @@ void Camera3::Update(double dt)
 		camerarotation.x = -maxCameraX;
 	}
 
+	
+
 	if (Application::IsKeyPressed('R'))
 	{
 		Reset();
 	}
 
+	
 	//Changing target
 	target = Vector3(sin(DegreeToRadian(camerarotation.y))*cos(DegreeToRadian(camerarotation.x)) + this->position.x, -sin(DegreeToRadian(camerarotation.x)) + this->position.y,
 		cos(DegreeToRadian(camerarotation.y))*cos(DegreeToRadian(camerarotation.x)) + this->position.z);
 
-	std::cout << target << std::endl;
+}
+
+Vector3 Camera3::setPos()
+{
+	location2 = position;
+	return location;
 }
 
 bool Camera3::testhitbox(const Vector3& lowest, const Vector3& highest, double move)

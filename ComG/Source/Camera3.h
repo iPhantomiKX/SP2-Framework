@@ -4,6 +4,8 @@
 #include "Camera.h"
 #include "MyMath.h"
 #include "Vector3.h"
+#include <vector>
+#include <iostream>
 
 using Math::DegreeToRadian;
 
@@ -38,6 +40,7 @@ public:
 	static double xpos;
 	static double ypos;
 	static Vector3 location;
+	static Vector3 location2;
 	static Vector3 direction;
 
 
@@ -53,6 +56,7 @@ public:
 	bool checkcollisionwithObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
+	Vector3 setPos();
 	virtual void Reset();
 
 };

@@ -19,12 +19,14 @@
 //bool Sp2Scene::test4 = false;
 //bool Sp2Scene::test5 = false;
 
-
-Vector3 Camera3::location = (0, 0, 0);
+Camera3 c3;
 bool Camera3::mouseControl = false;
 double Camera3::xpos = 0;
 double Camera3::ypos = 0;
-Vector3 Camera3::direction = (0,0,0);
+Vector3 Camera3::location = (0, 0, 0);
+Vector3 Camera3::location2 = (0, 0, 0);
+Vector3 Camera3::direction = (0, 0, 0);
+
 
 Sp2Scene::Sp2Scene()
 {
@@ -117,11 +119,10 @@ void Sp2Scene::Init()
 	rotateGunX = 0;
 	rotateGunY = 0;
 	test = (0, 0, 0);
-	bullet1 = false;
 	range = 0;
 
 	//Initialize camera settings
-	camera.Init(Vector3(0, 10, 0), Vector3(10, 10, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(1, 10, 0), Vector3(0, 10, 0), Vector3(0, 1, 0));
 
 
 	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
@@ -200,31 +201,61 @@ static float SCALE_LIMIT = 5.f;
 
 void Sp2Scene::Update(double dt)
 {
-	std::cout << range << std::endl;
+	camera.Update(dt);
+	//std::cout << range << std::endl;
 	//std::cout << Camera3::location << std::endl;
-	if (Application::IsKeyPressed(VK_LBUTTON) && bullet1 == false)
+	/*if (Application::IsKeyPressed(VK_LBUTTON) && bullet1 == false)
 	{
-		bullet1 = true;
-		range = 100;
+	bullet1 = true;
+	range = 100;
 	}
 
 	if (bullet1 == true)
 	{
-		test.x += (Camera3::direction.x);
-		test.y += (Camera3::direction.y);
-		test.z += (Camera3::direction.z);
-		range -= 1;
+	test.x += (Camera3::direction.x);
+	test.y += (Camera3::direction.y);
+	test.z += (Camera3::direction.z);
+	range -= 1;
 	}
 	else if (bullet1 == false)
 	{
-		test = Camera3::location;
+	test = Camera3::location;
 	}
 	if (range <= 0)
 	{
-		bullet1 = false;
-	}
+	bullet1 = false;
+	}*/
 
-	std::cout << test << std::endl;
+	//if (Application::IsKeyPressed(VK_LBUTTON))
+	//{
+	//	shotsFired.push_back(new bullet(Vector3(c3.position.x,c3.position.y, c3.position.z) , Vector3(c3.view.x, c3.view.y, c3.view.z)));
+	//}
+
+	//for (vector<bullet*>::iterator count = shotsFired.begin(); count != shotsFired.end();)
+	//{
+	//	if ((*count)->bulletDeleted() == true)
+	//	{
+	//		count = shotsFired.erase(count);
+	//	}
+	//	else
+	//	{
+	//		++count;
+	//	}
+	//}
+
+	//for (vector<bullet*>::iterator count = shotsFired.begin(); count != shotsFired.end();)
+	//{
+	//	test == (*count)->getBulletPos();
+	//	++count;
+	//}
+
+	/*if (bul.bulletDeleted == true)
+	{
+
+	}*/
+
+
+	
 
 	//std::cout << test << std::endl;
 	//Gun rotation
@@ -587,8 +618,42 @@ void Sp2Scene::Update(double dt)
 					rainpositionx[i] += (float)(150 * dt);
 				}
 			}
-			camera.Update(dt);
-		}
+			//test = c3.getShotsFired();
+			//std::cout << c3.getShotsFired() << "bang" <<  std::endl; // why 0
+			if (Application::IsKeyPressed(VK_LBUTTON))
+			{
+				shotsFired.push_back(Camera3::location2);
+				shotsDir.push_back(Camera3::direction);
+				//shotsRange.push_back(1);
+				std::cout << Camera3::location << "here " << std::endl;
+			}
+
+			std::vector<Vector3>::iterator count = shotsFired.begin();
+			std::vector<Vector3>::iterator count1 = shotsDir.begin();
+			std::vector<int>::iterator count2 = shotsRange.begin();
+
+			//int count3 = 0;
+
+			while (count != shotsFired.end()/* && count3 < shotsFired.size()*/)
+			{
+				
+			/*	if (shotsRange.at(0)<= 0)
+				{
+					shotsFired.erase(shotsFired.begin());
+					shotsDir.erase(shotsDir.begin());
+					shotsRange.erase(shotsRange.begin());
+				}
+				else
+				{
+					--shotsRange.at(count3);
+				}*/
+				*count += *count1;
+				*count++;
+				*count1++;
+				//*count2++;
+				//count3++;
+			}
+}
 	
 
 
@@ -764,6 +829,7 @@ void Sp2Scene::RenderMesh(Mesh *mesh, bool enablelight)
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
+
 
 void Sp2Scene::RenderSpaceshipQuad()
 {
@@ -1088,16 +1154,17 @@ void Sp2Scene::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], "framerate: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 1);
 	modelStack.PopMatrix();
 
-	if (bullet1 == true)
+
+	for (std::vector<Vector3>::iterator count = shotsFired.begin(); count != shotsFired.end(); ++count)
 	{
+		test = *count;
 		modelStack.PushMatrix();
-		modelStack.Scale(3, 3, 3);
-		modelStack.Translate( test.x, test.y - 7, test.z);
-		//modelStack.Rotate(Camera3::direction, 0, 0, 1);
+		modelStack.Translate(test.x, test.y, test.z);
+		modelStack.Scale(1, 1, 1);
 		RenderMesh(meshList[GEO_SHOT], false);
 		modelStack.PopMatrix();
-		//std::cout << test << std::endl;
 	}
+	
 
 }
 void Sp2Scene::RenderPistol1()

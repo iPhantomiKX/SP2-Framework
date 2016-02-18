@@ -6,6 +6,10 @@
 #include "Mesh.h"
 #include "MatrixStack.h"
 #include "Light.h"
+#include "bullet.h"
+#include <vector>
+
+using std::vector;
 
 
 
@@ -139,7 +143,6 @@ private:
 	float rotateGunX;
 	float rotateGunY;
 
-	bool bullet1;
 	double range;
 
 	bool equipPistol1 = true;
@@ -157,6 +160,12 @@ private:
 
 	Vector3 treeposition[150];
 	Vector3 test;
+
+
+	std::vector<Vector3> shotsFired;
+	std::vector<Vector3> shotsDir;
+	std::vector<int> shotsRange;
+	//vector<> shotsFired;
 
 
 	Camera3 camera;
