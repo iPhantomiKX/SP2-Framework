@@ -1290,10 +1290,15 @@ void Sp2Scene::Render()
 	//	modelStack.PopMatrix();
 	//}
 	
-	
-	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], "framerate: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 1);
-	modelStack.PopMatrix();
+	//Render Frame rate on screen
+	RenderTextOnScreen(meshList[GEO_TEXT], "FPS: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 25);
+
+	//Render camera position on screen
+	std::ostringstream oss;
+	oss << "X: " << camera.position.x << " Y: " << camera.position.y << "Z: " << camera.position.z;
+	string var = oss.str();
+	RenderTextOnScreen(meshList[GEO_TEXT], oss.str(), Color(0, 1, 0), 2, 2, 28);
+
 
 	for (std::vector<Vector3>::iterator count = shotsFired.begin(); count != shotsFired.end(); ++count)
 	{

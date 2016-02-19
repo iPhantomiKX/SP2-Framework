@@ -7,7 +7,10 @@
 #include "MatrixStack.h"
 #include "Light.h"
 #include <vector>
+#include <sstream>
+#include <string>
 
+using std::string;
 using std::vector;
 
 
