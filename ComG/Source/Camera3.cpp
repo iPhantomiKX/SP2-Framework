@@ -32,6 +32,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	speed = 100;
 	location = (0,0,0);
 	location2 = (0, 0, 0);
+	//mouseControl = true;
 	//delay = 0;
 	delay2 = 0;
 	//cd = 10;
@@ -63,25 +64,64 @@ void Camera3::Update(double dt)
 	}
 	Mtx44 rotation;
 	//std::cout << xpos << " " << ypos << std::endl;
-	if (mouseControl == true)
+	if (mouseControl == true && Application::IsKeyPressed(VK_RBUTTON))
 	{
 		xpos, ypos = a.Mouse(xpos, ypos);
 
-		if (xpos < 390)
+		if (xpos < 395)
+		{
+			//rotation.SetToRotation(3, up.x, up.y, up.z);
+			//view = rotation * view;
+			//target = position + view;
+			camerarotation.y += 1.5;
+		}
+		if (xpos > 405)
+		{
+			//rotation.SetToRotation(-3, up.x, up.y, up.z);
+			//view = rotation * view;
+			//target = position + view;
+			camerarotation.y -= 1.5;
+		}
+		if (ypos < 295)
+		{
+			if (camerarotation.x > -45)
+			{
+				//rotation.SetToRotation(2, right.x, right.y, right.z);
+				//view = rotation * view;
+				//target = position + view;
+				camerarotation.x -= 1.5;
+			}
+		}
+		if (ypos > 305)
+		{
+			if (camerarotation.x < 45)
+			{
+				//rotation.SetToRotation(-2, right.x, right.y, right.z);
+				//view = rotation * view;
+				//target = position + view;
+				camerarotation.x += 1.5;
+			}
+		}
+	}
+	else if (mouseControl == true)
+	{
+		xpos, ypos = a.Mouse(xpos, ypos);
+
+		if (xpos < 395)
 		{
 			//rotation.SetToRotation(3, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
 			camerarotation.y += 3;
 		}
-		if (xpos > 410)
+		if (xpos > 405)
 		{
 			//rotation.SetToRotation(-3, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
 			camerarotation.y -= 3;
 		}
-		if (ypos < 290)
+		if (ypos < 295)
 		{
 			if (camerarotation.x > -45)
 			{
@@ -91,7 +131,7 @@ void Camera3::Update(double dt)
 				camerarotation.x -= 3;
 			}
 		}
-		if (ypos > 310)
+		if (ypos > 305)
 		{
 			if (camerarotation.x < 45)
 			{
@@ -268,11 +308,11 @@ void Camera3::Update(double dt)
 	//std::cout << direction.y - position.y << std::endl;
 	//std::cout << direction.z - position.z << std::endl;
 
-	if (Application::IsKeyPressed(VK_LBUTTON))
-	{
-		std::cout << position << "cam" << std::endl;
-		std::cout << view << "view" << std::endl;
-	}
+	//if (Application::IsKeyPressed(VK_LBUTTON))
+	//{
+	//	std::cout << position << "cam" << std::endl;
+	//	std::cout << view << "view" << std::endl;
+	//}
 
 	if (camerarotation.x > maxCameraX)
 	{
@@ -303,6 +343,7 @@ Vector3 Camera3::setPos()
 	return location;
 }
 
+
 bool Camera3::testhitbox(const Vector3& lowest, const Vector3& highest, double move)
 {
 	/*if (position.x + 5 + move > lowest.x && position.x - 5 + move < highest.x && position.y + 5 + move > lowest.y && position.y - 5 + move < highest.y && position.z + 5 + move > lowest.z && position.z - 5 + move < highest.z)
@@ -312,14 +353,14 @@ bool Camera3::testhitbox(const Vector3& lowest, const Vector3& highest, double m
 	else
 	{*/
 		return false;
-	//}
+	
 }
 
 bool Camera3::hitbox(double move)
 {
 	/*for (int i = 0; i <= 50; i++)
 	{
-		if (testhitbox(Vector3(treex[i] - 20, -150, treez[i] - 20), Vector3(treex[i] + 20, 100, treez[i] + 20), move) == true)
+		if (testhitargetLocation(Vector3(treex[i] - 20, -150, treez[i] - 20), Vector3(treex[i] + 20, 100, treez[i] + 20), move) == true)
 		{
 			return true;
 		}

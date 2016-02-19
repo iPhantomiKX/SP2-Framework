@@ -11,9 +11,9 @@ struct pistol
 struct rifle
 {
 	int damage = 2;
-	double range = 150;
+	double range = 300;
 	double RoF = 10;
 	int ammo = 30;
 	int maxAmmo = 30;
-	double reloadSpd = 300;
+	double reloadSpd = 150;
 };

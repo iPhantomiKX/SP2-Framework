@@ -125,6 +125,7 @@ void Sp2Scene::Init()
 	range = 0;
 	gunCd = 0;
 	reloaded = true;
+	bulletAmt = 0;
 
 	//Initialize camera settings
 	camera.Init(Vector3(1, 10, 0), Vector3(0, 10, 0), Vector3(0, 1, 0));
@@ -182,7 +183,7 @@ void Sp2Scene::Init()
 	meshList[GEO_SPACEHOUSE] = MeshBuilder::GenerateOBJ("spacehouse", "OBJ//SpaceHouse.obj");
 	meshList[GEO_SPACEHOUSE]->textureID = LoadTGA("Image//SpaceHouseUV.tga");
 
-	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(1,0,0), 10,20);
+	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(0.3,0.3,1), 10,20);
 
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
 	meshList[GEO_PISTOL1]->textureID = LoadTGA("Image//pistol1texture.tga");
@@ -192,6 +193,10 @@ void Sp2Scene::Init()
 
 	meshList[GEO_SNIPER1] = MeshBuilder::GenerateOBJ("sniper1model", "OBJ//AK47.obj");
 	meshList[GEO_SNIPER1]->textureID = LoadTGA("Image//AK47UV.tga");
+
+	meshList[GEO_TARGET] = MeshBuilder::GenerateCube("target", Color(1, 0, 0));
+
+	meshList[GEO_TARGETHIT] = MeshBuilder::GenerateCube("target2", Color(0, 1, 0));
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
@@ -285,30 +290,52 @@ void Sp2Scene::Update(double dt)
 
 	if (Camera3::mouseControl == true)
 	{
-		if (Camera3::xpos < 390)
+		if (Application::IsKeyPressed(VK_RBUTTON))
 		{
-			rotateGunY += 3;
+			if (Camera3::xpos < 395)
+			{
+				rotateGunY += 1.5;
+			}
+			if (Camera3::xpos > 405)
+			{
+				rotateGunY -= 1.5;
+			}
+			if (Camera3::ypos < 295)
+			{
+				rotateGunX += 1.5;
+			}
+			if (Camera3::ypos > 305)
+			{
+				rotateGunX -= 1.5;
+			}
 		}
-		if (Camera3::xpos > 410)
+		else
 		{
-			rotateGunY -= 3;
-		}
-		if (Camera3::ypos < 290)
-		{
-			rotateGunX += 3;
-		}
-		if (Camera3::ypos > 310)
-		{
-			rotateGunX -= 3;
-		}
+			if (Camera3::xpos < 395)
+			{
+				rotateGunY += 3;
+			}
+			if (Camera3::xpos > 405)
+			{
+				rotateGunY -= 3;
+			}
+			if (Camera3::ypos < 295)
+			{
+				rotateGunX += 3;
+			}
+			if (Camera3::ypos > 305)
+			{
+				rotateGunX -= 3;
+			}
 
-		if (rotateGunX > 45)
-		{
-			rotateGunX = 45;
-		}
-		else if (rotateGunX < -45)
-		{
-			rotateGunX = -45;
+			if (rotateGunX > 45)
+			{
+				rotateGunX = 45;
+			}
+			else if (rotateGunX < -45)
+			{
+				rotateGunX = -45;
+			}
 		}
 	}
 	else if (Camera3::mouseControl == false)
@@ -732,21 +759,73 @@ void Sp2Scene::Update(double dt)
 					}
 				}
 			}
-			
-			std::cout << gunReload << std::endl;
+	
+			if (testHB == true)
+			{
+				targetReg = 100;
+				testHB = false;
+			}
+			else
+			{
+				if (targetReg > 0)
+				{
+					targetReg--;
+				}
+			}
+
+
 }
 	
 void Sp2Scene::bulletPos()
 {
+	bulletAmt = shotsFired.size();
+
 	std::vector<Vector3>::iterator count = shotsFired.begin();
 	std::vector<Vector3>::iterator count1 = shotsDir.begin();
 	std::vector<int>::iterator count2 = shotsRange.begin();
 
-	while (count != shotsFired.end())
+	
+
+	//testHB = c3.bulletEnemyCollision(store, (50, 1, 0));
+
+		while (count != shotsFired.end())
+		{
+			Vector3 temp = *count;
+			std::cout << temp << "look at me" << std::endl;
+			*count += *count1;
+			if (bulletEnemyCollision(temp, Vector3(50,10,0)) == true )
+			{
+				testHB = true;
+				std::cout << "hit" << std::endl;
+				count = shotsFired.erase(count);
+				count1 = shotsDir.erase(count1);
+			}
+			else if (temp.y <= 0 || temp.x >= 500 || temp.z >= 500 || temp.y >= 500 || temp.x <= -500 || temp.z <= -500 || temp.y <= -500)
+			{
+				count = shotsFired.erase(count);
+				count1 = shotsDir.erase(count1);
+			}
+			else
+			{
+				*count++;
+				*count1++;
+			}
+			
+			
+		}
+}
+
+bool Sp2Scene::bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation)
+{
+	if (bulletPos.x > (targetLocation.x - ((6 / 2)+1)) && bulletPos.x < (targetLocation.x + ((6 / 2)+1)) &&
+		bulletPos.y >(targetLocation.y - ((6 / 2))+1) && bulletPos.y < (targetLocation.y + ((6 / 2)+1)) &&
+		bulletPos.z >(targetLocation.z - ((6 / 2))+1) && bulletPos.z < (targetLocation.z + ((6 / 2)+1)))
 	{
-		*count += *count1;
-		*count++;
-		*count1++;
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
@@ -1199,11 +1278,11 @@ void Sp2Scene::Render()
 	RenderText(meshList[GEO_TEXT], "Welcome To The Moon", Color(1, 0, 0));
 	modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
-	modelStack.Translate(0,5,0);
-	modelStack.Scale(1, 1, 1);
-	RenderMesh(meshList[GEO_TEST], true);
-	modelStack.PopMatrix();
+	//modelStack.PushMatrix();
+	//modelStack.Translate(0,5,0);
+	//modelStack.Scale(1, 1, 1);
+	//RenderMesh(meshList[GEO_TEST], true);
+	//modelStack.PopMatrix();
 
 	//Check if button has pressed
 	if (equipPistol1 == true)
@@ -1314,6 +1393,23 @@ void Sp2Scene::Render()
 	{
 		modelStack.PushMatrix();
 		RenderTextOnScreen(meshList[GEO_TEXT], "RELOADING", Color(0, 1, 0), 5, 4, 8);
+		modelStack.PopMatrix();
+	}
+
+	if (targetReg > 0)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(50, 10, 0);
+		modelStack.Scale(6, 6, 6);
+		RenderMesh(meshList[GEO_TARGET], false);
+		modelStack.PopMatrix();
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(50, 10, 0);
+		modelStack.Scale(6, 6, 6);
+		RenderMesh(meshList[GEO_TARGETHIT], false);
 		modelStack.PopMatrix();
 	}
 }
