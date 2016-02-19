@@ -182,11 +182,10 @@ private:
 	Vector3 treeposition[150];
 	Vector3 test;
 
-	int bulletAmt;
 
 	std::vector<Vector3> shotsFired;
 	std::vector<Vector3> shotsDir;
-	std::vector<int> shotsRange;
+	std::vector<int> weaponDmg;
 	//vector<> shotsFired;
 
 	double targetReg;

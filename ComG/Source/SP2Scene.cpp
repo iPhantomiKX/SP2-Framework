@@ -11,6 +11,7 @@
 #include "LoadTGA.h"
 #include "LoadOBJ.h"
 #include "gun.h"
+#include "enemy.h"
 
 //test
 
@@ -29,6 +30,8 @@ Vector3 Camera3::location2 = (0, 0, 0);
 Vector3 Camera3::direction = (0, 0, 0);
 pistol pis;
 rifle rif;
+sniper sr;
+target t;
 
 
 Sp2Scene::Sp2Scene()
@@ -125,7 +128,6 @@ void Sp2Scene::Init()
 	range = 0;
 	gunCd = 0;
 	reloaded = true;
-	bulletAmt = 0;
 
 	//Initialize camera settings
 	camera.Init(Vector3(1, 10, 0), Vector3(0, 10, 0), Vector3(0, 1, 0));
@@ -706,6 +708,7 @@ void Sp2Scene::Update(double dt)
 				{
 					shotsFired.push_back(Camera3::location2);
 					shotsDir.push_back(Camera3::direction);
+					weaponDmg.push_back(pis.damage);
 					gunCd = pis.RoF;
 					pis.ammo--;
 				}
@@ -736,6 +739,7 @@ void Sp2Scene::Update(double dt)
 				{
 					shotsFired.push_back(Camera3::location2);
 					shotsDir.push_back(Camera3::direction);
+					weaponDmg.push_back(rif.damage);
 					gunCd = rif.RoF;
 					rif.ammo--;
 				}
@@ -759,6 +763,36 @@ void Sp2Scene::Update(double dt)
 					}
 				}
 			}
+			if (equipSniper1 == true)
+			{
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sr.ammo > 0 && gunReload <= 0 && reloaded == true)
+				{
+					shotsFired.push_back(Camera3::location2);
+					shotsDir.push_back(Camera3::direction);
+					weaponDmg.push_back(sr.damage);
+					gunCd = sr.RoF;
+					sr.ammo--;
+				}
+
+				bulletPos();
+				gunCd--;
+
+				if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo || sr.ammo == 0 && reloaded == true)
+				{
+					gunReload = sr.reloadSpd;
+					reloaded = false;
+				}
+
+				if (gunReload > 0)
+				{
+					gunReload--;
+					if (gunReload <= 0)
+					{
+						sr.ammo = sr.maxAmmo;
+						reloaded = true;
+					}
+				}
+			}
 	
 			if (testHB == true)
 			{
@@ -773,16 +807,18 @@ void Sp2Scene::Update(double dt)
 				}
 			}
 
-
+		if (t.hp <= 0)
+		{
+			t.isDead = true;
+		}
 }
 	
 void Sp2Scene::bulletPos()
 {
-	bulletAmt = shotsFired.size();
 
 	std::vector<Vector3>::iterator count = shotsFired.begin();
 	std::vector<Vector3>::iterator count1 = shotsDir.begin();
-	std::vector<int>::iterator count2 = shotsRange.begin();
+	std::vector<int>::iterator count2 = weaponDmg.begin();
 
 	
 
@@ -791,24 +827,28 @@ void Sp2Scene::bulletPos()
 		while (count != shotsFired.end())
 		{
 			Vector3 temp = *count;
-			std::cout << temp << "look at me" << std::endl;
+			//std::cout << temp << "look at me" << std::endl;
 			*count += *count1;
-			if (bulletEnemyCollision(temp, Vector3(50,10,0)) == true )
+			if (bulletEnemyCollision(temp, Vector3(50, 10, 0)) == true && t.isDead == false)
 			{
+				t.hp -= *count2;
 				testHB = true;
 				std::cout << "hit" << std::endl;
 				count = shotsFired.erase(count);
 				count1 = shotsDir.erase(count1);
+				count2 = weaponDmg.erase(count2);
 			}
 			else if (temp.y <= 0 || temp.x >= 500 || temp.z >= 500 || temp.y >= 500 || temp.x <= -500 || temp.z <= -500 || temp.y <= -500)
 			{
 				count = shotsFired.erase(count);
 				count1 = shotsDir.erase(count1);
+				count2 = weaponDmg.erase(count2);
 			}
 			else
 			{
 				*count++;
 				*count1++;
+				*count2++;
 			}
 			
 			
@@ -818,8 +858,8 @@ void Sp2Scene::bulletPos()
 bool Sp2Scene::bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation)
 {
 	if (bulletPos.x > (targetLocation.x - ((6 / 2)+1)) && bulletPos.x < (targetLocation.x + ((6 / 2)+1)) &&
-		bulletPos.y >(targetLocation.y - ((6 / 2))+1) && bulletPos.y < (targetLocation.y + ((6 / 2)+1)) &&
-		bulletPos.z >(targetLocation.z - ((6 / 2))+1) && bulletPos.z < (targetLocation.z + ((6 / 2)+1)))
+		bulletPos.y >(targetLocation.y - ((6 / 2)+1)) && bulletPos.y < (targetLocation.y + ((6 / 2)+1)) &&
+		bulletPos.z >(targetLocation.z - ((6 / 2)+1)) && bulletPos.z < (targetLocation.z + ((6 / 2)+1)))
 	{
 		return true;
 	}
@@ -1396,7 +1436,7 @@ void Sp2Scene::Render()
 		modelStack.PopMatrix();
 	}
 
-	if (targetReg > 0)
+	if (targetReg > 0 && t.isDead == false)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(50, 10, 0);
@@ -1404,7 +1444,7 @@ void Sp2Scene::Render()
 		RenderMesh(meshList[GEO_TARGET], false);
 		modelStack.PopMatrix();
 	}
-	else
+	else if (t.isDead == false)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(50, 10, 0);
@@ -1440,7 +1480,7 @@ void Sp2Scene::RenderPistol1()
 		modelStack.PopMatrix();
 	}
 	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0, 1, 0), 2, 30, 1);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0, .8, 0), 2, 30, 1);
 	modelStack.PopMatrix();
 }
 void Sp2Scene::RenderRifle1()
@@ -1470,7 +1510,7 @@ void Sp2Scene::RenderRifle1()
 		modelStack.PopMatrix();
 	}
 	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0, 1, 0), 2, 30, 1);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0, .8, 0), 2, 30, 1);
 	modelStack.PopMatrix();
 }
 void Sp2Scene::RenderSniper1()
@@ -1500,6 +1540,9 @@ void Sp2Scene::RenderSniper1()
 
 		modelStack.PopMatrix();
 	}
+	modelStack.PushMatrix();
+	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0, 0.8, 0), 2, 30, 1);
+	modelStack.PopMatrix();
 }
 void Sp2Scene::Exit()
 {
