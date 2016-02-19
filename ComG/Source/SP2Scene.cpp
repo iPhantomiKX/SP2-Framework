@@ -482,7 +482,7 @@ void Sp2Scene::Update(double dt)
 				camera.position = camera.prevPosition;
 			}
 
-			/*//collision for spaceship roof 1
+			//collision for spaceship roof 1
 			if (camera.checkcollisionwithObject(Vector3(400, 160, 0), 100, 15, 100))
 			{
 			camera.position = camera.prevPosition;
@@ -504,34 +504,34 @@ void Sp2Scene::Update(double dt)
 			if (camera.checkcollisionwithObject(Vector3(300, 160, 100), 100, 15, 100))
 			{
 				camera.position = camera.prevPosition;
-			}*/
+			}
 
-			//collision for spacedome width 1
-			if (camera.checkcollisionwithObject(Vector3(-320, 0, 0), 18, 50, 80))
+			//collision for spacehouse width 1
+			if (camera.checkcollisionwithObject(Vector3(-338, 0, 38), 18, 50, 80))
 			{
 				camera.position = camera.prevPosition;
 			}
 
-			//collision for spacedome width 2
-			if (camera.checkcollisionwithObject(Vector3(-480, 0, 0), 18, 50, 80))
+			//collision for spacehouse width 2
+			if (camera.checkcollisionwithObject(Vector3(-460, 0, 38), 18, 50, 80))
 			{
 				camera.position = camera.prevPosition;
 			}
 
-			//collision for spacedome back wall 
-			if (camera.checkcollisionwithObject(Vector3(-400, 0, 40), 155, 50, 15))
+			//collision for spacehouse back wall 
+			if (camera.checkcollisionwithObject(Vector3(-400, 0, 73), 120, 50, 18))
 			{
 				camera.position = camera.prevPosition;
 			}
 
 			//collision for front wall 1
-			if (camera.checkcollisionwithObject(Vector3(-350, 0, -40), 75, 50, 15))
+			if (camera.checkcollisionwithObject(Vector3(-360, 0, 0), 52, 50, 18))
 			{
 				camera.position = camera.prevPosition;
 			}
 
 			//collision for front wall 2
-			if (camera.checkcollisionwithObject(Vector3(-450, 0, -40), 75, 50, 15))
+			if (camera.checkcollisionwithObject(Vector3(-435, 0, 0), 52, 50, 18))
 			{
 				camera.position = camera.prevPosition;
 			}
@@ -1097,7 +1097,7 @@ void Sp2Scene::RenderSpaceHouse()
 	//space house
 	modelStack.PushMatrix();
 	modelStack.Translate(-400, 0, 0);
-	modelStack.Scale(20, 20, 20);
+	modelStack.Scale(15, 15, 15);
 	RenderMesh(meshList[GEO_SPACEHOUSE], true);
 	modelStack.PopMatrix();
 };
