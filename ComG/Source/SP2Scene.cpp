@@ -772,7 +772,7 @@ void Sp2Scene::Update(double dt)
 				bulletPos();
 				gunCd--;
 
-				if (Application::IsKeyPressed('R') && pis.ammo < pis.maxAmmo|| pis.ammo == 0 && reloaded == true)
+				if (Application::IsKeyPressed('R') && pis.ammo < pis.maxAmmo && reloaded == true || pis.ammo == 0 && reloaded == true)
 				{
 					gunReload = pis.reloadSpd;
 					reloaded = false;
@@ -803,7 +803,7 @@ void Sp2Scene::Update(double dt)
 				bulletPos();
 				gunCd--;
 
-				if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo || rif.ammo == 0 && reloaded == true)
+				if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo && reloaded == true || rif.ammo == 0 && reloaded == true)
 				{
 					gunReload = rif.reloadSpd;
 					reloaded = false;
@@ -833,7 +833,7 @@ void Sp2Scene::Update(double dt)
 				bulletPos();
 				gunCd--;
 
-				if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo || sr.ammo == 0 && reloaded == true)
+				if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo && reloaded == true || sr.ammo == 0 && reloaded == true)
 				{
 					gunReload = sr.reloadSpd;
 					reloaded = false;
@@ -867,6 +867,16 @@ void Sp2Scene::Update(double dt)
 		{
 			t.isDead = true;
 		}
+		if (Application::IsKeyPressed('P'))
+		{
+			t.hp = 10;
+			t.isDead = false;
+		}
+		//if (t.hp <= 10)
+		//{
+		//	t.hp++;
+		//}
+		std::cout << t.hp << std::endl;
 }
 	
 void Sp2Scene::bulletPos()
