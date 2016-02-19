@@ -1302,7 +1302,7 @@ void Sp2Scene::RenderPortal2()
 	modelStack.Scale(5, 5, 5);
 	RenderMesh(meshList[GEO_PORTAL2], true);
 	modelStack.PopMatrix();
-};
+}
 
 void Sp2Scene::Render()
 {
@@ -1456,6 +1456,7 @@ void Sp2Scene::Render()
 	{
 		modelStack.PushMatrix();
 		RenderTextOnScreen(meshList[GEO_TEXT], "PRESS E TO TELEPORT", Color(0, 1, 0), 3, 4, 15);
+	}
 
 	if (targetReg > 0 && t.isDead == false)
 	{
@@ -1536,7 +1537,6 @@ void Sp2Scene::RenderRifle1()
 }
 void Sp2Scene::RenderSniper1()
 {
-
 	if (gunReload <= 0)
 	{
 		modelStack.PushMatrix();
