@@ -74,6 +74,8 @@ class Sp2Scene : public Scene
 		GEO_SPACESHIPQUAD,
 		GEO_CRAFTINGPANEL,
 		GEO_SPACEHOUSE,
+		GEO_PORTAL1,
+		GEO_PORTAL2,
 
 		GEO_PISTOL1,
 		GEO_RIFLE1,
@@ -163,6 +165,8 @@ private:
 	bool equipRifle1 = false;
 	bool equipSniper1 = false;
 	bool reloaded = false;
+	bool testPortal = false;
+	bool testPortalsign = false;
 
 	bool testHB = false;
 
@@ -178,6 +182,8 @@ private:
 	void RenderCraftingPanel();
 	void bulletPos();
 	void RenderSpaceHouse();
+	void RenderPortal1();
+	void RenderPortal2();
 
 	Vector3 treeposition[150];
 	Vector3 test;
