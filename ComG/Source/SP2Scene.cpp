@@ -173,14 +173,25 @@ void Sp2Scene::Init()
 	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");*/
 	meshList[GEO_TEST] = MeshBuilder::GenerateOBJ("test", "OBJ//test.obj");
 
+	//Spaceship UI Image
 	meshList[GEO_SPACESHIPQUAD] = MeshBuilder::GenerateQuad("spaceshipquad", Color(1, 1, 1), 100, 100);
 	meshList[GEO_SPACESHIPQUAD]->textureID = LoadTGA("Image//spaceship_floor.tga");
 
+	//Crafting Panel UI Image
 	meshList[GEO_CRAFTINGPANEL] = MeshBuilder::GenerateOBJ("craftingpanelmodel", "OBJ//Crafting_Panel.obj");
 	meshList[GEO_CRAFTINGPANEL]->textureID = LoadTGA("Image//craft_bench_UV.tga");
 
+	//Space House UI Image
 	meshList[GEO_SPACEHOUSE] = MeshBuilder::GenerateOBJ("spacehouse", "OBJ//SpaceHouse.obj");
 	meshList[GEO_SPACEHOUSE]->textureID = LoadTGA("Image//SpaceHouseUV.tga");
+	
+	//Entrance Portal UI Image
+	meshList[GEO_PORTAL1] = MeshBuilder::GenerateOBJ("EnterPortal", "OBJ//portal.obj");
+	meshList[GEO_PORTAL1]->textureID = LoadTGA("Image//portal1UV.tga");
+
+	//Exit Portal UI Image
+	meshList[GEO_PORTAL2] = MeshBuilder::GenerateOBJ("ExitPortal", "OBJ//portal.obj");
+	meshList[GEO_PORTAL2]->textureID = LoadTGA("Image//portal2UV.tga");
 
 	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(1,0,0), 10,20);
 
@@ -535,6 +546,51 @@ void Sp2Scene::Update(double dt)
 			{
 				camera.position = camera.prevPosition;
 			}
+
+			//portal1 interaction
+			if (camera.checkcollisionwithObject(Vector3(-435.088, 10, 50.0353), 10, 15, 10))
+			{
+				camera.position = camera.prevPosition;
+				testPortalsign = true;
+				testPortal = true;
+				if (Application::IsKeyPressed('E') && testPortal == true)
+				{
+					camera.position.x = 399.526;
+					camera.position.y = 70.0759;
+					camera.position.z = 100.455;
+					testPortal = false;
+					testPortalsign = false;
+				}
+			}
+			else
+			{
+				testPortal = false;
+				testPortalsign = false;
+			}
+
+
+			//portal2 interaction
+			if (camera.checkcollisionwithObject(Vector3(400.088, 71, 0.0353), 10, 15, 10))
+			{
+				camera.position = camera.prevPosition;
+				testPortalsign = true;
+				testPortal = true;
+				if (Application::IsKeyPressed('E') && testPortal == true)
+				{
+					camera.position.x = -400;
+					camera.position.y = 10;
+					camera.position.z = 1;
+					testPortal = false;
+					testPortalsign = false;
+				}
+			}
+			else
+			{
+				testPortal = false;
+				testPortalsign = false;
+			}
+
+			
 
 
 
@@ -1102,6 +1158,32 @@ void Sp2Scene::RenderSpaceHouse()
 	modelStack.PopMatrix();
 };
 
+void Sp2Scene::RenderPortal1()
+{
+	//entrance portal in house
+	modelStack.PushMatrix();
+	modelStack.Translate(-435, 0, 50);
+	modelStack.Scale(5, 5, 5);
+	RenderMesh(meshList[GEO_PORTAL1], true);
+	modelStack.PopMatrix();
+
+	//entrance portal in spaceship
+	modelStack.PushMatrix();
+	modelStack.Translate(400, 61, 100);
+	modelStack.Scale(5, 5, 5);
+	RenderMesh(meshList[GEO_PORTAL1], true);
+	modelStack.PopMatrix();
+
+};
+
+void Sp2Scene::RenderPortal2()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(400, 61, 0);
+	modelStack.Scale(5, 5, 5);
+	RenderMesh(meshList[GEO_PORTAL2], true);
+	modelStack.PopMatrix();
+};
 
 void Sp2Scene::Render()
 {
@@ -1149,6 +1231,8 @@ void Sp2Scene::Render()
 	RenderSpaceshipQuad();
 	RenderCraftingPanel();
 	RenderSpaceHouse();
+	RenderPortal1();
+	RenderPortal2();
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -1221,74 +1305,6 @@ void Sp2Scene::Render()
 		RenderSniper1();
 		RenderImageOnScreen(meshList[GEO_SNIPER1], 1, 15, 10);
 	}
-
-	//if (Camera3::test == true)
-	//{
-	//	modelStack.PushMatrix();
-	//	modelStack.Translate(-80, 0, -50);
-	//	modelStack.Scale(5, 5, 5);
-	//	modelStack.Rotate(180, 0, 1, 0);
-	//	RenderMesh(meshList[GEO_OBJECT], false);
-	//	modelStack.PopMatrix();
-
-	//	modelStack.PushMatrix();
-	//	RenderTextOnScreen(meshList[GEO_TEXT], "Find Tricker", Color(1, 0, 0), 0, 0, 0);
-	//	modelStack.PopMatrix();
-
-	//	modelStack.PushMatrix();
-	//	RenderTextOnScreen(meshList[GEO_TEXT], "Find Sword", Color(1, 0, 0), 3.5, 7, 12);
-	//	modelStack.PopMatrix();
-
-	//}
-
-	////to test if player walk into tree
-	//if (Camera3::test2 == true)
-	//{
-	//	Camera3::test = false;
-
-	//	modelStack.PushMatrix();
-	//	RenderTextOnScreen(meshList[GEO_TEXT], "GAME OVER, YOU DIED", Color(1, 0, 0), 3.5, 3.5, 10);
-	//	modelStack.PopMatrix();
-	//}
-
-	//if (Camera3::test3 == true)
-	//{
-	//	modelStack.PushMatrix();
-	//	modelStack.Translate(40, 100, 90);
-	//	modelStack.Scale(5, 5, 5);
-	//	modelStack.Rotate(180, 0, 1, 0);
-	//	RenderMesh(meshList[GEO_OBJECT], false);
-	//	modelStack.PopMatrix();
-
-	//	modelStack.PushMatrix();
-	//	RenderTextOnScreen(meshList[GEO_TEXT], "Find Stone", Color(1, 0, 0), 3.5, 7, 10);
-	//	modelStack.PopMatrix();
-	//}
-
-	//if (Sp2Scene::test4 == true)
-	//{
-	//	modelStack.PushMatrix();
-	//	RenderTextOnScreen(meshList[GEO_TEXT], "Congratulations", Color(1, 0, 0), 3.5, 4, 10);
-	//	modelStack.PopMatrix();
-
-	//	modelStack.PushMatrix();
-	//	RenderTextOnScreen(meshList[GEO_TEXT], "YOU WIN", Color(1, 0, 0), 3.5, 4, 8);
-	//	modelStack.PopMatrix();
-	//}
-
-	//else
-	//{aaaaa
-	//	modelStack.PushMatrix();
-	//	modelStack.Translate(0, 0, -100);
-	//	modelStack.Scale(5, 5, 5);
-	//	modelStack.Rotate(180, 0, 1, 0);
-	//	RenderMesh(meshList[GEO_OBJECT], false);
-	//	modelStack.PopMatrix();
-
-	//	modelStack.PushMatrix();
-	//	RenderTextOnScreen(meshList[GEO_TEXT], "Find Tricker", Color(1, 0, 0), 3.5, 7, 15);
-	//	modelStack.PopMatrix();
-	//}
 	
 	//Render Frame rate on screen
 	RenderTextOnScreen(meshList[GEO_TEXT], "FPS: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 25);
@@ -1314,6 +1330,13 @@ void Sp2Scene::Render()
 	{
 		modelStack.PushMatrix();
 		RenderTextOnScreen(meshList[GEO_TEXT], "RELOADING", Color(0, 1, 0), 5, 4, 8);
+		modelStack.PopMatrix();
+	}
+
+	if (testPortalsign == true)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "PRESS E TO TELEPORT", Color(0, 1, 0), 3, 4, 15);
 		modelStack.PopMatrix();
 	}
 }
