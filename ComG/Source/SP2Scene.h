@@ -67,6 +67,9 @@ class Sp2Scene : public Scene
 		GEO_OBJECT,
 		GEO_TEST,
 		
+		GEO_TARGET,
+		GEO_TARGETHIT,
+
 		GEO_SHOT,
 		GEO_SPACESHIPQUAD,
 		GEO_CRAFTINGPANEL,
@@ -165,9 +168,13 @@ private:
 	bool testPortal = false;
 	bool testPortalsign = false;
 
+	bool testHB = false;
+
 	void RenderPistol1();
 	void RenderRifle1();
 	void RenderSniper1();
+
+	bool bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation);
 	/*static bool test4;
 	static bool test5;*/
 
@@ -181,13 +188,14 @@ private:
 	Vector3 treeposition[150];
 	Vector3 test;
 
+	int bulletAmt;
 
 	std::vector<Vector3> shotsFired;
 	std::vector<Vector3> shotsDir;
 	std::vector<int> shotsRange;
 	//vector<> shotsFired;
 
-	
+	double targetReg;
 
 	Camera3 camera;
 
