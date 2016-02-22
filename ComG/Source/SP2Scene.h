@@ -76,6 +76,8 @@ class Sp2Scene : public Scene
 		GEO_SPACEHOUSE,
 		GEO_PORTAL1,
 		GEO_PORTAL2,
+		GEO_TABLE,
+		GEO_HEALTHPACK,
 
 		GEO_PISTOL1,
 		GEO_RIFLE1,
@@ -188,6 +190,8 @@ private:
 	void RenderSpaceHouse();
 	void RenderPortal1();
 	void RenderPortal2();
+	void RenderTable();
+	void RenderHealthPack();
 
 	Vector3 treeposition[150];
 	Vector3 test;

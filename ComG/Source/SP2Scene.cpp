@@ -199,6 +199,14 @@ void Sp2Scene::Init()
 	meshList[GEO_PORTAL2] = MeshBuilder::GenerateOBJ("ExitPortal", "OBJ//portal.obj");
 	meshList[GEO_PORTAL2]->textureID = LoadTGA("Image//portal2UV.tga");
 
+	//Table Image
+	meshList[GEO_TABLE] = MeshBuilder::GenerateOBJ("table", "OBJ//Table.obj");
+	meshList[GEO_TABLE]->textureID = LoadTGA("Image//TableUV.tga");
+
+	//HealthPack Image
+	meshList[GEO_HEALTHPACK] = MeshBuilder::GenerateOBJ("healthpack", "OBJ//HealthPack.obj");
+	meshList[GEO_HEALTHPACK]->textureID = LoadTGA("Image//HealthPackUV.tga");
+
 	meshList[GEO_SHOT] = MeshBuilder::GenerateSphere("shot", Color(0.3,0.3,1), 10,20);
 
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
@@ -1554,12 +1562,42 @@ void Sp2Scene::RenderPortal1()
 
 void Sp2Scene::RenderPortal2()
 {
+	//exit portal in spaceship
 	modelStack.PushMatrix();
 	modelStack.Translate(400, 61, 0);
 	modelStack.Scale(5, 5, 5);
 	RenderMesh(meshList[GEO_PORTAL2], true);
 	modelStack.PopMatrix();
 }
+
+void Sp2Scene::RenderTable()
+{
+	//table in spacehouse
+	modelStack.PushMatrix();
+	modelStack.Translate(-390, 0, 40);
+	modelStack.Scale(2.4, 2.4, 2.4);
+	RenderMesh(meshList[GEO_TABLE], true);
+	modelStack.PopMatrix();
+};
+
+void Sp2Scene::RenderHealthPack()
+{
+	//healthpack 1
+	modelStack.PushMatrix();
+	modelStack.Translate(-386, 6, 40);
+	modelStack.Scale(2.5, 2.5, 2.5);
+	RenderMesh(meshList[GEO_HEALTHPACK], true);
+	modelStack.PopMatrix();
+
+	//healthpack 2
+	modelStack.PushMatrix();
+	modelStack.Translate(-393, 6, 40);
+	modelStack.Rotate(-180, 0, 1, 0);
+	modelStack.Scale(2.5, 2.5, 2.5);
+	RenderMesh(meshList[GEO_HEALTHPACK], true);
+	modelStack.PopMatrix();
+
+};
 
 void Sp2Scene::Render()
 {
@@ -1609,6 +1647,8 @@ void Sp2Scene::Render()
 	RenderSpaceHouse();
 	RenderPortal1();
 	RenderPortal2();
+	RenderTable();
+	RenderHealthPack();
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
