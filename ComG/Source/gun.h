@@ -6,6 +6,7 @@ struct pistol
 	int ammo = 12;
 	int maxAmmo = 12;
 	double reloadSpd = 100;
+	int inAccuracy = 1;
 };
 
 struct rifle
@@ -16,6 +17,7 @@ struct rifle
 	int ammo = 30;
 	int maxAmmo = 30;
 	double reloadSpd = 150;
+	int inAccuracy = 2;
 };
 
 struct sniper
@@ -26,4 +28,5 @@ struct sniper
 	int ammo = 10;
 	int maxAmmo = 10;
 	double reloadSpd = 200;
+	int inAccuracy = 3;
 };

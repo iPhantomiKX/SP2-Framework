@@ -760,6 +760,58 @@ void Sp2Scene::Update(double dt)
 			//std::cout << c3.getShotsFired() << "bang" <<  std::endl; // why 0
 			if (equipPistol1 == true)
 			{
+				if (Application::IsKeyPressed(VK_RBUTTON))
+				{
+
+				}
+				else
+				{
+					double storeRand = 0;
+					int storeRand2 = 0;
+					storeRand = rand() % (pis.inAccuracy+1);
+					storeRand2 = rand() % 2;
+					std::cout << storeRand;
+					if (storeRand2 == 1)
+					{
+						storeRand -= (storeRand + storeRand);
+					}
+					if (storeRand == 0)
+					{
+
+					}
+					else
+					{
+						Camera3::direction.x += storeRand / 10;
+					}
+					storeRand = rand() % (pis.inAccuracy+1);
+					storeRand2 = rand() % 2;
+					if (storeRand2 == 1)
+					{
+						storeRand -= (storeRand + storeRand);
+					}
+					if (storeRand == 0)
+					{
+
+					}
+					else
+					{
+						Camera3::direction.y += storeRand / 10;
+					}
+					storeRand = rand() % (pis.inAccuracy+1);
+					storeRand2 = rand() % 2;
+					if (storeRand2 == 1)
+					{
+						storeRand -= (storeRand + storeRand);
+					}
+					if (storeRand == 0)
+					{
+
+					}
+					else
+					{
+						Camera3::direction.z += storeRand / 10;
+					}
+				}
 				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && pis.ammo > 0 && gunReload <= 0 && reloaded == true)
 				{
 					shotsFired.push_back(Camera3::location2);
@@ -793,6 +845,57 @@ void Sp2Scene::Update(double dt)
 			{
 				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && rif.ammo > 0 && gunReload <= 0 && reloaded == true)
 				{
+					if (Application::IsKeyPressed(VK_RBUTTON))
+					{
+
+					}
+					else
+					{
+						double storeRand = 0;
+						double storeRand2 = 0;
+						storeRand = rand() % (rif.inAccuracy+1);
+						storeRand2 = rand() % 2;
+						if (storeRand2 == 1)
+						{
+							storeRand -= (storeRand + storeRand);
+						}
+						if (storeRand == 0)
+						{
+
+						}
+						else
+						{
+							Camera3::direction.x += storeRand / 10;
+						}
+						storeRand = rand() % (rif.inAccuracy+1);
+						storeRand2 = rand() % 2;
+						if (storeRand2 == 1)
+						{
+							storeRand -= (storeRand + storeRand);
+						}
+						if (storeRand == 0)
+						{
+
+						}
+						else
+						{
+							Camera3::direction.y += storeRand / 10;
+						}
+						storeRand = rand() % (rif.inAccuracy+1);
+						storeRand2 = rand() % 2;
+						if (storeRand2 == 1)
+						{
+							storeRand -= (storeRand + storeRand);
+						}
+						if (storeRand == 0)
+						{
+
+						}
+						else
+						{
+							Camera3::direction.z += storeRand / 10;
+						}
+					}
 					shotsFired.push_back(Camera3::location2);
 					shotsDir.push_back(Camera3::direction);
 					weaponDmg.push_back(rif.damage);
@@ -823,6 +926,57 @@ void Sp2Scene::Update(double dt)
 			{
 				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sr.ammo > 0 && gunReload <= 0 && reloaded == true)
 				{
+					if (Application::IsKeyPressed(VK_RBUTTON))
+					{
+
+					}
+					else
+					{
+						double storeRand = 0;
+						double storeRand2 = 0;
+						storeRand = rand() % (sr.inAccuracy+1);
+						storeRand2 = rand() % 2;
+						if (storeRand2 == 1)
+						{
+							storeRand -= (storeRand + storeRand);
+						}
+						if (storeRand == 0)
+						{
+
+						}
+						else
+						{
+							Camera3::direction.x += storeRand / 10;
+						}
+						storeRand = rand() % (sr.inAccuracy+1);
+						storeRand2 = rand() % 2;
+						if (storeRand2 == 1)
+						{
+							storeRand -= (storeRand + storeRand);
+						}
+						if (storeRand == 0)
+						{
+
+						}
+						else
+						{
+							Camera3::direction.y += storeRand / 10;
+						}
+						storeRand = rand() % (sr.inAccuracy+1);
+						storeRand2 = rand() % 2;
+						if (storeRand2 == 1)
+						{
+							storeRand -= (storeRand + storeRand);
+						}
+						if (storeRand == 0)
+						{
+
+						}
+						else
+						{
+							Camera3::direction.z += storeRand / 10;
+						}
+					}
 					shotsFired.push_back(Camera3::location2);
 					shotsDir.push_back(Camera3::direction);
 					weaponDmg.push_back(sr.damage);
@@ -1484,6 +1638,15 @@ void Sp2Scene::Render()
 		RenderMesh(meshList[GEO_TARGETHIT], false);
 		modelStack.PopMatrix();
 	}
+
+	if (Application::IsKeyPressed(VK_RBUTTON) || reloaded == false)
+	{
+	}
+	else
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "+", Color(0.3, 0.8, 0.3), 5, 8.28, 6);
+	}
+
 }
 void Sp2Scene::RenderPistol1()
 {
