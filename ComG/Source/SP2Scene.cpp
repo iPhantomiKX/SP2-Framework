@@ -25,6 +25,7 @@ Camera3 c3;
 bool Camera3::mouseControl = false;
 double Camera3::xpos = 0;
 double Camera3::ypos = 0;
+double Camera3::recoil = 0;
 Vector3 Camera3::location = (0, 0, 0);
 Vector3 Camera3::location2 = (0, 0, 0);
 Vector3 Camera3::direction = (0, 0, 0);
@@ -128,6 +129,8 @@ void Sp2Scene::Init()
 	range = 0;
 	gunCd = 0;
 	reloaded = true;
+	upRecoil = 0;
+	gunDir = 0;
 
 	//Initialize camera settings
 	camera.Init(Vector3(1, 10, 0), Vector3(0, 10, 0), Vector3(0, 1, 0));
@@ -315,11 +318,19 @@ void Sp2Scene::Update(double dt)
 			}
 			if (Camera3::ypos < 295)
 			{
-				rotateGunX += 1.5;
+				gunDir += 1.5;
 			}
 			if (Camera3::ypos > 305)
 			{
-				rotateGunX -= 1.5;
+				gunDir -= 1.5;
+			}
+			if (gunDir > 45)
+			{
+				gunDir = 45;
+			}
+			else if (gunDir < -45)
+			{
+				gunDir = -45;
 			}
 		}
 		else
@@ -334,20 +345,20 @@ void Sp2Scene::Update(double dt)
 			}
 			if (Camera3::ypos < 295)
 			{
-				rotateGunX += 3;
+				gunDir += 3;
 			}
 			if (Camera3::ypos > 305)
 			{
-				rotateGunX -= 3;
+				gunDir -= 3;
 			}
 
-			if (rotateGunX > 45)
+			if (gunDir > 45)
 			{
-				rotateGunX = 45;
+				gunDir = 45;
 			}
-			else if (rotateGunX < -45)
+			else if (gunDir < -45)
 			{
-				rotateGunX = -45;
+				gunDir = -45;
 			}
 		}
 	}
@@ -363,22 +374,46 @@ void Sp2Scene::Update(double dt)
 		}
 		if (Application::IsKeyPressed(VK_UP))
 		{
-			rotateGunX += 3;
+			gunDir += 3;
 		}
 		if (Application::IsKeyPressed(VK_DOWN))
 		{
-			rotateGunX -= 3;
+			gunDir -= 3;
 		}
 
 		//Boundaries for gun rotation
-		if (rotateGunX > 45)
+		if (gunDir > 45)
 		{
-			rotateGunX = 45;
+			gunDir = 45;
 		}
-		else if (rotateGunX < -45)
+		else if (gunDir < -45)
 		{
-			rotateGunX = -45;
+			gunDir = -45;
 		}
+	}
+
+	if (upRecoil > 30)
+	{
+		upRecoil = 30;
+	}
+
+	rotateGunX = gunDir + upRecoil;
+	if (Application::IsKeyPressed(VK_LBUTTON))
+	{
+
+	}
+	else if (upRecoil > 0)
+	{
+		upRecoil-= 0.1;
+	}
+	
+	if (rotateGunX > 45)
+	{
+		rotateGunX = 45;
+	}
+	if (rotateGunX < -45)
+	{
+		rotateGunX = -45;
 	}
 
 	//If pressed '1', switch to Pistol1
@@ -760,65 +795,69 @@ void Sp2Scene::Update(double dt)
 			//std::cout << c3.getShotsFired() << "bang" <<  std::endl; // why 0
 			if (equipPistol1 == true)
 			{
-				if (Application::IsKeyPressed(VK_RBUTTON))
-				{
-
-				}
-				else
-				{
-					double storeRand = 0;
-					int storeRand2 = 0;
-					storeRand = rand() % (pis.inAccuracy+1);
-					storeRand2 = rand() % 2;
-					std::cout << storeRand;
-					if (storeRand2 == 1)
-					{
-						storeRand -= (storeRand + storeRand);
-					}
-					if (storeRand == 0)
-					{
-
-					}
-					else
-					{
-						Camera3::direction.x += storeRand / 10;
-					}
-					storeRand = rand() % (pis.inAccuracy+1);
-					storeRand2 = rand() % 2;
-					if (storeRand2 == 1)
-					{
-						storeRand -= (storeRand + storeRand);
-					}
-					if (storeRand == 0)
-					{
-
-					}
-					else
-					{
-						Camera3::direction.y += storeRand / 10;
-					}
-					storeRand = rand() % (pis.inAccuracy+1);
-					storeRand2 = rand() % 2;
-					if (storeRand2 == 1)
-					{
-						storeRand -= (storeRand + storeRand);
-					}
-					if (storeRand == 0)
-					{
-
-					}
-					else
-					{
-						Camera3::direction.z += storeRand / 10;
-					}
-				}
+				
 				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && pis.ammo > 0 && gunReload <= 0 && reloaded == true)
 				{
+					if (Application::IsKeyPressed(VK_RBUTTON))
+					{
+
+					}
+					else
+					{
+						/*double storeRand = 0;
+						int storeRand2 = 0;
+						storeRand = rand() % (pis.inAccuracy+1);
+						storeRand2 = rand() % 2;
+						std::cout << storeRand;
+						if (storeRand2 == 1)
+						{
+						storeRand -= (storeRand + storeRand);
+						}
+						if (storeRand == 0)
+						{
+
+						}
+						else
+						{
+						Camera3::direction.x += storeRand / 10;
+						}
+						storeRand = rand() % (pis.inAccuracy+1);
+						storeRand2 = rand() % 2;
+						if (storeRand2 == 1)
+						{
+						storeRand -= (storeRand + storeRand);
+						}
+						if (storeRand == 0)
+						{
+
+						}
+						else
+						{
+						Camera3::direction.y += storeRand / 10;
+						}
+						storeRand = rand() % (pis.inAccuracy+1);
+						storeRand2 = rand() % 2;
+						if (storeRand2 == 1)
+						{
+						storeRand -= (storeRand + storeRand);
+						}
+						if (storeRand == 0)
+						{
+
+						}
+						else
+						{
+						Camera3::direction.z += storeRand / 10;
+						}*/
+						bulletRNG(pis.inAccuracy);
+					}
 					shotsFired.push_back(Camera3::location2);
 					shotsDir.push_back(Camera3::direction);
 					weaponDmg.push_back(pis.damage);
 					gunCd = pis.RoF;
 					pis.ammo--;
+					Camera3::recoil += 3;
+					upRecoil += 3;
 				}
 
 				bulletPos();
@@ -851,7 +890,7 @@ void Sp2Scene::Update(double dt)
 					}
 					else
 					{
-						double storeRand = 0;
+						/*double storeRand = 0;
 						double storeRand2 = 0;
 						storeRand = rand() % (rif.inAccuracy+1);
 						storeRand2 = rand() % 2;
@@ -894,13 +933,16 @@ void Sp2Scene::Update(double dt)
 						else
 						{
 							Camera3::direction.z += storeRand / 10;
-						}
+						}*/
+						bulletRNG(rif.inAccuracy);
 					}
 					shotsFired.push_back(Camera3::location2);
 					shotsDir.push_back(Camera3::direction);
 					weaponDmg.push_back(rif.damage);
 					gunCd = rif.RoF;
 					rif.ammo--;
+					Camera3::recoil += 1.5;
+					upRecoil += 1.5;
 				}
 
 				bulletPos();
@@ -932,7 +974,7 @@ void Sp2Scene::Update(double dt)
 					}
 					else
 					{
-						double storeRand = 0;
+						/*double storeRand = 0;
 						double storeRand2 = 0;
 						storeRand = rand() % (sr.inAccuracy+1);
 						storeRand2 = rand() % 2;
@@ -975,13 +1017,16 @@ void Sp2Scene::Update(double dt)
 						else
 						{
 							Camera3::direction.z += storeRand / 10;
-						}
+						}*/
+						bulletRNG(sr.inAccuracy);
 					}
 					shotsFired.push_back(Camera3::location2);
 					shotsDir.push_back(Camera3::direction);
 					weaponDmg.push_back(sr.damage);
 					gunCd = sr.RoF;
 					sr.ammo--;
+					Camera3::recoil += 5;
+					upRecoil += 5;
 				}
 
 				bulletPos();
@@ -1030,9 +1075,57 @@ void Sp2Scene::Update(double dt)
 		//{
 		//	t.hp++;
 		//}
-		std::cout << t.hp << std::endl;
+		//std::cout << t.hp << std::endl;
 }
 	
+void Sp2Scene::bulletRNG(int spray)
+{
+	double storeRand = 0;
+	double storeRand2 = 0;
+	storeRand = rand() % (spray + 1);
+	storeRand2 = rand() % 2;
+	if (storeRand2 == 1)
+	{
+		storeRand -= (storeRand + storeRand);
+	}
+	if (storeRand == 0)
+	{
+
+	}
+	else
+	{
+		Camera3::direction.x += storeRand / 10;
+	}
+	storeRand = rand() % (spray + 1);
+	storeRand2 = rand() % 2;
+	if (storeRand2 == 1)
+	{
+		storeRand -= (storeRand + storeRand);
+	}
+	if (storeRand == 0)
+	{
+
+	}
+	else
+	{
+		Camera3::direction.y += storeRand / 10;
+	}
+	storeRand = rand() % (spray + 1);
+	storeRand2 = rand() % 2;
+	if (storeRand2 == 1)
+	{
+		storeRand -= (storeRand + storeRand);
+	}
+	if (storeRand == 0)
+	{
+
+	}
+	else
+	{
+		Camera3::direction.z += storeRand / 10;
+	}
+}
+
 void Sp2Scene::bulletPos()
 {
 

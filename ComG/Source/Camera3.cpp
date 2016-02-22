@@ -28,7 +28,9 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	right.y = 0;
 	right.Normalize();
 	this->up = defaultUp = right.Cross(view).Normalized();
-	camerarotation = Vector3(0, -180, 0);
+	directionRotation = Vector3(0, -180, 0);
+	gunRecoil = Vector3(0,0,0);
+	camerarotation = Vector3(0,0,0);
 	speed = 100;
 	location = (0,0,0);
 	location2 = (0, 0, 0);
@@ -36,13 +38,16 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	//delay = 0;
 	delay2 = 0;
 	//cd = 10;
+	cameraStore = 0;
+
+	
 
 	//mouseSpeed = 0.005f;
 }
 
 void Camera3::Update(double dt)
 {
-	static const float CAMERA_SPEED = 50.f;
+	static const float CAMERA_SPEED = 500.f;
 	prevPosition = position;
 	Vector3 view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
@@ -73,33 +78,33 @@ void Camera3::Update(double dt)
 			//rotation.SetToRotation(3, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
-			camerarotation.y += 1.5;
+			directionRotation.y += 1.5;
 		}
 		if (xpos > 405)
 		{
 			//rotation.SetToRotation(-3, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
-			camerarotation.y -= 1.5;
+			directionRotation.y -= 1.5;
 		}
 		if (ypos < 295)
 		{
-			if (camerarotation.x > -45)
+			if (directionRotation.x > -45)
 			{
 				//rotation.SetToRotation(2, right.x, right.y, right.z);
 				//view = rotation * view;
 				//target = position + view;
-				camerarotation.x -= 1.5;
+				directionRotation.x -= 1.5;
 			}
 		}
 		if (ypos > 305)
 		{
-			if (camerarotation.x < 45)
+			if (directionRotation.x < 45)
 			{
 				//rotation.SetToRotation(-2, right.x, right.y, right.z);
 				//view = rotation * view;
 				//target = position + view;
-				camerarotation.x += 1.5;
+				directionRotation.x += 1.5;
 			}
 		}
 	}
@@ -112,33 +117,33 @@ void Camera3::Update(double dt)
 			//rotation.SetToRotation(3, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
-			camerarotation.y += 3;
+			directionRotation.y += 3;
 		}
 		if (xpos > 405)
 		{
 			//rotation.SetToRotation(-3, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
-			camerarotation.y -= 3;
+			directionRotation.y -= 3;
 		}
 		if (ypos < 295)
 		{
-			if (camerarotation.x > -45)
+			if (directionRotation.x > -45)
 			{
 				//rotation.SetToRotation(2, right.x, right.y, right.z);
 				//view = rotation * view;
 				//target = position + view;
-				camerarotation.x -= 3;
+				directionRotation.x -= 3;
 			}
 		}
 		if (ypos > 305)
 		{
-			if (camerarotation.x < 45)
+			if (directionRotation.x < 45)
 			{
 				//rotation.SetToRotation(-2, right.x, right.y, right.z);
 				//view = rotation * view;
 				//target = position + view;
-				camerarotation.x += 3;
+				directionRotation.x += 3;
 			}
 		}
 	}
@@ -149,14 +154,14 @@ void Camera3::Update(double dt)
 			//rotation.SetToRotation(2, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
-			camerarotation.y += 3;
+			directionRotation.y += 3;
 		}
 		if (Application::IsKeyPressed(VK_RIGHT))
 		{
 			//rotation.SetToRotation(-2, up.x, up.y, up.z);
 			//view = rotation * view;
 			//target = position + view;
-			camerarotation.y -= 3;
+			directionRotation.y -= 3;
 		}
 		if (Application::IsKeyPressed(VK_UP))
 		{
@@ -167,9 +172,9 @@ void Camera3::Update(double dt)
 				view = rotation * view;
 				target = position + view;
 			}*/
-			if (camerarotation.x > -45)
+			if (directionRotation.x > -45)
 			{
-				camerarotation.x -= 3;
+				directionRotation.x -= 3;
 			}
 			
 			
@@ -183,12 +188,37 @@ void Camera3::Update(double dt)
 				target = position + view;
 			}*/
 			
-			if (camerarotation.x < 45)
+			if (directionRotation.x < 45)
 			{
-				camerarotation.x += 3;
+				directionRotation.x += 3;
 			}
 		}
 	}
+	if (recoil > 30)
+	{
+		recoil = 30;
+	}
+	gunRecoil.x = recoil;
+	if (Application::IsKeyPressed(VK_LBUTTON))
+	{
+
+	}
+	else if (gunRecoil.x > 0)
+	{
+		gunRecoil.x -= 0.1;
+	}
+	if (Application::IsKeyPressed(VK_LBUTTON))
+	{
+
+	}
+	else if (recoil > 0)
+	{
+		recoil-= 0.1;
+	}
+
+	camerarotation = directionRotation - gunRecoil;
+
+
 	/*if (Application::IsKeyPressed(VK_LEFT))
 	{
 		Vector3 view = (target - position).Normalized();
@@ -431,6 +461,12 @@ void Camera3::Update(double dt)
 
 }
 
+//void Camera3::recoil()
+//{
+//	upRecoil += 10;
+//	std::cout << upRecoil << std::endl;
+//}
+
 Vector3 Camera3::setPos()
 {
 	location2 = position;
@@ -446,7 +482,7 @@ bool Camera3::testhitbox(const Vector3& lowest, const Vector3& highest, double m
 	}
 	else
 	{*/
-		return false;
+	return false;
 	
 }
 

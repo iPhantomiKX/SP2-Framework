@@ -160,11 +160,15 @@ private:
 	double range;
 	double gunCd;
 	double gunReload;
+	float upRecoil;
+	float gunDir;
+	bool reloaded = false;
+	void bulletRNG(int spray);
 
 	bool equipPistol1 = true;
 	bool equipRifle1 = false;
 	bool equipSniper1 = false;
-	bool reloaded = false;
+	
 	bool testPortal = false;
 	bool testPortalsign = false;
 
