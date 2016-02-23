@@ -29,4 +29,5 @@ struct sniper
 	int maxAmmo = 10;
 	double reloadSpd = 200;
 	int inAccuracy = 3;
+	int aimedInAccuracy = 2;
 };

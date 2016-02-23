@@ -39,6 +39,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	delay2 = 0;
 	//cd = 10;
 	cameraStore = 0;
+	cRecoilCd = 0;
 
 	
 
@@ -194,26 +195,26 @@ void Camera3::Update(double dt)
 			}
 		}
 	}
-	if (recoil > 30)
+	if (recoil > 20)
 	{
-		recoil = 30;
+		recoil = 20;
 	}
 	gunRecoil.x = recoil;
 	if (Application::IsKeyPressed(VK_LBUTTON))
 	{
-
+		cRecoilCd = 10;
 	}
-	else if (gunRecoil.x > 0)
+	if (cRecoilCd > 0)
 	{
-		gunRecoil.x -= 0.1;
+		cRecoilCd--;
 	}
-	if (Application::IsKeyPressed(VK_LBUTTON))
+	if (gunRecoil.x > 0 && cRecoilCd == 0)
 	{
-
+		gunRecoil.x -= 0.2;
 	}
-	else if (recoil > 0)
+	if (recoil > 0 && cRecoilCd == 0)
 	{
-		recoil-= 0.1;
+		recoil -= 0.2;
 	}
 
 	camerarotation = directionRotation - gunRecoil;

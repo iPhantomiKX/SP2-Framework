@@ -47,6 +47,7 @@ public:
 	int recoilResist;
 	Vector3 gunRecoil;
 	Vector3 directionRotation;
+	int cRecoilCd;
 
 	Vector3 diffx;
 	Vector3 diffz;
