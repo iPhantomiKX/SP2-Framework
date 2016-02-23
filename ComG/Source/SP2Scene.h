@@ -78,6 +78,7 @@ class Sp2Scene : public Scene
 		GEO_PORTAL2,
 		GEO_TABLE,
 		GEO_HEALTHPACK,
+		GEO_MINERALS,
 
 		GEO_PISTOL1,
 		GEO_RIFLE1,
@@ -131,7 +132,8 @@ private:
 	void RenderSkybox();
 	void RenderText(Mesh * mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh * mesh, std::string text, Color color, float size, float x, float y);
-	void RenderImageOnScreen(Mesh * mesh, float size, float x, float y);
+	void RenderImageOnScreen(Mesh * mesh, float sizex, float x, float y);
+	void RenderImageOnScreen(Mesh * mesh, float sizex, float sizey, float sizez, float x, float y);
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];
 
@@ -145,6 +147,11 @@ private:
 	float rainpositionx[1000];
 	float rainpositiony[1000];
 	float rainpositionz[1000];
+
+	float elementsx[25];
+	float elementsz[25];
+
+
 
 	int treex[50];
 	int treez[50];
@@ -164,8 +171,13 @@ private:
 	double gunReload;
 	float upRecoil;
 	float gunDir;
+	int sRecoilCd;
 	bool reloaded = false;
 	void bulletRNG(int spray);
+	void aimBulletRNG(int spray);
+
+	double storeRand;
+	double storeRand2;
 
 	bool crafting = false;
 	bool equipPistol1 = true;
@@ -181,6 +193,7 @@ private:
 	void RenderRifle1();
 	void RenderSniper1();
 	void RenderShotgun1();
+	void RenderElements();
 
 	bool bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation);
 	/*static bool test4;
