@@ -76,15 +76,24 @@ class Sp2Scene : public Scene
 		GEO_SPACEHOUSE,
 		GEO_PORTAL1,
 		GEO_PORTAL2,
+		GEO_TABLE,
+		GEO_HEALTHPACK,
+		GEO_ELEMENTS6,
+		GEO_ELEMENTS7,
+		GEO_ELEMENTS8,
+		GEO_ELEMENTS9,
+		GEO_ELEMENTS10,
 
 		GEO_PISTOL1,
 		GEO_RIFLE1,
 		GEO_SNIPER1,
+		GEO_SHOTGUN1,
 
 		GEO_PISTOL1_IMAGE,
 		GEO_RIFLE1_IMAGE,
 		GEO_SNIPER1_IMAGE,
 
+		GEO_SCOPE,
 		GEO_AMMO,
 		NUM_GEOMETRY,
 	};
@@ -144,6 +153,11 @@ private:
 	float rainpositiony[1000];
 	float rainpositionz[1000];
 
+	float elementsx[25];
+	float elementsz[25];
+
+
+
 	int treex[50];
 	int treez[50];
 
@@ -160,11 +174,15 @@ private:
 	double range;
 	double gunCd;
 	double gunReload;
+	float upRecoil;
+	float gunDir;
+	bool reloaded = false;
+	void bulletRNG(int spray);
 
 	bool equipPistol1 = true;
 	bool equipRifle1 = false;
 	bool equipSniper1 = false;
-	bool reloaded = false;
+	bool equipShotgun1 = false;
 	bool testPortal = false;
 	bool testPortalsign = false;
 
@@ -173,6 +191,8 @@ private:
 	void RenderPistol1();
 	void RenderRifle1();
 	void RenderSniper1();
+	void RenderShotgun1();
+	void RenderElements();
 
 	bool bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation);
 	/*static bool test4;
@@ -184,6 +204,8 @@ private:
 	void RenderSpaceHouse();
 	void RenderPortal1();
 	void RenderPortal2();
+	void RenderTable();
+	void RenderHealthPack();
 
 	Vector3 treeposition[150];
 	Vector3 test;

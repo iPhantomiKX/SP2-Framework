@@ -42,7 +42,11 @@ public:
 	static Vector3 location;
 	static Vector3 location2;
 	static Vector3 direction;
-
+	static double recoil;
+	double cameraStore;
+	int recoilResist;
+	Vector3 gunRecoil;
+	Vector3 directionRotation;
 
 	Vector3 diffx;
 	Vector3 diffz;
