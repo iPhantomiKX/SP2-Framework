@@ -78,6 +78,11 @@ class Sp2Scene : public Scene
 		GEO_PORTAL2,
 		GEO_TABLE,
 		GEO_HEALTHPACK,
+		GEO_ELEMENTS6,
+		GEO_ELEMENTS7,
+		GEO_ELEMENTS8,
+		GEO_ELEMENTS9,
+		GEO_ELEMENTS10,
 
 		GEO_PISTOL1,
 		GEO_RIFLE1,
@@ -149,6 +154,11 @@ private:
 	float rainpositiony[1000];
 	float rainpositionz[1000];
 
+	float elementsx[25];
+	float elementsz[25];
+
+
+
 	int treex[50];
 	int treez[50];
 
@@ -188,6 +198,7 @@ private:
 	void RenderRifle1();
 	void RenderSniper1();
 	void RenderShotgun1();
+	void RenderElements();
 
 	bool bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation);
 	/*static bool test4;

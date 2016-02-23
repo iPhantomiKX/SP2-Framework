@@ -209,6 +209,18 @@ void Sp2Scene::Init()
 	//HealthPack Image
 	meshList[GEO_HEALTHPACK] = MeshBuilder::GenerateOBJ("healthpack", "OBJ//HealthPack.obj");
 	meshList[GEO_HEALTHPACK]->textureID = LoadTGA("Image//HealthPackUV.tga");
+
+	//Minerals Image
+	meshList[GEO_ELEMENTS6] = MeshBuilder::GenerateOBJ("stone_mineral", "OBJ//StoneMineral.obj");
+	meshList[GEO_ELEMENTS6]->textureID = LoadTGA("Image//StoneMineralsUV.tga");
+	meshList[GEO_ELEMENTS7] = MeshBuilder::GenerateOBJ("silver_mineral", "OBJ//SilverMineral.obj");
+	meshList[GEO_ELEMENTS7]->textureID = LoadTGA("Image//SilverMineralsUV.tga");
+	meshList[GEO_ELEMENTS8] = MeshBuilder::GenerateOBJ("gold_mineral", "OBJ//GoldMineral.obj");
+	meshList[GEO_ELEMENTS8]->textureID = LoadTGA("Image//GoldMineralsUV.tga");
+	meshList[GEO_ELEMENTS9] = MeshBuilder::GenerateOBJ("crystal_mineral", "OBJ//CrystalMineral.obj");
+	meshList[GEO_ELEMENTS9]->textureID = LoadTGA("Image//CrystalMineralsUV.tga");
+	meshList[GEO_ELEMENTS10] = MeshBuilder::GenerateOBJ("coal_mineral", "OBJ//CoalMineral.obj");
+	meshList[GEO_ELEMENTS10]->textureID = LoadTGA("Image//CoalMineralsUV.tga");
 	
 	meshList[GEO_SCOPE] = MeshBuilder::GenerateOBJ("scopemodel", "OBJ//Scope.obj");
 	meshList[GEO_SCOPE]->textureID = LoadTGA("Image//Scope.tga");
@@ -248,6 +260,11 @@ void Sp2Scene::Init()
 		treez[i] = rand() % 980 - 490;
 	}
 
+	for (int a = 0; a < 25; ++a)
+	{
+		elementsx[a] = rand() % 980 - 490;
+		elementsz[a] = rand() % 980 - 490;
+	}
 
 	translateY = -60;
 	translateX = 0;
@@ -1813,6 +1830,55 @@ void Sp2Scene::RenderHealthPack()
 
 };
 
+void Sp2Scene::RenderElements()
+{
+	for (int a = 0; a < 15; ++a)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(elementsx[a], -5, elementsz[a]);
+		modelStack.Scale(2, 2, 2);
+		RenderMesh(meshList[GEO_ELEMENTS6], true);
+		modelStack.PopMatrix();
+	}
+	
+	for (int a = 0; a < 15; ++a)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(elementsx[a] + -131, -5, elementsz[a] + -222);
+		modelStack.Scale(2, 2, 2);
+		RenderMesh(meshList[GEO_ELEMENTS7], true);
+		modelStack.PopMatrix();
+	}
+	
+	for (int a = 0; a < 15; ++a)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(elementsx[a] + 467, -5, elementsz[a] + -73);
+		modelStack.Scale(2, 2, 2);
+		RenderMesh(meshList[GEO_ELEMENTS8], true);
+		modelStack.PopMatrix();
+	}
+	
+	for (int a = 0; a < 15; ++a)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(elementsx[a] + 254, -5, elementsz[a] + -788);
+		modelStack.Scale(2, 2, 2);
+		RenderMesh(meshList[GEO_ELEMENTS9], true);
+		modelStack.PopMatrix();
+	}
+
+	for (int a = 0; a < 15; ++a)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(elementsx[a] + -845, -5, elementsz[a] + 10);
+		modelStack.Scale(2, 2, 2);
+		RenderMesh(meshList[GEO_ELEMENTS10], true);
+		modelStack.PopMatrix();
+	}
+
+};
+
 void Sp2Scene::Render()
 {
 	// Render VBO here
@@ -1879,6 +1945,7 @@ void Sp2Scene::Render()
 	RenderPortal2();
 	RenderTable();
 	RenderHealthPack();
+	RenderElements();
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -2124,6 +2191,36 @@ void Sp2Scene::RenderShotgun1()
 	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0, 0.8, 0), 2, 30, 1);
 	modelStack.PopMatrix();
 }
+//void Sp2Scene::RenderShotgun1()
+//{
+//	if (gunReload <= 0)
+//	{
+//		modelStack.PushMatrix();
+//		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
+//		modelStack.Rotate(rotateGunY, 0, 1, 0);
+//		modelStack.Rotate(rotateGunX, 1, 0, 0);
+//
+//		modelStack.PushMatrix();
+//		if (Application::IsKeyPressed(VK_RBUTTON) == true)
+//		{
+//			modelStack.Translate(0, -7, -10);
+//		}
+//		else
+//		{
+//			modelStack.Translate(5, -10, -15);
+//		}
+//		modelStack.Translate(0, 1.5, 0);
+//		modelStack.Rotate(-90, 0, 1, 0);
+//		modelStack.Scale(2, 2, 2);
+//		RenderMesh(meshList[GEO_SHOTGUN1], true);
+//		modelStack.PopMatrix();
+//
+//		modelStack.PopMatrix();
+//	}
+//	modelStack.PushMatrix();
+//	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0, 0.8, 0), 2, 30, 1);
+//	modelStack.PopMatrix();
+//}
 void Sp2Scene::Exit()
 {
 	glDeleteVertexArrays(1, &m_vertexArrayID);

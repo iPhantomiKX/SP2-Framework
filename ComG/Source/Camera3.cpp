@@ -41,6 +41,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	cameraStore = 0;
 	cRecoilCd = 0;
 
+
 	
 
 	//mouseSpeed = 0.005f;
@@ -271,17 +272,17 @@ void Camera3::Update(double dt)
 		if (Application::IsKeyPressed('W'))
 		{
 			Vector3 view = (target - position).Normalized();
-			if (position.x + (view.x * dt * speed) / 5 <= 495 && position.x + (view.x * dt * speed) / 5 >= -495 && hitbox((position.x * dt * speed) / 5) == false)
+			if (position.x + (view.x * dt * speed) / 5 <= 990 && position.x + (view.x * dt * speed) / 5 >= -990 && hitbox((position.x * dt * speed) / 5) == false)
 			{
 				position.x += (view.x * dt * speed) / 5;
 				target.x += (view.x * dt * speed) / 5;
 			}
-			if (position.z + (view.z * dt * speed) / 5 <= 495 && position.z + (view.z * dt * speed) / 5 >= -495 && hitbox((view.z * dt * speed) / 5) == false)
+			if (position.z + (view.z * dt * speed) / 5 <= 990 && position.z + (view.z * dt * speed) / 5 >= -990 && hitbox((view.z * dt * speed) / 5) == false)
 			{
 				position.z += (view.z * dt * speed) / 5;
 				target.z += (view.z * dt * speed) / 5;
 			}
-			if (Application::IsKeyPressed(VK_SHIFT) && position.y + (view.y * dt * speed) / 5 <= 495 && position.y + (view.y * dt * speed) / 5 >= 10 && hitbox((position.y * dt * speed) / 5) == false)
+			if (Application::IsKeyPressed(VK_SHIFT) && position.y + (view.y * dt * speed) / 5 <= 990 && position.y + (view.y * dt * speed) / 5 >= 10 && hitbox((position.y * dt * speed) / 5) == false)
 			{
 				position.y += (view.y * dt * speed) / 5;
 				target.y += (view.y * dt * speed) / 5;
@@ -290,17 +291,17 @@ void Camera3::Update(double dt)
 		if (Application::IsKeyPressed('S'))
 		{
 			Vector3 view = (target - position).Normalized();
-			if (position.x - (view.x * dt * speed) / 5 <= 495 && position.x - (view.x * dt * speed) / 5 >= -495 && hitbox(-(view.x * dt * speed) / 5) == false)
+			if (position.x - (view.x * dt * speed) / 5 <= 990 && position.x - (view.x * dt * speed) / 5 >= -990 && hitbox(-(view.x * dt * speed) / 5) == false)
 			{
 				position.x -= (view.x * dt * speed) / 5;
 				target.x -= (view.x * dt * speed) / 5;
 			}
-			if (position.z - (view.z * dt * speed) / 5 <= 495 && position.z - (view.z * dt * speed) / 5 >= -495 && hitbox(-(view.z * dt * speed) / 5) == false)
+			if (position.z - (view.z * dt * speed) / 5 <= 990 && position.z - (view.z * dt * speed) / 5 >= -990 && hitbox(-(view.z * dt * speed) / 5) == false)
 			{
 				position.z -= (view.z * dt * speed) / 5;
 				target.z -= (view.z * dt * speed) / 5;
 			}
-			if (Application::IsKeyPressed(VK_SHIFT) && position.y - (view.y * dt * speed) / 5 <= 495 && position.y - (view.y * dt * speed) / 5 >= 10 && hitbox(-(view.y * dt * speed) / 5) == false)
+			if (Application::IsKeyPressed(VK_SHIFT) && position.y - (view.y * dt * speed) / 5 <= 990 && position.y - (view.y * dt * speed) / 5 >= 10 && hitbox(-(view.y * dt * speed) / 5) == false)
 			{
 				position.y -= (view.y * dt * speed) / 5;
 				target.y -= (view.y * dt * speed) / 5;
@@ -310,17 +311,17 @@ void Camera3::Update(double dt)
 		{
 			Vector3 view = (target - position).Normalized();
 			Vector3 right = view.Cross(up);
-			if (position.x + (right.x * dt * speed) / 5 <= 495 && position.x + (right.x * dt * speed) / 5 >= -495 && hitbox((right.x * dt * speed) / 5) == false)
+			if (position.x + (right.x * dt * speed) / 5 <= 990 && position.x + (right.x * dt * speed) / 5 >= -990 && hitbox((right.x * dt * speed) / 5) == false)
 			{
 				position.x += (right.x * dt * speed) / 5;
 				target.x += (right.x * dt * speed) / 5;
 			}
-			if (position.z + (right.z * dt * speed) / 5 <= 495 && position.z + (right.z * dt * speed) / 5 >= -495 && hitbox((right.z * dt * speed) / 5) == false)
+			if (position.z + (right.z * dt * speed) / 5 <= 990 && position.z + (right.z * dt * speed) / 5 >= -990 && hitbox((right.z * dt * speed) / 5) == false)
 			{
 				position.z += (right.z * dt * speed) / 5;
 				target.z += (right.z * dt * speed) / 5;
 			}
-			if (position.y - (right.y * dt * speed) / 5 <= 495 && position.y - (right.y * dt * speed) / 5 >= -495 && hitbox(-(right.y * dt * speed) / 5) == false)
+			if (position.y - (right.y * dt * speed) / 5 <= 990 && position.y - (right.y * dt * speed) / 5 >= -990 && hitbox(-(right.y * dt * speed) / 5) == false)
 			{
 				position.z -= (right.y * dt * speed) / 5;
 				target.z -= (right.y * dt * speed) / 5;
@@ -330,17 +331,17 @@ void Camera3::Update(double dt)
 		{
 			Vector3 view = (target - position).Normalized();
 			Vector3 right = view.Cross(up);
-			if (position.x - (right.x * dt * speed) / 5 <= 495 && position.x - (right.x * dt * speed) / 5 >= -495 && hitbox(-(right.x * dt * speed) / 5) == false)
+			if (position.x - (right.x * dt * speed) / 5 <= 990 && position.x - (right.x * dt * speed) / 5 >= -990 && hitbox(-(right.x * dt * speed) / 5) == false)
 			{
 				position.x -= (right.x * dt * speed) / 5;
 				target.x -= (right.x * dt * speed) / 5;
 			}
-			if (position.z - (right.z * dt * speed) / 5 <= 495 && position.z - (right.z * dt * speed) / 5 >= -495 && hitbox(-(right.z * dt * speed) / 5) == false)
+			if (position.z - (right.z * dt * speed) / 5 <= 990 && position.z - (right.z * dt * speed) / 5 >= -990 && hitbox(-(right.z * dt * speed) / 5) == false)
 			{
 				position.z -= (right.z * dt * speed) / 5;
 				target.z -= (right.z * dt * speed) / 5;
 			}
-			if (position.y - (right.y * dt * speed) / 5 <= 495 && position.y - (right.y * dt * speed) / 5 >= -495 && hitbox(-(right.y * dt * speed) / 5) == false)
+			if (position.y - (right.y * dt * speed) / 5 <= 990 && position.y - (right.y * dt * speed) / 5 >= -990 && hitbox(-(right.y * dt * speed) / 5) == false)
 			{
 				position.z -= (right.y * dt * speed) / 5;
 				target.z -= (right.y * dt * speed) / 5;
@@ -352,17 +353,17 @@ void Camera3::Update(double dt)
 		if (Application::IsKeyPressed('W'))
 	{
 		Vector3 view = (target - position).Normalized();
-		if (position.x + (view.x * dt * speed)/2 <= 495 && position.x + (view.x * dt * speed)/2 >= -495 && hitbox((position.x * dt * speed)/2) == false)
+		if (position.x + (view.x * dt * speed)/2 <= 990 && position.x + (view.x * dt * speed)/2 >= -990 && hitbox((position.x * dt * speed)/2) == false)
 		{
 			position.x += (view.x * dt * speed)/2;
 			target.x += (view.x * dt * speed)/2;
 		}
-		if (position.z + (view.z * dt * speed) / 2 <= 495 && position.z + (view.z * dt * speed) / 2 >= -495 && hitbox((view.z * dt * speed) / 2) == false)
+		if (position.z + (view.z * dt * speed) / 2 <= 990 && position.z + (view.z * dt * speed) / 2 >= -990 && hitbox((view.z * dt * speed) / 2) == false)
 		{
 			position.z += (view.z * dt * speed) / 2;
 			target.z += (view.z * dt * speed) / 2;
 		}	
-		if (Application::IsKeyPressed(VK_SHIFT) && position.y + (view.y * dt * speed)/2 <= 495 && position.y + (view.y * dt * speed)/2 >= 10 && hitbox((position.y * dt * speed)/2) == false)
+		if (Application::IsKeyPressed(VK_SHIFT) && position.y + (view.y * dt * speed)/2 <= 990 && position.y + (view.y * dt * speed)/2 >= 10 && hitbox((position.y * dt * speed)/2) == false)
 		{
 			position.y += (view.y * dt * speed) / 2;
 			target.y += (view.y * dt * speed) / 2;
@@ -371,17 +372,17 @@ void Camera3::Update(double dt)
 	if (Application::IsKeyPressed('S'))
 	{
 		Vector3 view = (target - position).Normalized();
-		if (position.x - (view.x * dt * speed) / 2 <= 495 && position.x - (view.x * dt * speed) / 2 >= -495 && hitbox(-(view.x * dt * speed) / 2) == false)
+		if (position.x - (view.x * dt * speed) / 2 <= 990 && position.x - (view.x * dt * speed) / 2 >= -990 && hitbox(-(view.x * dt * speed) / 2) == false)
 		{
 			position.x -= (view.x * dt * speed) / 2;
 			target.x -= (view.x * dt * speed) / 2;
 		}
-		if (position.z - (view.z * dt * speed) / 2 <= 495 && position.z - (view.z * dt * speed) / 2 >= -495 && hitbox(-(view.z * dt * speed) / 2) == false)
+		if (position.z - (view.z * dt * speed) / 2 <= 990 && position.z - (view.z * dt * speed) / 2 >= -990 && hitbox(-(view.z * dt * speed) / 2) == false)
 		{
 			position.z -= (view.z * dt * speed) / 2;
 			target.z -= (view.z * dt * speed) / 2;
 		}
-		if (Application::IsKeyPressed(VK_SHIFT) && position.y - (view.y * dt * speed) / 2 <= 495 && position.y - (view.y * dt * speed) / 2 >= 10 && hitbox(-(view.y * dt * speed) / 2) == false)
+		if (Application::IsKeyPressed(VK_SHIFT) && position.y - (view.y * dt * speed) / 2 <= 990 && position.y - (view.y * dt * speed) / 2 >= 10 && hitbox(-(view.y * dt * speed) / 2) == false)
 		{
 			position.y -= (view.y * dt * speed) / 2;
 			target.y -= (view.y * dt * speed) / 2;
@@ -391,17 +392,17 @@ void Camera3::Update(double dt)
 	{
 		Vector3 view = (target - position).Normalized();
 		Vector3 right = view.Cross(up);
-		if (position.x + (right.x * dt * speed) / 2 <= 495 && position.x + (right.x * dt * speed) / 2 >= -495 && hitbox((right.x * dt * speed) / 2) == false)
+		if (position.x + (right.x * dt * speed) / 2 <= 990 && position.x + (right.x * dt * speed) / 2 >= -990 && hitbox((right.x * dt * speed) / 2) == false)
 		{
 			position.x += (right.x * dt * speed) / 2;
 			target.x += (right.x * dt * speed) / 2;
 		}
-		if (position.z + (right.z * dt * speed)/2 <= 495 && position.z + (right.z * dt * speed)/2 >= -495 && hitbox((right.z * dt * speed)/2) == false)
+		if (position.z + (right.z * dt * speed)/2 <= 990 && position.z + (right.z * dt * speed)/2 >= -990 && hitbox((right.z * dt * speed)/2) == false)
 		{
 			position.z += (right.z * dt * speed) / 2;
 			target.z += (right.z * dt * speed) / 2;
 		}
-		if (position.y - (right.y * dt * speed) / 2 <= 495 && position.y - (right.y * dt * speed) / 2 >= -495 && hitbox(-(right.y * dt * speed) / 2) == false)
+		if (position.y - (right.y * dt * speed) / 2 <= 990 && position.y - (right.y * dt * speed) / 2 >= -990 && hitbox(-(right.y * dt * speed) / 2) == false)
 		{
 			position.z -= (right.y * dt * speed) / 2;
 			target.z -= (right.y * dt * speed) / 2;
@@ -411,17 +412,17 @@ void Camera3::Update(double dt)
 	{
 		Vector3 view = (target - position).Normalized();
 		Vector3 right = view.Cross(up);
-		if (position.x - (right.x * dt * speed)/2 <= 495 && position.x - (right.x * dt * speed)/2 >= -495 && hitbox(-(right.x * dt * speed)/2) == false)
+		if (position.x - (right.x * dt * speed)/2 <= 990 && position.x - (right.x * dt * speed)/2 >= -990 && hitbox(-(right.x * dt * speed)/2) == false)
 		{
 			position.x -= (right.x * dt * speed)/2;
 			target.x -= (right.x * dt * speed)/2;
 		}
-		if (position.z - (right.z * dt * speed)/2 <= 495 && position.z - (right.z * dt * speed)/2 >= -495 && hitbox(-(right.z * dt * speed)/2) == false)
+		if (position.z - (right.z * dt * speed)/2 <= 990 && position.z - (right.z * dt * speed)/2 >= -990 && hitbox(-(right.z * dt * speed)/2) == false)
 		{
 			position.z -= (right.z * dt * speed)/2;
 			target.z -= (right.z * dt * speed)/2;
 		}
-		if (position.y - (right.y * dt * speed) / 2 <= 495 && position.y - (right.y * dt * speed) / 2 >= -495 && hitbox(-(right.y * dt * speed) / 2) == false)
+		if (position.y - (right.y * dt * speed) / 2 <= 990 && position.y - (right.y * dt * speed) / 2 >= -990 && hitbox(-(right.y * dt * speed) / 2) == false)
 		{
 			position.z -= (right.y * dt * speed) / 2;
 			target.z -= (right.y * dt * speed) / 2;
