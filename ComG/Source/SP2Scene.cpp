@@ -221,8 +221,8 @@ void Sp2Scene::Init()
 	meshList[GEO_SNIPER1] = MeshBuilder::GenerateOBJ("sniper1model", "OBJ//AK47.obj");
 	meshList[GEO_SNIPER1]->textureID = LoadTGA("Image//AK47UV.tga");
 
-	//meshList[GEO_SHOTGUN1] = MeshBuilder::GenerateOBJ("shotgun1model", "OBJ//Spaz12.obj");
-	//meshList[GEO_SHOTGUN1]->textureID = LoadTGA("Image//Spaz12_UV.tga");
+	meshList[GEO_SHOTGUN1] = MeshBuilder::GenerateOBJ("shotgun1model", "OBJ//Shotgun.obj");
+	meshList[GEO_SHOTGUN1]->textureID = LoadTGA("Image//shotgunUV.tga");
 
 	meshList[GEO_TARGET] = MeshBuilder::GenerateCube("target", Color(1, 0, 0));
 
@@ -644,7 +644,7 @@ void Sp2Scene::Update(double dt)
 				if (Application::IsKeyPressed('E') && testPortal == true)
 				{
 					camera.position.x = 399.526;
-					camera.position.y = 70.0759;
+					camera.position.y = 80.0759;
 					camera.position.z = 100.455;
 					testPortal = false;
 					testPortalsign = false;
@@ -666,7 +666,7 @@ void Sp2Scene::Update(double dt)
 				if (Application::IsKeyPressed('E') && testPortal == true)
 				{
 					camera.position.x = -400;
-					camera.position.y = 10;
+					camera.position.y = 20;
 					camera.position.z = 1;
 					testPortal = false;
 					testPortalsign = false;
@@ -1705,7 +1705,7 @@ void Sp2Scene::Render()
 	//Moon texture 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, 0);
-	modelStack.Scale(1000, 1000, 1000);
+	modelStack.Scale(2000, 2000, 2000);
 	RenderMesh(meshList[GEO_QUAD], true);
 	modelStack.PopMatrix();
 
@@ -1738,11 +1738,11 @@ void Sp2Scene::Render()
 		RenderImageOnScreen(meshList[GEO_SNIPER1], 1, 15, 10);
 		
 	}
-	/*else if (equipShotgun1 == true)
+	else if (equipShotgun1 == true)
 	{
 		RenderShotgun1();
-		RenderImageOnScreen(meshList[GEO_SHOTGUN1], 1, 15, 10);
-	}*/
+		RenderImageOnScreen(meshList[GEO_SHOTGUN1], 0.5, 26, 18);
+	}
 	
 	//Render Frame rate on screen
 	RenderTextOnScreen(meshList[GEO_TEXT], "FPS: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 25);
@@ -1895,36 +1895,36 @@ void Sp2Scene::RenderSniper1()
 	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0, 0.8, 0), 2, 30, 1);
 	modelStack.PopMatrix();
 }
-//void Sp2Scene::RenderShotgun1()
-//{
-//	if (gunReload <= 0)
-//	{
-//		modelStack.PushMatrix();
-//		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
-//		modelStack.Rotate(rotateGunY, 0, 1, 0);
-//		modelStack.Rotate(rotateGunX, 1, 0, 0);
-//
-//		modelStack.PushMatrix();
-//		if (Application::IsKeyPressed(VK_RBUTTON) == true)
-//		{
-//			modelStack.Translate(0, -7, -10);
-//		}
-//		else
-//		{
-//			modelStack.Translate(5, -10, -15);
-//		}
-//		modelStack.Translate(0, 1.5, 0);
-//		modelStack.Rotate(-90, 0, 1, 0);
-//		modelStack.Scale(2, 2, 2);
-//		RenderMesh(meshList[GEO_SHOTGUN1], true);
-//		modelStack.PopMatrix();
-//
-//		modelStack.PopMatrix();
-//	}
-//	modelStack.PushMatrix();
-//	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0, 0.8, 0), 2, 30, 1);
-//	modelStack.PopMatrix();
-//}
+void Sp2Scene::RenderShotgun1()
+{
+	if (gunReload <= 0)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
+		modelStack.Rotate(rotateGunY, 0, 1, 0);
+		modelStack.Rotate(rotateGunX, 1, 0, 0);
+
+		modelStack.PushMatrix();
+		if (Application::IsKeyPressed(VK_RBUTTON) == true)
+		{
+			modelStack.Translate(0, -7, -10);
+		}
+		else
+		{
+			modelStack.Translate(5, -10, -15);
+		}
+		modelStack.Translate(0.3, 4.1, 0);
+		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Scale(0.5, 0.5, 0.5);
+		RenderMesh(meshList[GEO_SHOTGUN1], true);
+		modelStack.PopMatrix();
+
+		modelStack.PopMatrix();
+	}
+	modelStack.PushMatrix();
+	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0, 0.8, 0), 2, 30, 1);
+	modelStack.PopMatrix();
+}
 void Sp2Scene::Exit()
 {
 	glDeleteVertexArrays(1, &m_vertexArrayID);
