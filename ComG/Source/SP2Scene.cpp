@@ -12,6 +12,9 @@
 #include "LoadOBJ.h"
 #include "gun.h"
 #include "enemy.h"
+#include <iostream>
+
+using std::cout;
 
 //test
 
@@ -163,17 +166,9 @@ void Sp2Scene::Init()
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 
-	//Pistol 1 Ui image
-	/*meshList[GEO_PISTOL1_IMAGE] = MeshBuilder::GenerateText("DE_image", 16, 16);
-	meshList[GEO_PISTOL1_IMAGE]->textureID = LoadTGA("Image//DE_image.tga");
-
-	//Rifle 1 UI image
-	meshList[GEO_RIFLE1_IMAGE] = MeshBuilder::GenerateText("AR_image", 16, 16);
-	meshList[GEO_RIFLE1_IMAGE]->textureID = LoadTGA("Image//AR_Image.tga");
-
-	//Sniper 1 UI Image
-	meshList[GEO_SNIPER1_IMAGE] = MeshBuilder::GenerateText("AK47_image", 16, 16);
-	meshList[GEO_SNIPER1_IMAGE]->textureID = LoadTGA("Image//AK47_image.tga");*/
+	//Crafting Ui image
+	meshList[GEO_CRAFT_UI] = MeshBuilder::GenerateOBJ("craftin_UI","OBJ//CraftingUI.obj");
+	meshList[GEO_CRAFT_UI]->textureID = LoadTGA("Image//CraftingUI.tga");
 
 	/*meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Tricker.obj");
 	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");*/
@@ -461,6 +456,21 @@ void Sp2Scene::Update(double dt)
 		equipSniper1 = false;
 		equipShotgun1 = true;
 	}
+	if (Application::IsKeyPressed('E'))
+	{
+		if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+		{
+			crafting = true;
+		}
+		else
+		{
+			crafting = false;
+		}
+	}
+	else if (!camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+	{
+		crafting = false;
+	}
 
 	//for (int i = 0; i < 50; ++i)
 	//{
@@ -678,9 +688,22 @@ void Sp2Scene::Update(double dt)
 				testPortalsign = false;
 			}
 
-			
+			////Crafting interaction
+			//if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+			//{
+			//	camera.position = camera.prevPosition;
 
+			//	if (Application::IsKeyPressed('E'))
+			//	{
+			//		
+			//		RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
+			//		cout << "I am running";
+			//	}
+			//}
+			//else
+			//{
 
+			//}
 
 
 			/*if (Application::IsKeyPressed('1')) //enable back face culling
@@ -1722,10 +1745,15 @@ void Sp2Scene::Render()
 	//modelStack.PopMatrix();
 
 	//Check if button has pressed
+	if (crafting == true)
+	{
+		RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
+	}
 	if (equipPistol1 == true)
 	{
 		RenderPistol1();
 		RenderImageOnScreen(meshList[GEO_PISTOL1], 0.5, 25, 15);
+		//RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
 	}
 	else if (equipRifle1 == true)
 	{

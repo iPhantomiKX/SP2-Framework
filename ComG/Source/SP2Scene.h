@@ -84,9 +84,7 @@ class Sp2Scene : public Scene
 		GEO_SNIPER1,
 		GEO_SHOTGUN1,
 
-		GEO_PISTOL1_IMAGE,
-		GEO_RIFLE1_IMAGE,
-		GEO_SNIPER1_IMAGE,
+		GEO_CRAFT_UI,
 
 		GEO_SCOPE,
 		GEO_AMMO,
@@ -169,6 +167,7 @@ private:
 	bool reloaded = false;
 	void bulletRNG(int spray);
 
+	bool crafting = false;
 	bool equipPistol1 = true;
 	bool equipRifle1 = false;
 	bool equipSniper1 = false;
