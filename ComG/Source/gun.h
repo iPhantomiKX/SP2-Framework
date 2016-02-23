@@ -29,5 +29,15 @@ struct sniper
 	int maxAmmo = 10;
 	double reloadSpd = 200;
 	int inAccuracy = 3;
-	int aimedInAccuracy = 2;
+};
+
+struct shotgun
+{
+	int damage = 1;
+	//double range = 500;
+	double RoF = 30;
+	int ammo = 8;
+	int maxAmmo = 8;
+	double reloadSpd = 25;
+	int inAccuracy = 2;
 };

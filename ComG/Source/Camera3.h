@@ -59,6 +59,7 @@ public:
 	bool testhitbox(const Vector3& lowest, const Vector3& highest, double move);
 	bool hitbox(double move);
 	bool checkcollisionwithObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
+	bool Camera3::checkBulletcollisionwithObject(Vector3 bulletPos, Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	Vector3 setPos();

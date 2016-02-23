@@ -202,7 +202,7 @@ void Camera3::Update(double dt)
 	gunRecoil.x = recoil;
 	if (Application::IsKeyPressed(VK_LBUTTON))
 	{
-		cRecoilCd = 10;
+		cRecoilCd = 20;
 	}
 	if (cRecoilCd > 0)
 	{
@@ -534,6 +534,33 @@ bool Camera3::checkcollisionwithObject(Vector3& otherObjectposition, float sizex
 	//test2 = true;
 	return true;
 	//return false;
+}
+
+bool Camera3::checkBulletcollisionwithObject(Vector3 bulletPos, Vector3& otherObjectposition, float sizex, float sizey, float sizez)
+{
+	//to do
+	// Get all min and max (eg. minX, maxX)
+
+	// Do SAT Test on all axis)
+	// eg (if (position.x < min) return false; // (Outside!)
+	//		Repeat for Max, Repeat Min + Max for Y and Z axis
+	float minX = otherObjectposition.x - ((sizex / 2)-5);
+	float maxX = otherObjectposition.x + ((sizex / 2)-5);
+
+	float minY = otherObjectposition.y - ((sizey / 2)-5);
+	float maxY = otherObjectposition.y + ((sizey / 2)-5);
+
+	float minZ = otherObjectposition.z - ((sizez / 2)-5);
+	float maxZ = otherObjectposition.z + ((sizez / 2)-5);
+	if (bulletPos.x > minX && bulletPos.x < maxX && bulletPos.y > minY && bulletPos.y < maxY && bulletPos.z > minZ && bulletPos.z < maxZ)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
 }
 
 bool Camera3::checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez)

@@ -1,6 +1,6 @@
 struct target
 {
-	int hp = 10;
+	int hp = 100;
 	bool isDead = false;
 };
 
@@ -8,5 +8,4 @@ class enemy
 {
 	enemy();
 	~enemy();
-	void TisDead();
 };

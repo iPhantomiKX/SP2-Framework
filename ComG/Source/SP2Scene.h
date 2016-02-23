@@ -133,7 +133,8 @@ private:
 	void RenderSkybox();
 	void RenderText(Mesh * mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh * mesh, std::string text, Color color, float size, float x, float y);
-	void RenderImageOnScreen(Mesh * mesh, float size, float x, float y);
+	void RenderImageOnScreen(Mesh * mesh, float sizex, float x, float y);
+	void RenderImageOnScreen(Mesh * mesh, float sizex, float sizey, float sizez, float x, float y);
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];
 
