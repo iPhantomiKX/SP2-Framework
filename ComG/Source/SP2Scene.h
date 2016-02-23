@@ -76,15 +76,19 @@ class Sp2Scene : public Scene
 		GEO_SPACEHOUSE,
 		GEO_PORTAL1,
 		GEO_PORTAL2,
+		GEO_TABLE,
+		GEO_HEALTHPACK,
 
 		GEO_PISTOL1,
 		GEO_RIFLE1,
 		GEO_SNIPER1,
+		GEO_SHOTGUN1,
 
 		GEO_PISTOL1_IMAGE,
 		GEO_RIFLE1_IMAGE,
 		GEO_SNIPER1_IMAGE,
 
+		GEO_SCOPE,
 		GEO_AMMO,
 		NUM_GEOMETRY,
 	};
@@ -173,7 +177,7 @@ private:
 	bool equipPistol1 = true;
 	bool equipRifle1 = false;
 	bool equipSniper1 = false;
-	
+	bool equipShotgun1 = false;
 	bool testPortal = false;
 	bool testPortalsign = false;
 
@@ -182,6 +186,7 @@ private:
 	void RenderPistol1();
 	void RenderRifle1();
 	void RenderSniper1();
+	void RenderShotgun1();
 
 	bool bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation);
 	/*static bool test4;
@@ -193,6 +198,8 @@ private:
 	void RenderSpaceHouse();
 	void RenderPortal1();
 	void RenderPortal2();
+	void RenderTable();
+	void RenderHealthPack();
 
 	Vector3 treeposition[150];
 	Vector3 test;
