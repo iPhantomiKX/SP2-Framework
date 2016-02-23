@@ -131,6 +131,8 @@ void Sp2Scene::Init()
 	reloaded = true;
 	upRecoil = 0;
 	gunDir = 0;
+	storeRand = 0;
+	storeRand2 = 0;
 
 	//Initialize camera settings
 	camera.Init(Vector3(1, 10, 0), Vector3(0, 10, 0), Vector3(0, 1, 0));
@@ -233,8 +235,8 @@ void Sp2Scene::Init()
 	meshList[GEO_SNIPER1] = MeshBuilder::GenerateOBJ("sniper1model", "OBJ//AK47.obj");
 	meshList[GEO_SNIPER1]->textureID = LoadTGA("Image//AK47UV.tga");
 
-	//meshList[GEO_SHOTGUN1] = MeshBuilder::GenerateOBJ("shotgun1model", "OBJ//Spaz12.obj");
-	//meshList[GEO_SHOTGUN1]->textureID = LoadTGA("Image//Spaz12_UV.tga");
+	meshList[GEO_SHOTGUN1] = MeshBuilder::GenerateOBJ("shotgun1model", "OBJ//Shotgun.obj");
+	meshList[GEO_SHOTGUN1]->textureID = LoadTGA("Image//shotgunUV.tga");
 
 	meshList[GEO_TARGET] = MeshBuilder::GenerateCube("target", Color(1, 0, 0));
 
@@ -423,19 +425,25 @@ void Sp2Scene::Update(double dt)
 		}
 	}
 
-	if (upRecoil > 30)
+	if (upRecoil > 20)
 	{
-		upRecoil = 30;
+		upRecoil = 20;
 	}
 
 	rotateGunX = gunDir + upRecoil;
 	if (Application::IsKeyPressed(VK_LBUTTON))
 	{
-
+		sRecoilCd = 10;
 	}
-	else if (upRecoil > 0)
+	else if (sRecoilCd > 0)
 	{
-		upRecoil-= 0.1;
+		sRecoilCd--;
+	}
+
+
+	if (upRecoil > 0 && sRecoilCd == 0)
+	{
+		upRecoil-= 0.2;
 	}
 	
 	if (rotateGunX > 45)
@@ -661,7 +669,7 @@ void Sp2Scene::Update(double dt)
 				if (Application::IsKeyPressed('E') && testPortal == true)
 				{
 					camera.position.x = 399.526;
-					camera.position.y = 70.0759;
+					camera.position.y = 80.0759;
 					camera.position.z = 100.455;
 					testPortal = false;
 					testPortalsign = false;
@@ -683,7 +691,7 @@ void Sp2Scene::Update(double dt)
 				if (Application::IsKeyPressed('E') && testPortal == true)
 				{
 					camera.position.x = -400;
-					camera.position.y = 10;
+					camera.position.y = 20;
 					camera.position.z = 1;
 					testPortal = false;
 					testPortalsign = false;
@@ -841,7 +849,7 @@ void Sp2Scene::Update(double dt)
 				{
 					if (Application::IsKeyPressed(VK_RBUTTON))
 					{
-
+						aimBulletRNG(pis.inAccuracy);
 					}
 					else
 					{
@@ -897,8 +905,8 @@ void Sp2Scene::Update(double dt)
 					weaponDmg.push_back(pis.damage);
 					gunCd = pis.RoF;
 					pis.ammo--;
-					Camera3::recoil += 3;
-					upRecoil += 3;
+					Camera3::recoil += 1;
+					upRecoil += 1;
 				}
 
 				bulletPos();
@@ -908,6 +916,8 @@ void Sp2Scene::Update(double dt)
 				{
 					gunReload = pis.reloadSpd;
 					reloaded = false;
+					Camera3::recoil = 0;
+					upRecoil = 0;
 				}
 
 				if (gunReload > 0)
@@ -927,7 +937,7 @@ void Sp2Scene::Update(double dt)
 				{
 					if (Application::IsKeyPressed(VK_RBUTTON))
 					{
-
+						aimBulletRNG(rif.inAccuracy);
 					}
 					else
 					{
@@ -982,8 +992,8 @@ void Sp2Scene::Update(double dt)
 					weaponDmg.push_back(rif.damage);
 					gunCd = rif.RoF;
 					rif.ammo--;
-					Camera3::recoil += 1.5;
-					upRecoil += 1.5;
+					Camera3::recoil += 0.5;
+					upRecoil += 0.5;
 				}
 
 				bulletPos();
@@ -993,6 +1003,8 @@ void Sp2Scene::Update(double dt)
 				{
 					gunReload = rif.reloadSpd;
 					reloaded = false;
+					Camera3::recoil = 0;
+					upRecoil = 0;
 				}
 
 				if (gunReload > 0)
@@ -1011,7 +1023,7 @@ void Sp2Scene::Update(double dt)
 				{
 					if (Application::IsKeyPressed(VK_RBUTTON))
 					{
-
+						aimBulletRNG(sr.aimedInAccuracy);
 					}
 					else
 					{
@@ -1066,8 +1078,8 @@ void Sp2Scene::Update(double dt)
 					weaponDmg.push_back(sr.damage);
 					gunCd = sr.RoF;
 					sr.ammo--;
-					Camera3::recoil += 5;
-					upRecoil += 5;
+					Camera3::recoil += 2;
+					upRecoil += 2;
 				}
 
 				bulletPos();
@@ -1077,6 +1089,8 @@ void Sp2Scene::Update(double dt)
 				{
 					gunReload = sr.reloadSpd;
 					reloaded = false;
+					Camera3::recoil = 0;
+					upRecoil = 0;
 				}
 
 				if (gunReload > 0)
@@ -1121,9 +1135,15 @@ void Sp2Scene::Update(double dt)
 	
 void Sp2Scene::bulletRNG(int spray)
 {
-	double storeRand = 0;
-	double storeRand2 = 0;
-	storeRand = rand() % (spray + 1);
+
+	if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+	{
+		storeRand = rand() % ((spray + 2));
+	}
+	else
+	{
+		storeRand = rand() % (spray + 1);
+	}
 	storeRand2 = rand() % 2;
 	if (storeRand2 == 1)
 	{
@@ -1137,7 +1157,14 @@ void Sp2Scene::bulletRNG(int spray)
 	{
 		Camera3::direction.x += storeRand / 10;
 	}
-	storeRand = rand() % (spray + 1);
+	if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+	{
+		storeRand = rand() % ((spray + 2));
+	}
+	else
+	{
+		storeRand = rand() % (spray + 1);
+	}
 	storeRand2 = rand() % 2;
 	if (storeRand2 == 1)
 	{
@@ -1151,7 +1178,14 @@ void Sp2Scene::bulletRNG(int spray)
 	{
 		Camera3::direction.y += storeRand / 10;
 	}
-	storeRand = rand() % (spray + 1);
+	if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+	{
+		storeRand = rand() % ((spray + 2));
+	}
+	else
+	{
+		storeRand = rand() % (spray + 1);
+	}
 	storeRand2 = rand() % 2;
 	if (storeRand2 == 1)
 	{
@@ -1164,6 +1198,26 @@ void Sp2Scene::bulletRNG(int spray)
 	else
 	{
 		Camera3::direction.z += storeRand / 10;
+	}
+}
+void Sp2Scene::aimBulletRNG(int spray)
+{
+	if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+	{
+		storeRand = rand() % (spray);
+		storeRand2 = rand() % 2;
+		if (storeRand2 == 1)
+		{
+			storeRand -= (storeRand + storeRand);
+		}
+		if (storeRand == 0)
+		{
+
+		}
+		else
+		{
+			Camera3::direction.x += storeRand / 10;
+		}
 	}
 }
 
@@ -1805,11 +1859,11 @@ void Sp2Scene::Render()
 		RenderImageOnScreen(meshList[GEO_SNIPER1], 1, 15, 10);
 		
 	}
-	/*else if (equipShotgun1 == true)
+	else if (equipShotgun1 == true)
 	{
 		RenderShotgun1();
-		RenderImageOnScreen(meshList[GEO_SHOTGUN1], 1, 15, 10);
-	}*/
+		RenderImageOnScreen(meshList[GEO_SHOTGUN1], 0.5, 26, 18);
+	}
 	
 	//Render Frame rate on screen
 	RenderTextOnScreen(meshList[GEO_TEXT], "FPS: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 25);
@@ -1884,7 +1938,7 @@ void Sp2Scene::RenderPistol1()
 		modelStack.PushMatrix();
 		if (Application::IsKeyPressed(VK_RBUTTON) == true)
 		{
-			modelStack.Translate(0, -7, -10);
+			modelStack.Translate(0, -7.1, -10);
 		}
 		else
 		{
@@ -1912,7 +1966,7 @@ void Sp2Scene::RenderRifle1()
 		modelStack.PushMatrix();
 		if (Application::IsKeyPressed(VK_RBUTTON) == true)
 		{
-			modelStack.Translate(0, -8, -10);
+			modelStack.Translate(0, -8.1, -10);
 		}
 		else
 		{
@@ -1942,6 +1996,8 @@ void Sp2Scene::RenderSniper1()
 		modelStack.PushMatrix();
 		if (Application::IsKeyPressed(VK_RBUTTON) == true)
 		{
+
+			modelStack.Translate(0, -7.1, -10);
 			//modelStack.Translate(0, -7, -10);
 			RenderImageOnScreen(meshList[GEO_SCOPE], 10, 4, 3);
 		}
@@ -1954,6 +2010,36 @@ void Sp2Scene::RenderSniper1()
 			RenderMesh(meshList[GEO_SNIPER1], true);
 			
 		}
+		modelStack.PopMatrix();
+
+		modelStack.PopMatrix();
+	}
+	modelStack.PushMatrix();
+	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0, 0.8, 0), 2, 30, 1);
+	modelStack.PopMatrix();
+}
+void Sp2Scene::RenderShotgun1()
+{
+	if (gunReload <= 0)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
+		modelStack.Rotate(rotateGunY, 0, 1, 0);
+		modelStack.Rotate(rotateGunX, 1, 0, 0);
+
+		modelStack.PushMatrix();
+		if (Application::IsKeyPressed(VK_RBUTTON) == true)
+		{
+			modelStack.Translate(0, -7, -10);
+		}
+		else
+		{
+			modelStack.Translate(5, -10, -15);
+		}
+		modelStack.Translate(0.3, 4.1, 0);
+		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Scale(0.5, 0.5, 0.5);
+		RenderMesh(meshList[GEO_SHOTGUN1], true);
 		modelStack.PopMatrix();
 
 		modelStack.PopMatrix();

@@ -176,8 +176,13 @@ private:
 	double gunReload;
 	float upRecoil;
 	float gunDir;
+	int sRecoilCd;
 	bool reloaded = false;
 	void bulletRNG(int spray);
+	void aimBulletRNG(int spray);
+
+	double storeRand;
+	double storeRand2;
 
 	bool equipPistol1 = true;
 	bool equipRifle1 = false;
