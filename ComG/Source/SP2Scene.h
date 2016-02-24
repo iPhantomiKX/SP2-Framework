@@ -179,11 +179,21 @@ private:
 	double storeRand;
 	double storeRand2;
 
+	//boolean for crafting UI to pop out
 	bool crafting = false;
+
+	//boolean for equipping weapons
 	bool equipPistol1 = true;
 	bool equipRifle1 = false;
 	bool equipSniper1 = false;
 	bool equipShotgun1 = false;
+
+	//check if weapon is bought
+	bool boughtPistol1 = false;
+	bool boughtRifle1 = false;
+	bool boughtSniper1 = false;
+	bool boughtShotgun1 = false;
+
 	bool testPortal = false;
 	bool testPortalsign = false;
 

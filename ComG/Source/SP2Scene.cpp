@@ -250,8 +250,8 @@ void Sp2Scene::Init()
 
 	for (int a = 0; a < 25; ++a)
 	{
-		elementsx[a] = rand() % 980 - 490;
-		elementsz[a] = rand() % 980 - 490;
+		elementsx[a] = rand() % 980 - 980;
+		elementsz[a] = rand() % 980 - 880;
 	}
 
 	translateY = -60;
@@ -1403,13 +1403,13 @@ void Sp2Scene::bulletPos()
 				count1 = shotsDir.erase(count1);
 				count2 = weaponDmg.erase(count2);
 			}
-			else if (temp.y <= 0 || temp.x >= 1000 || temp.z >= 1000 || temp.y >= 1000 || temp.x <= -1000 || temp.z <= -1000 || temp.y <= -1000 || camera.checkBulletcollisionwithObject(temp, Vector3(400, 60, 0), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(400, 60, 100), 100, 15, 100)
+			else if (temp.y <= 0 || temp.x >= 1000 || temp.z >= 1000 || temp.y >= 1000 || temp.x <= -1000 || temp.z <= -1000 || temp.y <= -1000/* || camera.checkBulletcollisionwithObject(temp, Vector3(400, 60, 0), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(400, 60, 100), 100, 15, 100)
 				|| camera.checkBulletcollisionwithObject(temp, Vector3(300, 60, 0), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(300, 60, 100), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(450, 110, 0), 15, 100, 100)
 				|| camera.checkBulletcollisionwithObject(temp, Vector3(450, 110, 100), 15, 100, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(250, 110, 100), 15, 100, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(400, 110, -50), 100, 100, 15)
 				|| camera.checkBulletcollisionwithObject(temp, Vector3(400, 110, 150), 100, 100, 15) || camera.checkBulletcollisionwithObject(temp, Vector3(300, 110, -50), 100, 100, 15) || camera.checkBulletcollisionwithObject(temp, Vector3(300, 110, 150), 100, 100, 15)
 				|| camera.checkBulletcollisionwithObject(temp, Vector3(400, 160, 0), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(400, 160, 100), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(300, 160, 0), 100, 15, 100)
 				|| camera.checkBulletcollisionwithObject(temp, Vector3(300, 160, 100), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(-338, 0, 38), 18, 120, 80) || camera.checkBulletcollisionwithObject(temp, Vector3(-460, 0, 38), 18, 120, 80)
-				|| camera.checkBulletcollisionwithObject(temp, Vector3(-400, 0, 73), 120, 120, 18) || camera.checkBulletcollisionwithObject(temp, Vector3(-360, 0, 0), 52, 120, 18) || camera.checkBulletcollisionwithObject(temp, Vector3(-435, 0, 0), 52, 120, 18))
+				|| camera.checkBulletcollisionwithObject(temp, Vector3(-400, 0, 73), 120, 120, 18) || camera.checkBulletcollisionwithObject(temp, Vector3(-360, 0, 0), 52, 120, 18) || camera.checkBulletcollisionwithObject(temp, Vector3(-435, 0, 0), 52, 120, 18)*/)
 			{
 				count = shotsFired.erase(count);
 				count1 = shotsDir.erase(count1);
@@ -1849,7 +1849,7 @@ void Sp2Scene::RenderHealthPack()
 
 void Sp2Scene::RenderElements()
 {
-	for (int a = 0; a < 15; ++a)
+	for (int a = 0; a < 25; ++a)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(elementsx[a], -5, elementsz[a]);
