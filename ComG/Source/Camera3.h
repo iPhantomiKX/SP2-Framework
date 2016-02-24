@@ -48,6 +48,7 @@ public:
 	int recoilResist;
 	Vector3 gunRecoil;
 	Vector3 directionRotation;
+	int cRecoilCd;
 
 	Vector3 diffx;
 	Vector3 diffz;
@@ -65,6 +66,7 @@ public:
 	bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	void teleport();
+	bool craftUi();
 	Vector3 minPos(Vector3 center, double sizeX, double sizeY, double sizeZ);
 	Vector3 maxPos(Vector3 center, double sizeX, double sizeY, double sizeZ);
 	Vector3 setPos();

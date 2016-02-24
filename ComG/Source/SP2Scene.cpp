@@ -313,6 +313,9 @@ static float SCALE_LIMIT = 5.f;
 void Sp2Scene::Update(double dt)
 {
 	camera.Update(dt);
+
+	std::cout << camera.position << std::endl;
+
 	//std::cout << range << std::endl;
 	//std::cout << Camera3::location << std::endl;
 	/*if (Application::IsKeyPressed(VK_LBUTTON) && bullet1 == false)
@@ -523,7 +526,21 @@ void Sp2Scene::Update(double dt)
 		equipShotgun1 = false;
 		equipSniper1 = true;
 	}
-	if (Application::IsKeyPressed('E'))
+
+	if (camera.craftUi() == true)
+	{
+		std::cout << "hi amirul" << std::endl;
+	}
+
+	if (camera.craftUi() == true && Application::IsKeyPressed('E') == true)
+	{
+		crafting = true;
+	}
+	else
+	{
+		crafting = false;
+	}
+	/*if (Application::IsKeyPressed('E'))
 	{
 		if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
 		{
@@ -537,7 +554,7 @@ void Sp2Scene::Update(double dt)
 	else if (!camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
 	{
 		crafting = false;
-	}
+	}*/
 
 	//for (int i = 0; i < 50; ++i)
 	//{
@@ -747,14 +764,13 @@ void Sp2Scene::Update(double dt)
 			//		camera.position.z = 1;
 			//		testPortal = false;
 			//		testPortalsign = false;
-//delete this part
-				}
+	/*			}
 			}
 			else
 			{
 				testPortal = false;
 				testPortalsign = false;
-			}
+			}*/
 
 			////Crafting interaction
 			//if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
@@ -1840,11 +1856,11 @@ void Sp2Scene::RenderSpaceshipQuad()
 void Sp2Scene::RenderCraftingPanel()
 {
 	//crafting panel 
-	modelStack.PushMatrix();
-	modelStack.Translate(400, 65, -49);
-	modelStack.Scale(2, 2, 1);
-	RenderMesh(meshList[GEO_CRAFTINGPANEL], true);
-	modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(400, 65, -49);
+		modelStack.Scale(2, 2, 1);
+		RenderMesh(meshList[GEO_CRAFTINGPANEL], true);
+		modelStack.PopMatrix();
 
 };
 

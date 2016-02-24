@@ -92,6 +92,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 
 void Camera3::Update(double dt)
 {
+
 	static const float CAMERA_SPEED = 500.f;
 	prevPosition = position;
 	Vector3 view = (target - position).Normalized();
@@ -239,26 +240,26 @@ void Camera3::Update(double dt)
 			}
 		}
 	}
-	if (recoil > 30)
+	if (recoil > 20)
 	{
-		recoil = 30;
+		recoil = 20;
 	}
 	gunRecoil.x = recoil;
 	if (Application::IsKeyPressed(VK_LBUTTON))
 	{
-
+		cRecoilCd = 20;
 	}
-	else if (gunRecoil.x > 0)
+	if (cRecoilCd > 0)
 	{
-		gunRecoil.x -= 0.1;
+		cRecoilCd--;
 	}
-	if (Application::IsKeyPressed(VK_LBUTTON))
+	if (gunRecoil.x > 0 && cRecoilCd == 0)
 	{
-
+		gunRecoil.x -= 0.2;
 	}
-	else if (recoil > 0)
+	if (recoil > 0 && cRecoilCd == 0)
 	{
-		recoil-= 0.1;
+		recoil -= 0.2;
 	}
 
 	camerarotation = directionRotation - gunRecoil;
@@ -597,6 +598,22 @@ void Camera3::teleport()
 		position.x = -400; 
 		position.y = 20; 
 		position.z = 1;
+	}
+}
+
+bool Camera3::craftUi()
+{
+	Vector3 min = minPos(Vector3(399.667, 80, -38), 10, 15, 10);
+	Vector3 max = maxPos(Vector3(399.667, 80, -38), 10, 15, 10);
+
+	if (position.x > min.x && position.y > min.y && position.z > min.z
+		&& position.x < max.x && position.y < max.y && position.z < max.z)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 

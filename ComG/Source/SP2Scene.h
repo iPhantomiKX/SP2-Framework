@@ -176,6 +176,7 @@ private:
 	void bulletRNG(int spray);
 	void aimBulletRNG(int spray);
 	bool bulletObjectCollision(Vector3 bulletPos);
+	bool craftUi();
 
 	double storeRand;
 	double storeRand2;
