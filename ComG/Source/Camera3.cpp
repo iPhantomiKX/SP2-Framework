@@ -239,26 +239,26 @@ void Camera3::Update(double dt)
 			}
 		}
 	}
-	if (recoil > 20)
+	if (recoil > 30)
 	{
-		recoil = 20;
+		recoil = 30;
 	}
 	gunRecoil.x = recoil;
 	if (Application::IsKeyPressed(VK_LBUTTON))
 	{
-		cRecoilCd = 20;
+
 	}
-	if (cRecoilCd > 0)
+	else if (gunRecoil.x > 0)
 	{
-		cRecoilCd--;
+		gunRecoil.x -= 0.1;
 	}
-	if (gunRecoil.x > 0 && cRecoilCd == 0)
+	if (Application::IsKeyPressed(VK_LBUTTON))
 	{
-		gunRecoil.x -= 0.2;
+
 	}
-	if (recoil > 0 && cRecoilCd == 0)
+	else if (recoil > 0)
 	{
-		recoil -= 0.2;
+		recoil-= 0.1;
 	}
 
 	camerarotation = directionRotation - gunRecoil;

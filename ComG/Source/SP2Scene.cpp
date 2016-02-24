@@ -12,6 +12,9 @@
 #include "LoadOBJ.h"
 #include "gun.h"
 #include "enemy.h"
+#include <iostream>
+
+using std::cout;
 
 //test
 
@@ -166,17 +169,9 @@ void Sp2Scene::Init()
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 
-	//Pistol 1 Ui image
-	/*meshList[GEO_PISTOL1_IMAGE] = MeshBuilder::GenerateText("DE_image", 16, 16);
-	meshList[GEO_PISTOL1_IMAGE]->textureID = LoadTGA("Image//DE_image.tga");
-
-	//Rifle 1 UI image
-	meshList[GEO_RIFLE1_IMAGE] = MeshBuilder::GenerateText("AR_image", 16, 16);
-	meshList[GEO_RIFLE1_IMAGE]->textureID = LoadTGA("Image//AR_Image.tga");
-
-	//Sniper 1 UI Image
-	meshList[GEO_SNIPER1_IMAGE] = MeshBuilder::GenerateText("AK47_image", 16, 16);
-	meshList[GEO_SNIPER1_IMAGE]->textureID = LoadTGA("Image//AK47_image.tga");*/
+	//Crafting Ui image
+	meshList[GEO_CRAFT_UI] = MeshBuilder::GenerateOBJ("craftin_UI","OBJ//CraftingUI.obj");
+	meshList[GEO_CRAFT_UI]->textureID = LoadTGA("Image//CraftingUI.tga");
 
 	/*meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Tricker.obj");
 	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");*/
@@ -211,16 +206,9 @@ void Sp2Scene::Init()
 	meshList[GEO_HEALTHPACK]->textureID = LoadTGA("Image//HealthPackUV.tga");
 
 	//Minerals Image
-	meshList[GEO_ELEMENTS6] = MeshBuilder::GenerateOBJ("stone_mineral", "OBJ//StoneMineral.obj");
-	meshList[GEO_ELEMENTS6]->textureID = LoadTGA("Image//StoneMineralsUV.tga");
-	meshList[GEO_ELEMENTS7] = MeshBuilder::GenerateOBJ("silver_mineral", "OBJ//SilverMineral.obj");
-	meshList[GEO_ELEMENTS7]->textureID = LoadTGA("Image//SilverMineralsUV.tga");
-	meshList[GEO_ELEMENTS8] = MeshBuilder::GenerateOBJ("gold_mineral", "OBJ//GoldMineral.obj");
-	meshList[GEO_ELEMENTS8]->textureID = LoadTGA("Image//GoldMineralsUV.tga");
-	meshList[GEO_ELEMENTS9] = MeshBuilder::GenerateOBJ("crystal_mineral", "OBJ//CrystalMineral.obj");
-	meshList[GEO_ELEMENTS9]->textureID = LoadTGA("Image//CrystalMineralsUV.tga");
-	meshList[GEO_ELEMENTS10] = MeshBuilder::GenerateOBJ("coal_mineral", "OBJ//CoalMineral.obj");
-	meshList[GEO_ELEMENTS10]->textureID = LoadTGA("Image//CoalMineralsUV.tga");
+	meshList[GEO_MINERALS] = MeshBuilder::GenerateOBJ("gold_mineral", "OBJ//GoldMineral.obj");
+	meshList[GEO_MINERALS]->textureID = LoadTGA("Image//GoldMineralsUV.tga");
+
 	
 	meshList[GEO_SCOPE] = MeshBuilder::GenerateOBJ("scopemodel", "OBJ//Scope.obj");
 	meshList[GEO_SCOPE]->textureID = LoadTGA("Image//Scope.tga");
@@ -262,8 +250,8 @@ void Sp2Scene::Init()
 
 	for (int a = 0; a < 25; ++a)
 	{
-		elementsx[a] = rand() % 980 - 490;
-		elementsz[a] = rand() % 980 - 490;
+		elementsx[a] = rand() % 980 - 980;
+		elementsz[a] = rand() % 980 - 880;
 	}
 
 	translateY = -60;
@@ -520,19 +508,35 @@ void Sp2Scene::Update(double dt)
 		equipShotgun1 = false;
 	}
 	//If pressed '3', switch to Sniper1
-	else if (Application::IsKeyPressed('3') && equipSniper1 == false && reloaded == true)
+	else if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true)
 	{
 		equipPistol1 = false;
 		equipRifle1 = false;
-		equipSniper1 = true;
-		equipShotgun1 = false;
-	}
-	else if (Application::IsKeyPressed('4') && equipShotgun1 == false && reloaded == true)
-	{
-		equipPistol1 = false;
-		equipRifle1 = false;
-		equipSniper1 = false;
 		equipShotgun1 = true;
+		equipSniper1 = false;
+		
+	}
+	else if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true)
+	{
+		equipPistol1 = false;
+		equipRifle1 = false;
+		equipShotgun1 = false;
+		equipSniper1 = true;
+	}
+	if (Application::IsKeyPressed('E'))
+	{
+		if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+		{
+			crafting = true;
+		}
+		else
+		{
+			crafting = false;
+		}
+	}
+	else if (!camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+	{
+		crafting = false;
 	}
 
 	//for (int i = 0; i < 50; ++i)
@@ -730,10 +734,10 @@ void Sp2Scene::Update(double dt)
 			//}
 
 
-			////portal2 interaction
+			//portal2 interaction
 			//if (camera.checkcollisionwithObject(Vector3(400.088, 71, 0.0353), 10, 15, 10))
 			//{
-			//	camera.position = camera.prevPosition;
+				//camera.position = camera.prevPosition;
 			//	testPortalsign = true;
 			//	testPortal = true;
 			//	if (Application::IsKeyPressed('E') && testPortal == true)
@@ -743,17 +747,31 @@ void Sp2Scene::Update(double dt)
 			//		camera.position.z = 1;
 			//		testPortal = false;
 			//		testPortalsign = false;
+//delete this part
+				}
+			}
+			else
+			{
+				testPortal = false;
+				testPortalsign = false;
+			}
+
+			////Crafting interaction
+			//if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+			//{
+			//	camera.position = camera.prevPosition;
+
+			//	if (Application::IsKeyPressed('E'))
+			//	{
+			//		
+			//		RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
+			//		cout << "I am running";
 			//	}
 			//}
 			//else
 			//{
-				testPortal = false;
-				testPortalsign = false;
+
 			//}
-
-			
-
-
 
 
 			//if (Application::IsKeyPressed('1')) //enable back face culling
@@ -1899,51 +1917,15 @@ void Sp2Scene::RenderHealthPack()
 
 void Sp2Scene::RenderElements()
 {
-	for (int a = 0; a < 15; ++a)
+	for (int a = 0; a < 25; ++a)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(elementsx[a], -5, elementsz[a]);
 		modelStack.Scale(2, 2, 2);
-		RenderMesh(meshList[GEO_ELEMENTS6], true);
+		RenderMesh(meshList[GEO_MINERALS], true);
 		modelStack.PopMatrix();
 	}
 	
-	for (int a = 0; a < 15; ++a)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(elementsx[a] + -131, -5, elementsz[a] + -222);
-		modelStack.Scale(2, 2, 2);
-		RenderMesh(meshList[GEO_ELEMENTS7], true);
-		modelStack.PopMatrix();
-	}
-	
-	for (int a = 0; a < 15; ++a)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(elementsx[a] + 467, -5, elementsz[a] + -73);
-		modelStack.Scale(2, 2, 2);
-		RenderMesh(meshList[GEO_ELEMENTS8], true);
-		modelStack.PopMatrix();
-	}
-	
-	for (int a = 0; a < 15; ++a)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(elementsx[a] + 254, -5, elementsz[a] + -788);
-		modelStack.Scale(2, 2, 2);
-		RenderMesh(meshList[GEO_ELEMENTS9], true);
-		modelStack.PopMatrix();
-	}
-
-	for (int a = 0; a < 15; ++a)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(elementsx[a] + -845, -5, elementsz[a] + 10);
-		modelStack.Scale(2, 2, 2);
-		RenderMesh(meshList[GEO_ELEMENTS10], true);
-		modelStack.PopMatrix();
-	}
-
 };
 
 void Sp2Scene::Render()
@@ -2070,10 +2052,15 @@ void Sp2Scene::Render()
 	//modelStack.PopMatrix();
 
 	//Check if button has pressed
+	if (crafting == true)
+	{
+		RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
+	}
 	if (equipPistol1 == true)
 	{
 		RenderPistol1();
 		RenderImageOnScreen(meshList[GEO_PISTOL1], 0.5, 25, 15);
+		//RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
 	}
 	else if (equipRifle1 == true)
 	{
