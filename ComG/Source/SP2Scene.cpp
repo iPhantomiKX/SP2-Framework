@@ -461,19 +461,20 @@ void Sp2Scene::Update(double dt)
 		equipShotgun1 = false;
 	}
 	//If pressed '3', switch to Sniper1
-	else if (Application::IsKeyPressed('3') && equipSniper1 == false && reloaded == true)
+	else if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true)
 	{
 		equipPistol1 = false;
 		equipRifle1 = false;
-		equipSniper1 = true;
-		equipShotgun1 = false;
-	}
-	else if (Application::IsKeyPressed('4') && equipShotgun1 == false && reloaded == true)
-	{
-		equipPistol1 = false;
-		equipRifle1 = false;
-		equipSniper1 = false;
 		equipShotgun1 = true;
+		equipSniper1 = false;
+		
+	}
+	else if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true)
+	{
+		equipPistol1 = false;
+		equipRifle1 = false;
+		equipShotgun1 = false;
+		equipSniper1 = true;
 	}
 	if (Application::IsKeyPressed('E'))
 	{
@@ -665,9 +666,9 @@ void Sp2Scene::Update(double dt)
 			}
 
 			//portal1 interaction
-			if (camera.checkcollisionwithObject(Vector3(-435.088, 10, 50.0353), 10, 15, 10))
+			if (camera.checkcollisionwithObject(Vector3(-435.088, 10, 50.0353), 10, 20, 10))
 			{
-				camera.position = camera.prevPosition;
+				//camera.position = camera.prevPosition;
 				testPortalsign = true;
 				testPortal = true;
 				if (Application::IsKeyPressed('E') && testPortal == true)
@@ -687,9 +688,9 @@ void Sp2Scene::Update(double dt)
 
 
 			//portal2 interaction
-			if (camera.checkcollisionwithObject(Vector3(400.088, 71, 0.0353), 10, 15, 10))
+			if (camera.checkcollisionwithObject(Vector3(400.088, 71, 0.0353), 10, 20, 10))
 			{
-				camera.position = camera.prevPosition;
+				//camera.position = camera.prevPosition;
 				testPortalsign = true;
 				testPortal = true;
 				if (Application::IsKeyPressed('E') && testPortal == true)
