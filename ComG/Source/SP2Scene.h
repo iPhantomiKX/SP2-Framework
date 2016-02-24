@@ -181,6 +181,7 @@ private:
 	bool reloaded = false;
 	void bulletRNG(int spray);
 	void aimBulletRNG(int spray);
+	bool bulletObjectCollision(Vector3 bulletPos);
 
 	double storeRand;
 	double storeRand2;
@@ -216,6 +217,8 @@ private:
 	Vector3 treeposition[150];
 	Vector3 test;
 
+	std::vector<Vector3> minVectors;
+	std::vector<Vector3> maxVectors;
 
 	std::vector<Vector3> shotsFired;
 	std::vector<Vector3> shotsDir;

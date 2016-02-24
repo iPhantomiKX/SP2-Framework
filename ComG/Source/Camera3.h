@@ -42,6 +42,7 @@ public:
 	static Vector3 location;
 	static Vector3 location2;
 	static Vector3 direction;
+	//Vector3 direction2;
 	static double recoil;
 	double cameraStore;
 	int recoilResist;
@@ -51,6 +52,8 @@ public:
 
 	Vector3 diffx;
 	Vector3 diffz;
+	std::vector<Vector3> minVectors;
+	std::vector<Vector3> maxVectors;
 
 	Camera3();
 	~Camera3();
@@ -58,10 +61,13 @@ public:
 	virtual void Update(double dt);
 	bool testhitbox(const Vector3& lowest, const Vector3& highest, double move);
 	bool hitbox(double move);
-	bool checkcollisionwithObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
-	bool Camera3::checkBulletcollisionwithObject(Vector3 bulletPos, Vector3& otherObjectposition, float sizex, float sizey, float sizez);
+	bool checkcollisionwithObject(double move);
+	//bool checkBulletcollisionwithObject(Vector3 bulletPos);
 	bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
+	void teleport();
+	Vector3 minPos(Vector3 center, double sizeX, double sizeY, double sizeZ);
+	Vector3 maxPos(Vector3 center, double sizeX, double sizeY, double sizeZ);
 	Vector3 setPos();
 	virtual void Reset();
 

@@ -269,6 +269,53 @@ void Sp2Scene::Init()
 	translateY = -60;
 	translateX = 0;
 	translateX = 0;
+
+	///for hitboxes///
+	minVectors.push_back(c3.minPos(Vector3(400, 60, 0), 75, 15, 75));
+	minVectors.push_back(c3.minPos(Vector3(400, 60, 100), 75, 15, 75));
+	minVectors.push_back(c3.minPos(Vector3(300, 60, 0), 75, 15, 75));
+	minVectors.push_back(c3.minPos(Vector3(300, 60, 100), 75, 15, 75));
+	minVectors.push_back(c3.minPos(Vector3(450, 110, 0), 10, 75, 75));
+	minVectors.push_back(c3.minPos(Vector3(450, 110, 100), 10, 75, 75));
+	minVectors.push_back(c3.minPos(Vector3(250, 110, 0), 10, 75, 75));
+	minVectors.push_back(c3.minPos(Vector3(250, 110, 100), 10, 75, 75));
+	minVectors.push_back(c3.minPos(Vector3(400, 110, -50), 75, 75, 10));
+	minVectors.push_back(c3.minPos(Vector3(400, 110, 150), 75, 75, 10));
+	minVectors.push_back(c3.minPos(Vector3(300, 110, -50), 75, 75, 10));
+	minVectors.push_back(c3.minPos(Vector3(300, 110, 150), 75, 75, 10));
+	minVectors.push_back(c3.minPos(Vector3(400, 160, 0), 75, 10, 75));
+	minVectors.push_back(c3.minPos(Vector3(400, 160, 100), 75, 10, 75));
+	minVectors.push_back(c3.minPos(Vector3(300, 160, 0), 75, 10, 75));
+	minVectors.push_back(c3.minPos(Vector3(300, 160, 100), 75, 10, 75));
+	minVectors.push_back(c3.minPos(Vector3(-338, 0, 38), 15, 90, 60));
+	minVectors.push_back(c3.minPos(Vector3(-460, 0, 38), 15, 90, 60));
+	minVectors.push_back(c3.minPos(Vector3(-400, 0, 73), 90, 90, 15));
+	minVectors.push_back(c3.minPos(Vector3(-360, 0, 0), 30, 90, 15));
+	minVectors.push_back(c3.minPos(Vector3(-435, 0, 0), 30, 90, 15));
+
+	maxVectors.push_back(c3.maxPos(Vector3(400, 60, 0), 75, 15, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(400, 60, 100), 75, 15, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(300, 60, 0), 75, 15, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(300, 60, 100), 75, 15, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(450, 110, 0), 10, 75, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(450, 110, 100), 10, 75, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(250, 110, 0), 10, 75, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(250, 110, 100), 10, 75, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(400, 110, -50), 75, 75, 10));
+	maxVectors.push_back(c3.maxPos(Vector3(400, 110, 150), 75, 75, 10));
+	maxVectors.push_back(c3.maxPos(Vector3(300, 110, -50), 75, 75, 10));
+	maxVectors.push_back(c3.maxPos(Vector3(300, 110, 150), 75, 75, 10));
+	maxVectors.push_back(c3.maxPos(Vector3(400, 160, 0), 75, 10, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(400, 160, 100), 75, 10, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(300, 160, 0), 75, 10, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(300, 160, 100), 75, 10, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(-338, 0, 38), 15, 90, 60));
+	maxVectors.push_back(c3.maxPos(Vector3(-460, 0, 38), 15, 90, 60));
+	maxVectors.push_back(c3.maxPos(Vector3(-400, 0, 73), 90, 90, 15));
+	maxVectors.push_back(c3.maxPos(Vector3(-360, 0, 0), 30, 90, 15));
+	maxVectors.push_back(c3.maxPos(Vector3(-435, 0, 0), 30, 90, 15));
+
+	
 }
 
 static float LSPEED = 10.f;
@@ -535,174 +582,174 @@ void Sp2Scene::Update(double dt)
 	//		}*/
 			
 			//collision for spaceship floor 1
-			if (camera.checkcollisionwithObject(Vector3(400, 60, 0), 100, 15, 100))
+			/*if (camera.checkcollisionwithObject(Vector3(400, 60, 0), 100, 15, 100))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spaceship floor 2
-			if (camera.checkcollisionwithObject(Vector3(400, 60, 100), 100, 15, 100))
+		/*	if (camera.checkcollisionwithObject(Vector3(400, 60, 100), 100, 15, 100))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spaceship floor 3
-			if (camera.checkcollisionwithObject(Vector3(300, 60, 0), 100, 15, 100))
+			/*if (camera.checkcollisionwithObject(Vector3(300, 60, 0), 100, 15, 100))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spaceship floor 4
-			if (camera.checkcollisionwithObject(Vector3(300, 60, 100), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}
+			//if (camera.checkcollisionwithObject(Vector3(300, 60, 100), 100, 15, 100))
+			//{
+			//	camera.position = camera.prevPosition;
+			//}
 
 			//collision for spaceship wall length 1
-			if (camera.checkcollisionwithObject(Vector3(450, 110, 0), 15, 100, 100))
-			{
-				camera.position = camera.prevPosition;
-			}
+			//if (camera.checkcollisionwithObject(Vector3(450, 110, 0), 15, 100, 100))
+			//{
+			//	camera.position = camera.prevPosition;
+			//}
 
 			//collision for spaceship wall length 2
-			if (camera.checkcollisionwithObject(Vector3(450, 110, 100), 15, 100, 100))
+			/*if (camera.checkcollisionwithObject(Vector3(450, 110, 100), 15, 100, 100))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			
 			//collision for spaceship wall length 3
-			if (camera.checkcollisionwithObject(Vector3(250, 110, 0), 15, 100, 100))
+			/*if (camera.checkcollisionwithObject(Vector3(250, 110, 0), 15, 100, 100))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spaceship wall length 4
-			if (camera.checkcollisionwithObject(Vector3(250, 110, 100), 15, 100, 100))
+			/*if (camera.checkcollisionwithObject(Vector3(250, 110, 100), 15, 100, 100))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spaceship wall width 1
-			if (camera.checkcollisionwithObject(Vector3(400, 110, -50), 100, 100, 15))
-			{
-				camera.position = camera.prevPosition;
-			}
+			//if (camera.checkcollisionwithObject(Vector3(400, 110, -50), 100, 100, 15))
+			//{
+			//	camera.position = camera.prevPosition;
+			//}
 
 			//collision for spaceship wall width 2
-			if (camera.checkcollisionwithObject(Vector3(400, 110, 150), 100, 100, 15))
+			/*if (camera.checkcollisionwithObject(Vector3(400, 110, 150), 100, 100, 15))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spaceship wall width 3
-			if (camera.checkcollisionwithObject(Vector3(300, 110, -50), 100, 100, 15))
+			/*if (camera.checkcollisionwithObject(Vector3(300, 110, -50), 100, 100, 15))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spaceship wall width 4
-			if (camera.checkcollisionwithObject(Vector3(300, 110, 150), 100, 100, 15))
+			/*if (camera.checkcollisionwithObject(Vector3(300, 110, 150), 100, 100, 15))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spaceship roof 1
-			if (camera.checkcollisionwithObject(Vector3(400, 160, 0), 100, 15, 100))
+			/*if (camera.checkcollisionwithObject(Vector3(400, 160, 0), 100, 15, 100))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spaceship roof 2
-			if (camera.checkcollisionwithObject(Vector3(400, 160, 100), 100, 15, 100))
+			/*if (camera.checkcollisionwithObject(Vector3(400, 160, 100), 100, 15, 100))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spaceship roof 3
-			if (camera.checkcollisionwithObject(Vector3(300, 160, 0), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}
+			//if (camera.checkcollisionwithObject(Vector3(300, 160, 0), 100, 15, 100))
+			//{
+			//	camera.position = camera.prevPosition;
+			//}
 
 			//collision for spaceship roof 4
-			if (camera.checkcollisionwithObject(Vector3(300, 160, 100), 100, 15, 100))
+			/*if (camera.checkcollisionwithObject(Vector3(300, 160, 100), 100, 15, 100))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spacehouse width 1
-			if (camera.checkcollisionwithObject(Vector3(-338, 0, 38), 18, 120, 120))
+			/*if (camera.checkcollisionwithObject(Vector3(-338, 0, 38), 18, 120, 120))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spacehouse width 2
-			if (camera.checkcollisionwithObject(Vector3(-460, 0, 38), 18, 120, 120))
+			/*if (camera.checkcollisionwithObject(Vector3(-460, 0, 38), 18, 120, 120))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for spacehouse back wall 
-			if (camera.checkcollisionwithObject(Vector3(-400, 0, 73), 120, 120, 18))
+			/*if (camera.checkcollisionwithObject(Vector3(-400, 0, 73), 120, 120, 18))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for front wall 1
-			if (camera.checkcollisionwithObject(Vector3(-360, 0, 0), 52, 120, 18))
+			/*if (camera.checkcollisionwithObject(Vector3(-360, 0, 0), 52, 120, 18))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//collision for front wall 2
-			if (camera.checkcollisionwithObject(Vector3(-435, 0, 0), 52, 120, 18))
+			/*if (camera.checkcollisionwithObject(Vector3(-435, 0, 0), 52, 120, 18))
 			{
 				camera.position = camera.prevPosition;
-			}
+			}*/
 
 			//portal1 interaction
-			if (camera.checkcollisionwithObject(Vector3(-435.088, 10, 50.0353), 10, 15, 10))
-			{
-				camera.position = camera.prevPosition;
-				testPortalsign = true;
-				testPortal = true;
-				if (Application::IsKeyPressed('E') && testPortal == true)
-				{
-					camera.position.x = 399.526;
-					camera.position.y = 80.0759;
-					camera.position.z = 100.455;
-					testPortal = false;
-					testPortalsign = false;
-				}
-			}
-			else
-			{
-				testPortal = false;
-				testPortalsign = false;
-			}
+			//if (camera.checkcollisionwithObject(Vector3(-435.088, 10, 50.0353), 10, 15, 10))
+			//{
+			//	camera.position = camera.prevPosition;
+			//	testPortalsign = true;
+			//	testPortal = true;
+			//	if (Application::IsKeyPressed('E') && testPortal == true)
+			//	{
+			//		camera.position.x = 399.526;
+			//		camera.position.y = 80.0759;
+			//		camera.position.z = 100.455;
+			//		testPortal = false;
+			//		testPortalsign = false;
+			//	}
+			//}
+			//else
+			//{
+			//	testPortal = false;
+			//	testPortalsign = false;
+			//}
 
 
-			//portal2 interaction
-			if (camera.checkcollisionwithObject(Vector3(400.088, 71, 0.0353), 10, 15, 10))
-			{
-				camera.position = camera.prevPosition;
-				testPortalsign = true;
-				testPortal = true;
-				if (Application::IsKeyPressed('E') && testPortal == true)
-				{
-					camera.position.x = -400;
-					camera.position.y = 20;
-					camera.position.z = 1;
-					testPortal = false;
-					testPortalsign = false;
-				}
-			}
-			else
-			{
+			////portal2 interaction
+			//if (camera.checkcollisionwithObject(Vector3(400.088, 71, 0.0353), 10, 15, 10))
+			//{
+			//	camera.position = camera.prevPosition;
+			//	testPortalsign = true;
+			//	testPortal = true;
+			//	if (Application::IsKeyPressed('E') && testPortal == true)
+			//	{
+			//		camera.position.x = -400;
+			//		camera.position.y = 20;
+			//		camera.position.z = 1;
+			//		testPortal = false;
+			//		testPortalsign = false;
+			//	}
+			//}
+			//else
+			//{
 				testPortal = false;
 				testPortalsign = false;
-			}
+			//}
 
 			
 
@@ -1375,8 +1422,9 @@ void Sp2Scene::bulletPos()
 		while (count != shotsFired.end())
 		{
 			Vector3 temp = *count;
-			//std::cout << temp << "look at me" << std::endl;
+			Vector3 temp1 = *count1;
 			*count += *count1;
+			//std::cout << temp << "look at me" << std::endl;
 			if (bulletEnemyCollision(temp, Vector3(50, 10, 0)) == true && t.isDead == false )
 			{
 				t.hp -= *count2;
@@ -1386,13 +1434,7 @@ void Sp2Scene::bulletPos()
 				count1 = shotsDir.erase(count1);
 				count2 = weaponDmg.erase(count2);
 			}
-			else if (temp.y <= 0 || temp.x >= 1000 || temp.z >= 1000 || temp.y >= 1000 || temp.x <= -1000 || temp.z <= -1000 || temp.y <= -1000 || camera.checkBulletcollisionwithObject(temp, Vector3(400, 60, 0), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(400, 60, 100), 100, 15, 100)
-				|| camera.checkBulletcollisionwithObject(temp, Vector3(300, 60, 0), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(300, 60, 100), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(450, 110, 0), 15, 100, 100)
-				|| camera.checkBulletcollisionwithObject(temp, Vector3(450, 110, 100), 15, 100, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(250, 110, 100), 15, 100, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(400, 110, -50), 100, 100, 15)
-				|| camera.checkBulletcollisionwithObject(temp, Vector3(400, 110, 150), 100, 100, 15) || camera.checkBulletcollisionwithObject(temp, Vector3(300, 110, -50), 100, 100, 15) || camera.checkBulletcollisionwithObject(temp, Vector3(300, 110, 150), 100, 100, 15)
-				|| camera.checkBulletcollisionwithObject(temp, Vector3(400, 160, 0), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(400, 160, 100), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(300, 160, 0), 100, 15, 100)
-				|| camera.checkBulletcollisionwithObject(temp, Vector3(300, 160, 100), 100, 15, 100) || camera.checkBulletcollisionwithObject(temp, Vector3(-338, 0, 38), 18, 120, 80) || camera.checkBulletcollisionwithObject(temp, Vector3(-460, 0, 38), 18, 120, 80)
-				|| camera.checkBulletcollisionwithObject(temp, Vector3(-400, 0, 73), 120, 120, 18) || camera.checkBulletcollisionwithObject(temp, Vector3(-360, 0, 0), 52, 120, 18) || camera.checkBulletcollisionwithObject(temp, Vector3(-435, 0, 0), 52, 120, 18))
+			else if (temp.y <= 0 || temp.x >= 1000 || temp.z >= 1000 || temp.y >= 1000 || temp.x <= -1000 || temp.z <= -1000 || temp.y <= -1000 || bulletObjectCollision(temp) == true)
 			{
 				count = shotsFired.erase(count);
 				count1 = shotsDir.erase(count1);
@@ -1407,11 +1449,36 @@ void Sp2Scene::bulletPos()
 		}
 }
 
+bool Sp2Scene::bulletObjectCollision(Vector3 bulletPos) 
+{
+	//to do
+	// Get all min and max (eg. minX, maxX)
+
+	// Do SAT Test on all axis)
+	// eg (if (position.x < min) return false; // (Outside!)
+	//		Repeat for Max, Repeat Min + Max for Y and Z axis
+	std::vector<Vector3>::iterator count = minVectors.begin();
+	std::vector<Vector3>::iterator count1 = maxVectors.begin();
+
+	while (count != minVectors.end())
+	{
+		Vector3 minTemp = *count;
+		Vector3 maxTemp = *count1;
+		if (bulletPos.x > minTemp.x && bulletPos.x < maxTemp.x && bulletPos.y > minTemp.y && bulletPos.y < maxTemp.y && bulletPos.z > minTemp.z && bulletPos.z < maxTemp.z)
+		{
+			return true;
+		}
+		*count++;
+		*count1++;
+	}
+	return false;
+}
+
 bool Sp2Scene::bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation)
 {
-	if (bulletPos.x > (targetLocation.x - ((6 / 2))) && bulletPos.x < (targetLocation.x + ((6 / 2))) &&
-		bulletPos.y >(targetLocation.y - ((6 / 2))) && bulletPos.y < (targetLocation.y + ((6 / 2))) &&
-		bulletPos.z >(targetLocation.z - ((6 / 2))) && bulletPos.z < (targetLocation.z + ((6 / 2))))
+	if (bulletPos.x > (targetLocation.x - (6 / 2)) && bulletPos.x < (targetLocation.x + (6 / 2)) &&
+		bulletPos.y >(targetLocation.y - (6 / 2)) && bulletPos.y < (targetLocation.y + (6 / 2)) &&
+		bulletPos.z >(targetLocation.z - (6 / 2)) && bulletPos.z < (targetLocation.z + (6 / 2)))
 	{
 		return true;
 	}
@@ -2093,9 +2160,18 @@ void Sp2Scene::RenderPistol1()
 
 		modelStack.PopMatrix();
 	}
-	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0, .8, 0), 2, 30, 1);
-	modelStack.PopMatrix();
+	if (pis.ammo < 5)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(.7, 0, 0), 3, 18, 1);
+		modelStack.PopMatrix();
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0, .7, 0), 3, 18, 1);
+		modelStack.PopMatrix();
+	}
 }
 void Sp2Scene::RenderRifle1()
 {
@@ -2123,9 +2199,18 @@ void Sp2Scene::RenderRifle1()
 		modelStack.PopMatrix();
 		modelStack.PopMatrix();
 	}
-	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0, .8, 0), 2, 30, 1);
-	modelStack.PopMatrix();
+	if (rif.ammo < 11)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(.7, 0, 0), 3, 18, 1);
+		modelStack.PopMatrix();
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0, .7, 0), 3, 18, 1);
+		modelStack.PopMatrix();
+	}
 }
 void Sp2Scene::RenderSniper1()
 {
@@ -2157,9 +2242,18 @@ void Sp2Scene::RenderSniper1()
 
 		modelStack.PopMatrix();
 	}
-	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0, 0.8, 0), 2, 30, 1);
-	modelStack.PopMatrix();
+	if (sr.ammo < 4)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0.7, 0, 0), 3, 18, 1);
+		modelStack.PopMatrix();
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0, 0.7, 0), 3, 18, 1);
+		modelStack.PopMatrix();
+	}
 }
 void Sp2Scene::RenderShotgun1()
 {
@@ -2187,9 +2281,18 @@ void Sp2Scene::RenderShotgun1()
 
 		modelStack.PopMatrix();
 	}
-	modelStack.PushMatrix();
-	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0, 0.8, 0), 2, 30, 1);
-	modelStack.PopMatrix();
+	if (sg.ammo < 3)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0.7, 0, 0), 3, 18, 1);
+		modelStack.PopMatrix();
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0, 0.7, 0), 3, 18, 1);
+		modelStack.PopMatrix();
+	}
 }
 //void Sp2Scene::RenderShotgun1()
 //{
