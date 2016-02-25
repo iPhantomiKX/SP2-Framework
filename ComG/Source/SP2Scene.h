@@ -119,6 +119,13 @@ class Sp2Scene : public Scene
 		U_TEXT_COLOR,
 		U_TOTAL,
 	};
+	enum class states
+	{
+		menu,
+		base,
+		outside,
+	};
+
 public:
 	Sp2Scene();
 	~Sp2Scene();
@@ -220,6 +227,8 @@ private:
 	void RenderTable();
 	void RenderHealthPack();
 
+	void changeStates();
+
 	Vector3 treeposition[150];
 	Vector3 test;
 
@@ -238,6 +247,8 @@ private:
 	MS modelStack, viewStack, projectionStack;
 
 	Light light[1];
+
+	states gameStates;
 };
 
 #endif

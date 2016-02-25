@@ -752,6 +752,7 @@ void Camera3::teleport()
 		position.x = 399.526;
 		position.y = 80.0759; 
 		position.z = 100.455;
+		inBase = true;
 	}
 
 	if (position.x > p2Min.x && position.y > p2Min.y && position.z > p2Min.z
@@ -760,6 +761,7 @@ void Camera3::teleport()
 		position.x = -400; 
 		position.y = 20; 
 		position.z = 1;
+		inBase = false;
 	}
 }
 
