@@ -863,7 +863,7 @@ void Sp2Scene::Update(double dt)
 			if (equipPistol1 == true)
 			{
 				
-				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && pis.ammo > 0 && gunReload <= 0 && reloaded == true)
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && pis.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
 					if (Application::IsKeyPressed(VK_RBUTTON))
 					{
@@ -888,7 +888,7 @@ void Sp2Scene::Update(double dt)
 				bulletPos();
 				gunCd--;
 
-				if (Application::IsKeyPressed('R') && pis.ammo < pis.maxAmmo && reloaded == true || pis.ammo == 0 && reloaded == true)
+				if (Application::IsKeyPressed('R') && pis.ammo < pis.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || pis.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
 					gunReload = pis.reloadSpd;
 					reloaded = false;
@@ -909,7 +909,7 @@ void Sp2Scene::Update(double dt)
 
 			if (equipRifle1 == true)
 			{
-				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && rif.ammo > 0 && gunReload <= 0 && reloaded == true)
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && rif.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
 					if (Application::IsKeyPressed(VK_RBUTTON) )
 					{
@@ -934,7 +934,7 @@ void Sp2Scene::Update(double dt)
 				bulletPos();
 				gunCd--;
 
-				if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo && reloaded == true || rif.ammo == 0 && reloaded == true)
+				if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || rif.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
 					gunReload = rif.reloadSpd;
 					reloaded = false;
@@ -954,7 +954,7 @@ void Sp2Scene::Update(double dt)
 			}
 			if (equipSniper1 == true)
 			{
-				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sr.ammo > 0 && gunReload <= 0 && reloaded == true)
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sr.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
 					if (Application::IsKeyPressed(VK_RBUTTON))
 					{
@@ -979,7 +979,7 @@ void Sp2Scene::Update(double dt)
 				bulletPos();
 				gunCd--;
 
-				if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo && reloaded == true || sr.ammo == 0 && reloaded == true)
+				if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sr.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
 					gunReload = sr.reloadSpd;
 					reloaded = false;
@@ -1000,20 +1000,13 @@ void Sp2Scene::Update(double dt)
 
 			if (equipShotgun1 == true)
 			{
-				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sg.ammo > 0 && gunReload <= 0 && reloaded == true)
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sg.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
-					for (int shots = 0; shots < 5; ++shots)
+					for (int shots = 0; shots < 6; ++shots)
 					{
 						if (Application::IsKeyPressed(VK_RBUTTON))
 						{
-							if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-							{
-								aimBulletRNG(sg.inAccuracy+1);
-							}
-							else
-							{
-								aimBulletRNG(sg.inAccuracy);
-							}
+							bulletRNG(sg.inAccuracy-1);
 						}
 						else
 						{
@@ -1032,7 +1025,7 @@ void Sp2Scene::Update(double dt)
 				bulletPos();
 				gunCd--;
 
-				if (Application::IsKeyPressed('R') && sg.ammo < sg.maxAmmo && reloaded == true || sg.ammo == 0 && reloaded == true)
+				if (Application::IsKeyPressed('R') && sg.ammo < sg.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sg.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
 					gunReload = sg.reloadSpd;
 					reloaded = false;
@@ -1936,7 +1929,7 @@ void Sp2Scene::Render()
 		RenderTextOnScreen(meshList[GEO_TEXT], "PRESS E TO TELEPORT", Color(0, 1, 0), 3, 4, 15);
 	}
 
-	if (Application::IsKeyPressed(VK_RBUTTON) || reloaded == false)
+	if (Application::IsKeyPressed(VK_RBUTTON) || reloaded == false || Application::IsKeyPressed(VK_SHIFT))
 	{
 	}
 	else
@@ -1957,15 +1950,22 @@ void Sp2Scene::RenderPistol1()
 
 
 		modelStack.PushMatrix();
-		if (Application::IsKeyPressed(VK_RBUTTON) == true)
+		
+		if (Application::IsKeyPressed(VK_SHIFT) == true)
+		{
+			modelStack.Translate(0, -10, -10);
+			modelStack.Rotate(-60, 0, 1, 0);
+		}
+		else if (Application::IsKeyPressed(VK_RBUTTON) == true)
 		{
 			modelStack.Translate(0, -7.1, -10);
+			modelStack.Rotate(-90, 0, 1, 0);
 		}
 		else
 		{
 			modelStack.Translate(5, -10, -15);
+			modelStack.Rotate(-90, 0, 1, 0);
 		}
-		modelStack.Rotate(-90, 0, 1, 0);
 		RenderMesh(meshList[GEO_PISTOL1], true);
 		modelStack.PopMatrix();
 
@@ -1994,7 +1994,11 @@ void Sp2Scene::RenderRifle1()
 		modelStack.Rotate(rotateGunX, 1, 0, 0);
 	
 		modelStack.PushMatrix();
-		if (Application::IsKeyPressed(VK_RBUTTON) == true)
+		if (Application::IsKeyPressed(VK_SHIFT) == true)
+		{
+			modelStack.Translate(0, -10, -10);
+		}
+		else if (Application::IsKeyPressed(VK_RBUTTON) == true)
 		{
 			modelStack.Translate(0, -8.1, -10);
 		}
@@ -2002,9 +2006,15 @@ void Sp2Scene::RenderRifle1()
 		{
 			modelStack.Translate(5, -10, -15);
 		}
-
 		modelStack.Translate(0, 5, 0);
-		modelStack.Rotate(-90, 0, 1, 0);
+		if (Application::IsKeyPressed(VK_SHIFT) == true)
+		{
+			modelStack.Rotate(-60, 0, 1, 0);
+		}
+		else
+		{
+			modelStack.Rotate(-90, 0, 1, 0);
+		}
 		modelStack.Scale(5, 5, 5);
 		RenderMesh(meshList[GEO_RIFLE1], true);
 		modelStack.PopMatrix();
@@ -2033,7 +2043,15 @@ void Sp2Scene::RenderSniper1()
 		modelStack.Rotate(rotateGunX, 1, 0, 0);
 
 		modelStack.PushMatrix();
-		if (Application::IsKeyPressed(VK_RBUTTON) == true)
+		if (Application::IsKeyPressed(VK_SHIFT) == true)
+		{
+			modelStack.Translate(0, -10, -15);
+			modelStack.Translate(0, 1.5, 0);
+			modelStack.Rotate(-60, 0, 1, 0);
+			modelStack.Scale(2, 2, 2);
+			RenderMesh(meshList[GEO_SNIPER1], true);
+		}
+		else if (Application::IsKeyPressed(VK_RBUTTON) == true)
 		{
 
 			modelStack.Translate(0, -7.1, -10);
@@ -2080,12 +2098,24 @@ void Sp2Scene::RenderShotgun1()
 		{
 			modelStack.Translate(0, -7, -10);
 		}
+		else if (Application::IsKeyPressed(VK_SHIFT) == true)
+		{
+			modelStack.Translate(0, -10, -15);
+		}
 		else
 		{
 			modelStack.Translate(5, -10, -15);
 		}
 		modelStack.Translate(0.3, 4.1, 0);
-		modelStack.Rotate(-90, 0, 1, 0);
+		if (Application::IsKeyPressed(VK_SHIFT) == true)
+		{
+			modelStack.Rotate(-60, 0, 1, 0);
+		}
+		else
+		{
+			modelStack.Rotate(-90, 0, 1, 0);
+		}
+		
 		modelStack.Scale(0.5, 0.5, 0.5);
 		RenderMesh(meshList[GEO_SHOTGUN1], true);
 		modelStack.PopMatrix();
