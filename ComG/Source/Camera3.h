@@ -49,6 +49,8 @@ public:
 	Vector3 gunRecoil;
 	Vector3 directionRotation;
 	int cRecoilCd;
+	static bool inBase;
+
 
 	Vector3 diffx;
 	Vector3 diffz;

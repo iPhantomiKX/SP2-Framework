@@ -121,6 +121,13 @@ class Sp2Scene : public Scene
 		U_TEXT_COLOR,
 		U_TOTAL,
 	};
+	enum class states
+	{
+		menu,
+		base,
+		outside,
+	};
+
 public:
 	Sp2Scene();
 	~Sp2Scene();
@@ -194,10 +201,16 @@ private:
 	bool equipShotgun1 = false;
 
 	//check if weapon is bought
-	bool boughtPistol1 = false;
+	//bool boughtPistol1 = false;
 	bool boughtRifle1 = false;
 	bool boughtSniper1 = false;
 	bool boughtShotgun1 = false;
+
+	//check if weapon is available
+	//bool pistol2Avail = false;
+	bool rifle1Avail = false;
+	bool sniper1Avail = false;
+	bool shotgun1Avail = false;
 
 	bool testPortal = false;
 	bool testPortalsign = false;
@@ -224,6 +237,8 @@ private:
 	void RenderTable();
 	void RenderHealthPack();
 
+	void changeStates();
+
 	Vector3 treeposition[150];
 	Vector3 test;
 
@@ -242,6 +257,8 @@ private:
 	MS modelStack, viewStack, projectionStack;
 
 	Light light[1];
+
+	states gameStates;
 };
 
 #endif

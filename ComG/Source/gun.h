@@ -36,7 +36,7 @@ struct shotgun
 	//double range = 500;
 	double RoF = 30;
 	int ammo = 8;
-	int maxAmmo = 10;
+	int maxAmmo = 8;
 	double reloadSpd = 50;
-	int inAccuracy = 3;
+	int inAccuracy = 2;
 };
