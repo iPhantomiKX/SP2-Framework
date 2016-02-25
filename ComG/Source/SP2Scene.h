@@ -198,13 +198,13 @@ private:
 	bool equipShotgun1 = false;
 
 	//check if weapon is bought
-	bool boughtPistol1 = false;
+	//bool boughtPistol1 = false;
 	bool boughtRifle1 = false;
 	bool boughtSniper1 = false;
 	bool boughtShotgun1 = false;
 
 	//check if weapon is available
-	bool pistol2Avail = false;
+	//bool pistol2Avail = false;
 	bool rifle1Avail = false;
 	bool sniper1Avail = false;
 	bool shotgun1Avail = false;

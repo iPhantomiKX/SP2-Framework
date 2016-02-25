@@ -318,129 +318,67 @@ void Sp2Scene::Update(double dt)
 
 	if (gameStates == states::base)
 	{
-		if (camera.craftUi() == true)
+		if (camera.craftUi() == true && Application::IsKeyPressed('E'))
 		{
 			crafting = true;
 		}
-	}
-	else if (camera.craftUi() == false)
-	{
-		crafting = false;
-	}
-
-	if (camera.craftUi() == true)
-	{
-		if (Application::IsKeyPressed('2') && crafting == true)
+		else if (camera.craftUi() == false)
 		{
-			boughtRifle1 = true;
-			rifle1Avail = true;
+			crafting = false;
+		}
 
-			/*if (boughtShotgun1 == false)
+		if (camera.craftUi() == true)
+		{
+			if (Application::IsKeyPressed('2') && crafting == true)
 			{
-			shotgun1Avail = false;
+				boughtRifle1 = true;
+				rifle1Avail = true;
+
+				/*if (boughtShotgun1 == false)
+				{
+				shotgun1Avail = false;
+				}
+
+				if (boughtSniper1 == false)
+				{
+				sniper1Avail = false;
+				}*/
 			}
+			if (Application::IsKeyPressed('3') && crafting == true)
+			{
 
-			if (boughtSniper1 == false)
-			{
-			sniper1Avail = false;
-			}*/
-		}
-		if (Application::IsKeyPressed('3') && crafting == true)
-		{
-			
-			/*		if (boughtRifle1 == false)
-			{
-			rifle1Avail = false;
-			}*/
-			boughtShotgun1 = true;
-			shotgun1Avail = true;
+				/*		if (boughtRifle1 == false)
+				{
+				rifle1Avail = false;
+				}*/
+				boughtShotgun1 = true;
+				shotgun1Avail = true;
 
-			//if (boughtSniper1 == false)
-			//{
-			//	sniper1Avail = false;
-			//}
-		}
-		if (Application::IsKeyPressed('4') && crafting == true)
-		{
-			/*if (boughtRifle1 == false)
-			{
-			rifle1Avail = false;
+				//if (boughtSniper1 == false)
+				//{
+				//	sniper1Avail = false;
+				//}
 			}
-
-			if (boughtShotgun1 == false)
+			if (Application::IsKeyPressed('4') && crafting == true)
 			{
-			shotgun1Avail = false;
-			}*/
-			cout << "3" << std::endl;
-			boughtSniper1 = true;
-			sniper1Avail = true;
+				/*if (boughtRifle1 == false)
+				{
+				rifle1Avail = false;
+				}
+
+				if (boughtShotgun1 == false)
+				{
+				shotgun1Avail = false;
+				}*/
+				cout << "3" << std::endl;
+				boughtSniper1 = true;
+				sniper1Avail = true;
+			}
 		}
 	}
 
-	}
 
 	//If pressed '1', switch to Pistol1
-	if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
-	{
-		equipPistol1 = true;
-		equipRifle1 = false;
-		equipSniper1 = false;
-		equipShotgun1 = false;
-	}
-
-	if (boughtRifle1 == true)
-	{
-		//If pressed '2', switch to Rifle1
-		if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
-		{
-			equipPistol1 = false;
-			equipRifle1 = true;
-			if (sniper1Avail == true)
-			{
-				equipSniper1 = false;
-			}
-			if (shotgun1Avail = true)
-			{
-				equipShotgun1 = false;
-			}
-		}
-	}
-
-	if (boughtShotgun1 == true)
-	{
-		//If pressed '3', switch to Sniper1
-		if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
-		{
-			equipPistol1 = false;
-			if (rifle1Avail == true)
-			{
-				equipRifle1 = false;
-			}
-
-			equipShotgun1 = true;
-
-			if (sniper1Avail == true)
-			{
-				equipSniper1 = false;
-			}
-		}
-	}
-	if (boughtSniper1 == true)
-	{
-		if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
-		{
-			equipPistol1 = false;
-			if (rifle1Avail == true)
-			{
-				equipRifle1 = false;
-			}
-			if (shotgun1Avail == true)
-			{
-				equipShotgun1 = false;
-			}
-			equipSniper1 = true;
-		}
-	}
 
 
 
@@ -726,7 +664,7 @@ void Sp2Scene::Update(double dt)
 			}
 
 
-			if (Application::IsKeyPressed('5'))
+			/*if (Application::IsKeyPressed('5'))
 			{
 				meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
 				meshList[GEO_TOP]->textureID = LoadTGA("Image//snow_up.tga");
@@ -791,7 +729,7 @@ void Sp2Scene::Update(double dt)
 			rotateAngle += (float)(10 * dt);
 			planet1RotAngle += (float)(5 * dt);
 			planet1RevAngle += (float)(2 * dt);
-			moon1RotAngle += (float)(50 * dt);
+			moon1RotAngle += (float)(50 * dt);*/
 
 			framerate = 1 / dt;
 
@@ -825,154 +763,7 @@ void Sp2Scene::Update(double dt)
 					rainpositionx[i] += (float)(150 * dt);
 				}
 			}*/
-			if (Camera3::mouseControl == true)
-			{
-				if (Application::IsKeyPressed(VK_RBUTTON))
-				{
-					if (Camera3::xpos < 395)
-					{
-						rotateGunY += 1.5;
-					}
-					if (Camera3::xpos > 405)
-					{
-						rotateGunY -= 1.5;
-					}
-					if (Camera3::ypos < 295)
-					{
-						gunDir += 1.5;
-					}
-					if (Camera3::ypos > 305)
-					{
-						gunDir -= 1.5;
-					}
-					if (gunDir > 45)
-					{
-						gunDir = 45;
-					}
-					else if (gunDir < -45)
-					{
-						gunDir = -45;
-					}
-				}
-				else
-				{
-					if (Camera3::xpos < 395)
-					{
-						rotateGunY += 3;
-					}
-					if (Camera3::xpos > 405)
-					{
-						rotateGunY -= 3;
-					}
-					if (Camera3::ypos < 295)
-					{
-						gunDir += 3;
-					}
-					if (Camera3::ypos > 305)
-					{
-						gunDir -= 3;
-					}
 
-					if (gunDir > 45)
-					{
-						gunDir = 45;
-					}
-					else if (gunDir < -45)
-					{
-						gunDir = -45;
-					}
-				}
-			}
-			else if (Camera3::mouseControl == false)
-			{
-				if (Application::IsKeyPressed(VK_LEFT))
-				{
-					rotateGunY += 3;
-				}
-				if (Application::IsKeyPressed(VK_RIGHT))
-				{
-					rotateGunY -= 3;
-				}
-				if (Application::IsKeyPressed(VK_UP))
-				{
-					gunDir += 3;
-				}
-				if (Application::IsKeyPressed(VK_DOWN))
-				{
-					gunDir -= 3;
-				}
-
-				//Boundaries for gun rotation
-				if (gunDir > 45)
-				{
-					gunDir = 45;
-				}
-				else if (gunDir < -45)
-				{
-					gunDir = -45;
-				}
-			}
-
-			if (upRecoil > 20)
-			{
-				upRecoil = 20;
-			}
-
-			rotateGunX = gunDir + upRecoil;
-			if (Application::IsKeyPressed(VK_LBUTTON))
-			{
-				sRecoilCd = 20;
-			}
-			else if (sRecoilCd > 0)
-			{
-				sRecoilCd--;
-			}
-
-
-			if (upRecoil > 0 && sRecoilCd == 0)
-			{
-				upRecoil -= 0.2;
-			}
-
-			if (rotateGunX > 45)
-			{
-				rotateGunX = 45;
-			}
-			if (rotateGunX < -45)
-			{
-				rotateGunX = -45;
-			}
-			if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
-			{
-				equipPistol1 = true;
-				equipRifle1 = false;
-				equipSniper1 = false;
-				equipShotgun1 = false;
-			}
-			//If pressed '2', switch to Rifle1
-			else if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true)
-			{
-				equipPistol1 = false;
-				equipRifle1 = true;
-				equipSniper1 = false;
-				equipShotgun1 = false;
-			}
-			//If pressed '3', switch to Sniper1
-			else if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true)
-			{
-				equipPistol1 = false;
-				equipRifle1 = false;
-				equipShotgun1 = true;
-				equipSniper1 = false;
-
-			}
-			else if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true)
-			{
-				equipPistol1 = false;
-				equipRifle1 = false;
-				equipShotgun1 = false;
-				equipSniper1 = true;
-			}
 			if (gameStates == states::outside)
 			{
 				
@@ -1198,6 +989,184 @@ void Sp2Scene::Update(double dt)
 				{
 					t.hp = 10;
 					t.isDead = false;
+				}
+			}
+			if (Camera3::mouseControl == true)
+			{
+				if (Application::IsKeyPressed(VK_RBUTTON))
+				{
+					if (Camera3::xpos < 395)
+					{
+						rotateGunY += 1.5;
+					}
+					if (Camera3::xpos > 405)
+					{
+						rotateGunY -= 1.5;
+					}
+					if (Camera3::ypos < 295)
+					{
+						gunDir += 1.5;
+					}
+					if (Camera3::ypos > 305)
+					{
+						gunDir -= 1.5;
+					}
+					if (gunDir > 45)
+					{
+						gunDir = 45;
+					}
+					else if (gunDir < -45)
+					{
+						gunDir = -45;
+					}
+				}
+				else
+				{
+					if (Camera3::xpos < 395)
+					{
+						rotateGunY += 3;
+					}
+					if (Camera3::xpos > 405)
+					{
+						rotateGunY -= 3;
+					}
+					if (Camera3::ypos < 295)
+					{
+						gunDir += 3;
+					}
+					if (Camera3::ypos > 305)
+					{
+						gunDir -= 3;
+					}
+
+					if (gunDir > 45)
+					{
+						gunDir = 45;
+					}
+					else if (gunDir < -45)
+					{
+						gunDir = -45;
+					}
+				}
+			}
+			else if (Camera3::mouseControl == false)
+			{
+				if (Application::IsKeyPressed(VK_LEFT))
+				{
+					rotateGunY += 3;
+				}
+				if (Application::IsKeyPressed(VK_RIGHT))
+				{
+					rotateGunY -= 3;
+				}
+				if (Application::IsKeyPressed(VK_UP))
+				{
+					gunDir += 3;
+				}
+				if (Application::IsKeyPressed(VK_DOWN))
+				{
+					gunDir -= 3;
+				}
+
+				//Boundaries for gun rotation
+				if (gunDir > 45)
+				{
+					gunDir = 45;
+				}
+				else if (gunDir < -45)
+				{
+					gunDir = -45;
+				}
+			}
+
+			if (upRecoil > 20)
+			{
+				upRecoil = 20;
+			}
+
+			rotateGunX = gunDir + upRecoil;
+			if (Application::IsKeyPressed(VK_LBUTTON))
+			{
+				sRecoilCd = 20;
+			}
+			else if (sRecoilCd > 0)
+			{
+				sRecoilCd--;
+			}
+
+
+			if (upRecoil > 0 && sRecoilCd == 0)
+			{
+				upRecoil -= 0.2;
+			}
+
+			if (rotateGunX > 45)
+			{
+				rotateGunX = 45;
+			}
+			if (rotateGunX < -45)
+			{
+				rotateGunX = -45;
+			}
+			if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
+			{
+				equipPistol1 = true;
+				equipRifle1 = false;
+				equipSniper1 = false;
+				equipShotgun1 = false;
+			}
+
+			if (boughtRifle1 == true)
+			{
+				//If pressed '2', switch to Rifle1
+				if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
+				{
+					equipPistol1 = false;
+					equipRifle1 = true;
+					if (sniper1Avail == true)
+					{
+						equipSniper1 = false;
+					}
+					if (shotgun1Avail = true)
+					{
+						equipShotgun1 = false;
+					}
+				}
+			}
+
+			if (boughtShotgun1 == true)
+			{
+				//If pressed '3', switch to Sniper1
+				if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
+				{
+					equipPistol1 = false;
+					if (rifle1Avail == true)
+					{
+						equipRifle1 = false;
+					}
+
+					equipShotgun1 = true;
+
+					if (sniper1Avail == true)
+					{
+						equipSniper1 = false;
+					}
+				}
+			}
+			if (boughtSniper1 == true)
+			{
+				if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
+				{
+					equipPistol1 = false;
+					if (rifle1Avail == true)
+					{
+						equipRifle1 = false;
+					}
+					if (shotgun1Avail == true)
+					{
+						equipShotgun1 = false;
+					}
+					equipSniper1 = true;
 				}
 			}
 		changeStates();
