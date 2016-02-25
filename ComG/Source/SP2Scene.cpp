@@ -432,6 +432,55 @@ void Sp2Scene::Update(double dt)
 		rotateGunX = -45;
 	}
 
+	if (crafting == true)
+	{
+		if (Application::IsKeyPressed('2'))
+		{
+			boughtRifle1 = true;
+			rifle1Avail = true;
+
+			/*if (boughtShotgun1 == false)
+			{
+				shotgun1Avail = false;
+			}
+
+			if (boughtSniper1 == false)
+			{
+				sniper1Avail = false;
+			}*/
+		}
+		if (Application::IsKeyPressed('3'))
+		{
+			
+	/*		if (boughtRifle1 == false)
+			{
+				rifle1Avail = false;
+			}*/
+			boughtShotgun1 = true;
+			shotgun1Avail = true;
+
+			//if (boughtSniper1 == false)
+			//{
+			//	sniper1Avail = false;
+			//}
+		}
+		if (Application::IsKeyPressed('4'))
+		{
+			/*if (boughtRifle1 == false)
+			{
+				rifle1Avail = false;
+			}
+
+			if (boughtShotgun1 == false)
+			{
+				shotgun1Avail = false;
+			}*/
+
+			boughtSniper1 = true;
+			sniper1Avail = true;
+		}
+	}
+
 	//If pressed '1', switch to Pistol1
 	if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
 	{
@@ -440,29 +489,59 @@ void Sp2Scene::Update(double dt)
 		equipSniper1 = false;
 		equipShotgun1 = false;
 	}
-	//If pressed '2', switch to Rifle1
-	else if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true)
+
+	if (boughtRifle1 == true)
 	{
-		equipPistol1 = false;
-		equipRifle1 = true;
-		equipSniper1 = false;
-		equipShotgun1 = false;
+		//If pressed '2', switch to Rifle1
+		if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true)
+		{
+			equipPistol1 = false;
+			equipRifle1 = true;
+			if (sniper1Avail == true)
+			{
+				equipSniper1 = false;
+			}
+			if (shotgun1Avail = true)
+			{
+				equipShotgun1 = false;
+			}
+		}
 	}
-	//If pressed '3', switch to Sniper1
-	else if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true)
+
+	if (boughtShotgun1 == true)
 	{
-		equipPistol1 = false;
-		equipRifle1 = false;
-		equipShotgun1 = true;
-		equipSniper1 = false;
-		
+		//If pressed '3', switch to Sniper1
+		if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true)
+		{
+			equipPistol1 = false;
+			if (rifle1Avail == true)
+			{
+				equipRifle1 = false;
+			}
+
+			equipShotgun1 = true;
+
+			if (sniper1Avail == true)
+			{
+				equipSniper1 = false;
+			}
+		}
 	}
-	else if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true)
+	if (boughtSniper1 == true)
 	{
-		equipPistol1 = false;
-		equipRifle1 = false;
-		equipShotgun1 = false;
-		equipSniper1 = true;
+		if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true)
+		{
+			equipPistol1 = false;
+			if (rifle1Avail == true)
+			{
+				equipRifle1 = false;
+			}
+			if (shotgun1Avail == true)
+			{
+				equipShotgun1 = false;
+			}
+			equipSniper1 = true;
+		}
 	}
 
 	if (camera.craftUi() == true)
@@ -470,29 +549,31 @@ void Sp2Scene::Update(double dt)
 		std::cout << "hi amirul" << std::endl;
 	}
 
-	if (camera.craftUi() == true && Application::IsKeyPressed('E') == true)
+	if (camera.craftUi() == true)
 	{
-		crafting = true;
-	}
-	else
-	{
-		crafting = false;
-	}
-	/*if (Application::IsKeyPressed('E'))
-	{
-		if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+		if (Application::IsKeyPressed('E'))
 		{
 			crafting = true;
 		}
-		else
-		{
-			crafting = false;
-		}
 	}
-	else if (!camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+	else if (camera.craftUi() == false)
 	{
 		crafting = false;
-	}*/
+	}
+	//if (Application::IsKeyPressed('E'))
+	//{
+	//	if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+	//	{
+	//		crafting = true;
+	//	}
+
+	//}
+	//else if (!camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+	//{
+	//	crafting = false;
+	//}
+
+
 
 	//for (int i = 0; i < 50; ++i)
 	//{
@@ -2096,7 +2177,7 @@ void Sp2Scene::RenderShotgun1()
 		modelStack.PushMatrix();
 		if (Application::IsKeyPressed(VK_RBUTTON) == true)
 		{
-			modelStack.Translate(0, -7, -10);
+			modelStack.Translate(0, -7, -8);
 		}
 		else if (Application::IsKeyPressed(VK_SHIFT) == true)
 		{
