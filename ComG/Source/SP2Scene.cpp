@@ -38,6 +38,7 @@ rifle rif;
 sniper sr;
 shotgun sg;
 target t;
+enemy thecube(100, 150.f, 10.f, 1.f, 5);
 
 
 Sp2Scene::Sp2Scene()
@@ -143,7 +144,6 @@ void Sp2Scene::Init()
 	//Initialize camera settings
 	camera.Init(Vector3(1, 10, 0), Vector3(0, 10, 0), Vector3(0, 1, 0));
 
-
 	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
@@ -233,6 +233,8 @@ void Sp2Scene::Init()
 
 	meshList[GEO_TARGETHIT] = MeshBuilder::GenerateCube("target2", Color(0, 1, 0));
 
+	meshList[GEO_THECUBE] = MeshBuilder::GenerateOBJ("thecube", "OBJ//MaleRobot.obj");
+
 	Mtx44 projection;
 	projection.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
 	projectionStack.LoadMatrix(projection);
@@ -315,6 +317,18 @@ static float SCALE_LIMIT = 5.f;
 void Sp2Scene::Update(double dt)
 {
 	camera.Update(dt);
+	Vector3 view = camera.position - thecube.pos;
+	view.Normalized();
+	/*********************************************
+	AI CODES!!!!!!!!!!!!!!!
+	***********************************************/
+	thecube.pos.x += (view.x * dt * thecube.speed) / 5;
+	thecube.pos.y += (view.y * dt * thecube.speed) / 5;
+	thecube.pos.z += (view.z * dt * thecube.speed) / 5;
+	if (thecube.pos == camera.position)
+	{
+		std::cout << "reached end point" << std::endl;
+	}
 
 	if (gameStates == states::base)
 	{
@@ -396,374 +410,149 @@ void Sp2Scene::Update(double dt)
 	//}
 
 
+	if (camera.craftUi() == true && Application::IsKeyPressed('E') == true)
+	{
+		crafting = true;
+	}
+	else
+	{
+		crafting = false;
+	}
 
-	//for (int i = 0; i < 50; ++i)
-	//{
-	//	if (camera.checkcollisionwithObject(Vector3(treex[i], 0, treez[i]), 20, 40, 20) == true)
-	//	{
-	//		camera.position = camera.prevPosition;
-	//	}
-
-	//	//collision for spaceship floor 2
-	//	if (camera.checkcollisionwithObject(Vector3(400, 60, 100), 100, 15, 100))
-	//	{
-	//		camera.position = camera.prevPosition;
-	//	}
-
-	//	//collision for spaceship wall length 1
-	//	if (camera.checkcollisionwithObject(Vector3(450, 110, 0), 15, 100, 100))
-	//	{
-	//		camera.position = camera.prevPosition;
-	//		meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_TOP]->textureID = LoadTGA("Image//blood_up.tga");
-	//		meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//blood_dn.tga");
-	//		meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_FRONT]->textureID = LoadTGA("Image//blood_ft.tga");
-	//		meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_BACK]->textureID = LoadTGA("Image//blood_bk.tga");
-	//		meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_LEFT]->textureID = LoadTGA("Image//blood_lf.tga");
-	//		meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_RIGHT]->textureID = LoadTGA("Image//blood_rt.tga");
-
-	//		meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 10, 40);
-	//		meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 0, 0), 10, 20);
-
-	//		meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Rock.obj");
-	//		//meshList[GEO_OBJECT]->textureID = LoadTGA("Image//chair.tga");
-
-	//		light[0].color.Set(1, 0, 0);
-	//		for (int i = 0; i < 1000; i++)
-	//		{
-	//			rainpositiony[i] -= (float)(100 * dt);
-	//		}
-	//		/*Camera3::test2 = false;
-	//		Camera3::test = false;
-	//		Camera3::test3 = true;
-	//		}*/
-			
-			//collision for spaceship floor 1
-			/*if (camera.checkcollisionwithObject(Vector3(400, 60, 0), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship floor 2
-		/*	if (camera.checkcollisionwithObject(Vector3(400, 60, 100), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship floor 3
-			/*if (camera.checkcollisionwithObject(Vector3(300, 60, 0), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship floor 4
-			//if (camera.checkcollisionwithObject(Vector3(300, 60, 100), 100, 15, 100))
-			//{
-			//	camera.position = camera.prevPosition;
-			//}
-
-			//collision for spaceship wall length 1
-			//if (camera.checkcollisionwithObject(Vector3(450, 110, 0), 15, 100, 100))
-			//{
-			//	camera.position = camera.prevPosition;
-			//}
-
-			//collision for spaceship wall length 2
-			/*if (camera.checkcollisionwithObject(Vector3(450, 110, 100), 15, 100, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			
-			//collision for spaceship wall length 3
-			/*if (camera.checkcollisionwithObject(Vector3(250, 110, 0), 15, 100, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship wall length 4
-			/*if (camera.checkcollisionwithObject(Vector3(250, 110, 100), 15, 100, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship wall width 1
-			//if (camera.checkcollisionwithObject(Vector3(400, 110, -50), 100, 100, 15))
-			//{
-			//	camera.position = camera.prevPosition;
-			//}
-
-			//collision for spaceship wall width 2
-			/*if (camera.checkcollisionwithObject(Vector3(400, 110, 150), 100, 100, 15))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship wall width 3
-			/*if (camera.checkcollisionwithObject(Vector3(300, 110, -50), 100, 100, 15))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship wall width 4
-			/*if (camera.checkcollisionwithObject(Vector3(300, 110, 150), 100, 100, 15))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship roof 1
-			/*if (camera.checkcollisionwithObject(Vector3(400, 160, 0), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship roof 2
-			/*if (camera.checkcollisionwithObject(Vector3(400, 160, 100), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship roof 3
-			//if (camera.checkcollisionwithObject(Vector3(300, 160, 0), 100, 15, 100))
-			//{
-			//	camera.position = camera.prevPosition;
-			//}
-
-			//collision for spaceship roof 4
-			/*if (camera.checkcollisionwithObject(Vector3(300, 160, 100), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spacehouse width 1
-			/*if (camera.checkcollisionwithObject(Vector3(-338, 0, 38), 18, 120, 120))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spacehouse width 2
-			/*if (camera.checkcollisionwithObject(Vector3(-460, 0, 38), 18, 120, 120))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spacehouse back wall 
-			/*if (camera.checkcollisionwithObject(Vector3(-400, 0, 73), 120, 120, 18))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for front wall 1
-			/*if (camera.checkcollisionwithObject(Vector3(-360, 0, 0), 52, 120, 18))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for front wall 2
-			/*if (camera.checkcollisionwithObject(Vector3(-435, 0, 0), 52, 120, 18))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//portal1 interaction
-			//if (camera.checkcollisionwithObject(Vector3(-435.088, 10, 50.0353), 10, 15, 10))
-			//{
-			//	camera.position = camera.prevPosition;
-			//	testPortalsign = true;
-			//	testPortal = true;
-			//	if (Application::IsKeyPressed('E') && testPortal == true)
-			//	{
-			//		camera.position.x = 399.526;
-			//		camera.position.y = 80.0759;
-			//		camera.position.z = 100.455;
-			//		testPortal = false;
-			//		testPortalsign = false;
-			//	}
-			//}
-			//else
-			//{
-			//	testPortal = false;
-			//	testPortalsign = false;
-			//}
-
-
-			//portal2 interaction
-			//if (camera.checkcollisionwithObject(Vector3(400.088, 71, 0.0353), 10, 15, 10))
-			//{
-				//camera.position = camera.prevPosition;
-			//	testPortalsign = true;
-			//	testPortal = true;
-			//	if (Application::IsKeyPressed('E') && testPortal == true)
-			//	{
-			//		camera.position.x = -400;
-			//		camera.position.y = 20;
-			//		camera.position.z = 1;
-			//		testPortal = false;
-			//		testPortalsign = false;
-	/*			}
-			}
-			else
-			{
-				testPortal = false;
-				testPortalsign = false;
-			}*/
-
-			////Crafting interaction
-			//if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
-			//{
-			//	camera.position = camera.prevPosition;
-
-			//	if (Application::IsKeyPressed('E'))
-			//	{
-			//		
-			//		RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
-			//		cout << "I am running";
-			//	}
-			//}
-			//else
-			//{
-
-			//}
-
-
-			//if (Application::IsKeyPressed('1')) //enable back face culling
-			//glDisable(GL_CULL_FACE);
-			//if (Application::IsKeyPressed('2')) //disable back face culling
-			//glEnable(GL_CULL_FACE);
-			if (Application::IsKeyPressed('0'))
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
-			if (Application::IsKeyPressed('5'))
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+		//if (Application::IsKeyPressed('1')) //enable back face culling
+		//glDisable(GL_CULL_FACE);
+		//if (Application::IsKeyPressed('2')) //disable back face culling
+		//glEnable(GL_CULL_FACE);
+		if (Application::IsKeyPressed('0'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
+		if (Application::IsKeyPressed('5'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
 			
 
-			if (Application::IsKeyPressed('I'))
-				light[0].position.z -= (float)(LSPEED * dt);
-			if (Application::IsKeyPressed('K'))
-				light[0].position.z += (float)(LSPEED * dt);
-			if (Application::IsKeyPressed('J'))
-				light[0].position.x -= (float)(LSPEED * dt);
-			if (Application::IsKeyPressed('L'))
-				light[0].position.x += (float)(LSPEED * dt);
-			if (Application::IsKeyPressed('O'))
-				light[0].position.y -= (float)(LSPEED * dt);
-			if (Application::IsKeyPressed('P'))
-				light[0].position.y += (float)(LSPEED * dt);
+		if (Application::IsKeyPressed('I'))
+			light[0].position.z -= (float)(LSPEED * dt);
+		if (Application::IsKeyPressed('K'))
+			light[0].position.z += (float)(LSPEED * dt);
+		if (Application::IsKeyPressed('J'))
+			light[0].position.x -= (float)(LSPEED * dt);
+		if (Application::IsKeyPressed('L'))
+			light[0].position.x += (float)(LSPEED * dt);
+		if (Application::IsKeyPressed('O'))
+			light[0].position.y -= (float)(LSPEED * dt);
+		if (Application::IsKeyPressed('P'))
+			light[0].position.y += (float)(LSPEED * dt);
 
-			if (Application::IsKeyPressed('7'))
+		if (Application::IsKeyPressed('7'))
+		{
+			light[0].type = Light::LIGHT_DIRECTIONAL;
+		}
+		if (Application::IsKeyPressed('8'))
+		{
+			light[0].type = Light::LIGHT_SPOT;
+		}
+
+
+		if (Application::IsKeyPressed('5'))
+		{
+			meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_TOP]->textureID = LoadTGA("Image//snow_up.tga");
+			meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//snow_dn.tga");
+			meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_FRONT]->textureID = LoadTGA("Image//snow_ft.tga");
+			meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_BACK]->textureID = LoadTGA("Image//snow_bk.tga");
+			meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_LEFT]->textureID = LoadTGA("Image//snow_lf.tga");
+			meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_RIGHT]->textureID = LoadTGA("Image//snow_rt.tga");
+			meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
+			meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
+			light[0].color.Set(1, 1, 1);
+		}
+
+		if (Application::IsKeyPressed('6'))
+		{
+			meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_TOP]->textureID = LoadTGA("Image//icyhell_up.tga");
+			meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//icyhell_dn.tga");
+			meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_FRONT]->textureID = LoadTGA("Image//icyhell_ft.tga");
+			meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_BACK]->textureID = LoadTGA("Image//icyhell_bk.tga");
+			meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_LEFT]->textureID = LoadTGA("Image//icyhell_lf.tga");
+			meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_RIGHT]->textureID = LoadTGA("Image//icyhell_rt.tga");
+			meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(0.5, 0.5, 0.5), 10, 40);
+			meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(0.5, 0.5, 0.5), 10, 20);
+			light[0].color.Set(0.5, 0.5, 0.5);
+		}
+
+		if (Application::IsKeyPressed('9'))
+		{
+			meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_TOP]->textureID = LoadTGA("Image//blood_up.tga");
+			meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//blood_dn.tga");
+			meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_FRONT]->textureID = LoadTGA("Image//blood_ft.tga");
+			meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_BACK]->textureID = LoadTGA("Image//blood_bk.tga");
+			meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_LEFT]->textureID = LoadTGA("Image//blood_lf.tga");
+			meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
+			meshList[GEO_RIGHT]->textureID = LoadTGA("Image//blood_rt.tga");
+
+			meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 10, 40);
+			meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 0, 0), 10, 20);
+			light[0].color.Set(1, 0, 0);
+			for (int i = 0; i < 1000; i++)
 			{
-				light[0].type = Light::LIGHT_DIRECTIONAL;
+				rainpositiony[i] -= (float)(100 * dt);
 			}
-			if (Application::IsKeyPressed('8'))
+		}
+
+		rotateAngle += (float)(10 * dt);
+		planet1RotAngle += (float)(5 * dt);
+		planet1RevAngle += (float)(2 * dt);
+		moon1RotAngle += (float)(50 * dt);
+
+		framerate = 1 / dt;
+
+	/*	for (int i = 0; i < 1000; i++)
+		{
+			rainpositiony[i] -= (float)(50 * dt);
+			if (rainpositiony[i] < -499.0f)
 			{
-				light[0].type = Light::LIGHT_SPOT;
+				rainpositiony[i] = 499.0f;
+				rainpositionx[i] = rand() % 998 - 499;
+				rainpositionz[i] = rand() % 998 - 499;
 			}
-
-
-			/*if (Application::IsKeyPressed('5'))
+			if (Application::IsKeyPressed(VK_SPACE))
 			{
-				meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_TOP]->textureID = LoadTGA("Image//snow_up.tga");
-				meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//snow_dn.tga");
-				meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_FRONT]->textureID = LoadTGA("Image//snow_ft.tga");
-				meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BACK]->textureID = LoadTGA("Image//snow_bk.tga");
-				meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_LEFT]->textureID = LoadTGA("Image//snow_lf.tga");
-				meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_RIGHT]->textureID = LoadTGA("Image//snow_rt.tga");
-				meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
-				meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
-				light[0].color.Set(1, 1, 1);
+				rainpositiony[i] -= (float)(150 * dt);
 			}
-
-			if (Application::IsKeyPressed('6'))
+			if (Application::IsKeyPressed('Q'))
 			{
-				meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_TOP]->textureID = LoadTGA("Image//icyhell_up.tga");
-				meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//icyhell_dn.tga");
-				meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_FRONT]->textureID = LoadTGA("Image//icyhell_ft.tga");
-				meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BACK]->textureID = LoadTGA("Image//icyhell_bk.tga");
-				meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_LEFT]->textureID = LoadTGA("Image//icyhell_lf.tga");
-				meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_RIGHT]->textureID = LoadTGA("Image//icyhell_rt.tga");
-				meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(0.5, 0.5, 0.5), 10, 40);
-				meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(0.5, 0.5, 0.5), 10, 20);
-				light[0].color.Set(0.5, 0.5, 0.5);
+				rainpositiony[i] += (float)(150 * dt);
 			}
-
-			if (Application::IsKeyPressed('9'))
+			if (Application::IsKeyPressed('E'))
 			{
-				meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_TOP]->textureID = LoadTGA("Image//blood_up.tga");
-				meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//blood_dn.tga");
-				meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_FRONT]->textureID = LoadTGA("Image//blood_ft.tga");
-				meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BACK]->textureID = LoadTGA("Image//blood_bk.tga");
-				meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_LEFT]->textureID = LoadTGA("Image//blood_lf.tga");
-				meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_RIGHT]->textureID = LoadTGA("Image//blood_rt.tga");
-
-				meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 10, 40);
-				meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 0, 0), 10, 20);
-				light[0].color.Set(1, 0, 0);
-				for (int i = 0; i < 1000; i++)
-				{
-					rainpositiony[i] -= (float)(100 * dt);
-				}
+				rainpositiony[i] += (float)(50 * dt);
 			}
-
-			rotateAngle += (float)(10 * dt);
-			planet1RotAngle += (float)(5 * dt);
-			planet1RevAngle += (float)(2 * dt);
-			moon1RotAngle += (float)(50 * dt);*/
-
-			framerate = 1 / dt;
-
-		/*	for (int i = 0; i < 1000; i++)
+			if (Application::IsKeyPressed('G'))
 			{
-				rainpositiony[i] -= (float)(50 * dt);
-				if (rainpositiony[i] < -499.0f)
-				{
-					rainpositiony[i] = 499.0f;
-					rainpositionx[i] = rand() % 998 - 499;
-					rainpositionz[i] = rand() % 998 - 499;
-				}
-				if (Application::IsKeyPressed(VK_SPACE))
-				{
-					rainpositiony[i] -= (float)(150 * dt);
-				}
-				if (Application::IsKeyPressed('Q'))
-				{
-					rainpositiony[i] += (float)(150 * dt);
-				}
-				if (Application::IsKeyPressed('E'))
-				{
-					rainpositiony[i] += (float)(50 * dt);
-				}
-				if (Application::IsKeyPressed('G'))
-				{
-					rainpositionx[i] -= (float)(150 * dt);
-				}
-				if (Application::IsKeyPressed('H'))
-				{
-					rainpositionx[i] += (float)(150 * dt);
-				}
-			}*/
-
+				rainpositionx[i] -= (float)(150 * dt);
+			}
+			if (Application::IsKeyPressed('H'))
+			{
+				rainpositionx[i] += (float)(150 * dt);
+			}
+		}*/
+		//test = c3.getShotsFired();
+		//std::cout << c3.getShotsFired() << "bang" <<  std::endl; // why 0
 			if (gameStates == states::outside)
 			{
 				
@@ -1906,6 +1695,15 @@ void Sp2Scene::RenderElements()
 	
 };
 
+void Sp2Scene::RenderEnemy()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(thecube.pos.x, thecube.pos.y, thecube.pos.z);
+	modelStack.Scale(0.5, 0.5, 0.5);
+	RenderMesh(meshList[GEO_THECUBE], true);
+	modelStack.PopMatrix();
+}
+
 void Sp2Scene::Render()
 {
 	// Render VBO here
@@ -1969,6 +1767,7 @@ void Sp2Scene::Render()
 		RenderTable();
 		RenderHealthPack();
 		RenderElements();
+		RenderEnemy();
 	}
 	if (gameStates == states::base)
 	{
@@ -1985,7 +1784,6 @@ void Sp2Scene::Render()
 	modelStack.Scale(10, 10, 10);
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();
-
 
 	/*if (Sp2Scene::test5 == true)
 	{

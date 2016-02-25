@@ -67,8 +67,8 @@ public:
 	bool hitbox(double move);
 	bool checkcollisionwithObject(double move);
 	//bool checkBulletcollisionwithObject(Vector3 bulletPos);
-	bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
-	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
+	/*bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
+	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);*/
 	void teleport();
 	bool craftUi();
 	Vector3 minPos(Vector3 center, double sizeX, double sizeY, double sizeZ);
