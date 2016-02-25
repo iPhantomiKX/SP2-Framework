@@ -30,7 +30,6 @@ struct sniper
 	double reloadSpd = 200;
 	int inAccuracy = 3;
 };
-
 struct shotgun
 {
 	int damage = 1;
@@ -38,6 +37,6 @@ struct shotgun
 	double RoF = 30;
 	int ammo = 8;
 	int maxAmmo = 8;
-	double reloadSpd = 25;
-	int inAccuracy = 2;
+	double reloadSpd = 50;
+	int inAccuracy = 3;
 };

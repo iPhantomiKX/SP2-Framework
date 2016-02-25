@@ -78,20 +78,14 @@ class Sp2Scene : public Scene
 		GEO_PORTAL2,
 		GEO_TABLE,
 		GEO_HEALTHPACK,
-		GEO_ELEMENTS6,
-		GEO_ELEMENTS7,
-		GEO_ELEMENTS8,
-		GEO_ELEMENTS9,
-		GEO_ELEMENTS10,
+		GEO_MINERALS,
 
 		GEO_PISTOL1,
 		GEO_RIFLE1,
 		GEO_SNIPER1,
 		GEO_SHOTGUN1,
 
-		GEO_PISTOL1_IMAGE,
-		GEO_RIFLE1_IMAGE,
-		GEO_SNIPER1_IMAGE,
+		GEO_CRAFT_UI,
 
 		GEO_SCOPE,
 		GEO_AMMO,
@@ -181,14 +175,27 @@ private:
 	bool reloaded = false;
 	void bulletRNG(int spray);
 	void aimBulletRNG(int spray);
+	bool bulletObjectCollision(Vector3 bulletPos);
+	bool craftUi();
 
 	double storeRand;
 	double storeRand2;
 
+	//boolean for crafting UI to pop out
+	bool crafting = false;
+
+	//boolean for equipping weapons
 	bool equipPistol1 = true;
 	bool equipRifle1 = false;
 	bool equipSniper1 = false;
 	bool equipShotgun1 = false;
+
+	//check if weapon is bought
+	bool boughtPistol1 = false;
+	bool boughtRifle1 = false;
+	bool boughtSniper1 = false;
+	bool boughtShotgun1 = false;
+
 	bool testPortal = false;
 	bool testPortalsign = false;
 
@@ -216,6 +223,8 @@ private:
 	Vector3 treeposition[150];
 	Vector3 test;
 
+	std::vector<Vector3> minVectors;
+	std::vector<Vector3> maxVectors;
 
 	std::vector<Vector3> shotsFired;
 	std::vector<Vector3> shotsDir;
