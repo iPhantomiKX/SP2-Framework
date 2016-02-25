@@ -432,29 +432,41 @@ void Sp2Scene::Update(double dt)
 		rotateGunX = -45;
 	}
 
-	if (crafting == true)
+	if (Application::IsKeyPressed('E'))
 	{
-		if (Application::IsKeyPressed('2'))
+		if (camera.craftUi() == true)
+		{
+			crafting = true;
+		}
+	}
+	else if (camera.craftUi() == false)
+	{
+		crafting = false;
+	}
+
+	if (camera.craftUi() == true)
+	{
+		if (Application::IsKeyPressed('2') && crafting == true)
 		{
 			boughtRifle1 = true;
 			rifle1Avail = true;
 
 			/*if (boughtShotgun1 == false)
 			{
-				shotgun1Avail = false;
+			shotgun1Avail = false;
 			}
 
 			if (boughtSniper1 == false)
 			{
-				sniper1Avail = false;
+			sniper1Avail = false;
 			}*/
 		}
-		if (Application::IsKeyPressed('3'))
+		if (Application::IsKeyPressed('3') && crafting == true)
 		{
 			
-	/*		if (boughtRifle1 == false)
+			/*		if (boughtRifle1 == false)
 			{
-				rifle1Avail = false;
+			rifle1Avail = false;
 			}*/
 			boughtShotgun1 = true;
 			shotgun1Avail = true;
@@ -464,18 +476,18 @@ void Sp2Scene::Update(double dt)
 			//	sniper1Avail = false;
 			//}
 		}
-		if (Application::IsKeyPressed('4'))
+		if (Application::IsKeyPressed('4') && crafting == true)
 		{
 			/*if (boughtRifle1 == false)
 			{
-				rifle1Avail = false;
+			rifle1Avail = false;
 			}
 
 			if (boughtShotgun1 == false)
 			{
-				shotgun1Avail = false;
+			shotgun1Avail = false;
 			}*/
-
+			cout << "3" << std::endl;
 			boughtSniper1 = true;
 			sniper1Avail = true;
 		}
@@ -493,7 +505,7 @@ void Sp2Scene::Update(double dt)
 	if (boughtRifle1 == true)
 	{
 		//If pressed '2', switch to Rifle1
-		if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true)
+		if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
 		{
 			equipPistol1 = false;
 			equipRifle1 = true;
@@ -511,7 +523,7 @@ void Sp2Scene::Update(double dt)
 	if (boughtShotgun1 == true)
 	{
 		//If pressed '3', switch to Sniper1
-		if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true)
+		if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
 		{
 			equipPistol1 = false;
 			if (rifle1Avail == true)
@@ -529,7 +541,7 @@ void Sp2Scene::Update(double dt)
 	}
 	if (boughtSniper1 == true)
 	{
-		if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true)
+		if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
 		{
 			equipPistol1 = false;
 			if (rifle1Avail == true)
@@ -544,22 +556,8 @@ void Sp2Scene::Update(double dt)
 		}
 	}
 
-	if (camera.craftUi() == true)
-	{
-		std::cout << "hi amirul" << std::endl;
-	}
 
-	if (camera.craftUi() == true)
-	{
-		if (Application::IsKeyPressed('E'))
-		{
-			crafting = true;
-		}
-	}
-	else if (camera.craftUi() == false)
-	{
-		crafting = false;
-	}
+
 	//if (Application::IsKeyPressed('E'))
 	//{
 	//	if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
