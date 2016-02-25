@@ -211,6 +211,9 @@ void Sp2Scene::Init()
 	meshList[GEO_MINERALS] = MeshBuilder::GenerateOBJ("gold_mineral", "OBJ//GoldMineral.obj");
 	meshList[GEO_MINERALS]->textureID = LoadTGA("Image//GoldMineralsUV.tga");
 
+	//Ores Image
+	meshList[GEO_ORES] = MeshBuilder::GenerateOBJ("gold_ore", "OBJ//GoldOre.obj");
+	meshList[GEO_ORES]->textureID = LoadTGA("Image//GoldOresUV.tga");
 	
 	meshList[GEO_SCOPE] = MeshBuilder::GenerateOBJ("scopemodel", "OBJ//Scope.obj");
 	meshList[GEO_SCOPE]->textureID = LoadTGA("Image//Scope.tga");
@@ -252,15 +255,16 @@ void Sp2Scene::Init()
 
 	for (int a = 0; a < 25; ++a)
 	{
-		elementsx[a] = rand() % 980 - 980;
-		elementsz[a] = rand() % 980 - 880;
+		elementsx[a] = rand() % 980 - 880;
+		elementsz[a] = rand() % 980 - 850;
+
 	}
 
 	translateY = -60;
 	translateX = 0;
 	translateX = 0;
 
-	///for hitboxes///
+	///for hitboxes/// for bullet
 	minVectors.push_back(c3.minPos(Vector3(400, 60, 0), 75, 15, 75));
 	minVectors.push_back(c3.minPos(Vector3(400, 60, 100), 75, 15, 75));
 	minVectors.push_back(c3.minPos(Vector3(300, 60, 0), 75, 15, 75));
@@ -354,10 +358,10 @@ void Sp2Scene::Update(double dt)
 				boughtShotgun1 = true;
 				shotgun1Avail = true;
 
-				//if (boughtSniper1 == false)
-				//{
-				//	sniper1Avail = false;
-				//}
+				if (boughtSniper1 == false)
+				{
+					sniper1Avail = false;
+				}
 			}
 			if (Application::IsKeyPressed('4') && crafting == true)
 			{

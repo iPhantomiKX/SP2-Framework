@@ -65,6 +65,9 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	minVectors.push_back(minPos(Vector3(-360, 0, 0), 58, 120, 20));
 	minVectors.push_back(minPos(Vector3(-435, 0, 0), 58, 120, 20));
 
+	//minerals hitbox
+
+
 	maxVectors.push_back(maxPos(Vector3(400, 60, 0), 100, 20, 100));
 	maxVectors.push_back(maxPos(Vector3(400, 60, 100), 100, 20, 100));
 	maxVectors.push_back(maxPos(Vector3(300, 60, 0), 100, 20, 100));
@@ -86,6 +89,9 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	maxVectors.push_back(maxPos(Vector3(-400, 0, 73), 120, 120, 20));
 	maxVectors.push_back(maxPos(Vector3(-360, 0, 0), 52, 120, 20));
 	maxVectors.push_back(maxPos(Vector3(-435, 0, 0), 52, 120, 20));	
+
+	//minerals hitbox
+
 
 	//mouseSpeed = 0.005f;
 }

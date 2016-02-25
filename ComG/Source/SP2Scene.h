@@ -79,6 +79,7 @@ class Sp2Scene : public Scene
 		GEO_TABLE,
 		GEO_HEALTHPACK,
 		GEO_MINERALS,
+		GEO_ORES,
 
 		GEO_PISTOL1,
 		GEO_RIFLE1,
