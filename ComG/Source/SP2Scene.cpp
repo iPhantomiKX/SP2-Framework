@@ -1008,11 +1008,11 @@ void Sp2Scene::Update(double dt)
 						{
 							if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
 							{
-								bulletRNG(sg.inAccuracy - 1);
+								aimBulletRNG(sg.inAccuracy+1);
 							}
 							else
 							{
-								bulletRNG(sg.inAccuracy - 2);
+								aimBulletRNG(sg.inAccuracy);
 							}
 						}
 						else
