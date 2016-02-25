@@ -261,7 +261,7 @@ void Sp2Scene::Init()
 	translateX = 0;
 
 	///for hitboxes///
-	minVectors.push_back(c3.minPos(Vector3(400, 60, 0), 75, 15, 75));
+	/*minVectors.push_back(c3.minPos(Vector3(400, 60, 0), 75, 15, 75));
 	minVectors.push_back(c3.minPos(Vector3(400, 60, 100), 75, 15, 75));
 	minVectors.push_back(c3.minPos(Vector3(300, 60, 0), 75, 15, 75));
 	minVectors.push_back(c3.minPos(Vector3(300, 60, 100), 75, 15, 75));
@@ -276,29 +276,29 @@ void Sp2Scene::Init()
 	minVectors.push_back(c3.minPos(Vector3(400, 160, 0), 75, 10, 75));
 	minVectors.push_back(c3.minPos(Vector3(400, 160, 100), 75, 10, 75));
 	minVectors.push_back(c3.minPos(Vector3(300, 160, 0), 75, 10, 75));
-	minVectors.push_back(c3.minPos(Vector3(300, 160, 100), 75, 10, 75));
+	minVectors.push_back(c3.minPos(Vector3(300, 160, 100), 75, 10, 75));*/
 	minVectors.push_back(c3.minPos(Vector3(-338, 0, 38), 15, 90, 60));
 	minVectors.push_back(c3.minPos(Vector3(-460, 0, 38), 15, 90, 60));
 	minVectors.push_back(c3.minPos(Vector3(-400, 0, 73), 90, 90, 15));
 	minVectors.push_back(c3.minPos(Vector3(-360, 0, 0), 30, 90, 15));
 	minVectors.push_back(c3.minPos(Vector3(-435, 0, 0), 30, 90, 15));
 
-	maxVectors.push_back(c3.maxPos(Vector3(400, 60, 0), 75, 15, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(400, 60, 100), 75, 15, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 60, 0), 75, 15, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 60, 100), 75, 15, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(450, 110, 0), 10, 75, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(450, 110, 100), 10, 75, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(250, 110, 0), 10, 75, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(250, 110, 100), 10, 75, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(400, 110, -50), 75, 75, 10));
-	maxVectors.push_back(c3.maxPos(Vector3(400, 110, 150), 75, 75, 10));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 110, -50), 75, 75, 10));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 110, 150), 75, 75, 10));
-	maxVectors.push_back(c3.maxPos(Vector3(400, 160, 0), 75, 10, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(400, 160, 100), 75, 10, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 160, 0), 75, 10, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 160, 100), 75, 10, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 60, 0), 75, 15, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 60, 100), 75, 15, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 60, 0), 75, 15, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 60, 100), 75, 15, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(450, 110, 0), 10, 75, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(450, 110, 100), 10, 75, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(250, 110, 0), 10, 75, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(250, 110, 100), 10, 75, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 110, -50), 75, 75, 10));
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 110, 150), 75, 75, 10));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 110, -50), 75, 75, 10));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 110, 150), 75, 75, 10));
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 160, 0), 75, 10, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 160, 100), 75, 10, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 160, 0), 75, 10, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 160, 100), 75, 10, 75));
 	maxVectors.push_back(c3.maxPos(Vector3(-338, 0, 38), 15, 90, 60));
 	maxVectors.push_back(c3.maxPos(Vector3(-460, 0, 38), 15, 90, 60));
 	maxVectors.push_back(c3.maxPos(Vector3(-400, 0, 73), 90, 90, 15));
@@ -1634,125 +1634,178 @@ void Sp2Scene::RenderMesh(Mesh *mesh, bool enablelight)
 
 void Sp2Scene::RenderSpaceshipQuad()
 {
-	//spaceship floor 1
+	////spaceship floor 1
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 60, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship floor 2
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 60, 100);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship floor 3
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 60, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship floor 4
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 60, 100);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall length 1
+	//modelStack.PushMatrix();
+	//modelStack.Translate(450, 110, 0);
+	//modelStack.Rotate(90,0, 0, 1);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+	//
+	////spaceship wall length 2
+	//modelStack.PushMatrix();
+	//modelStack.Translate(450, 110, 100);
+	//modelStack.Rotate(90, 0, 0, 1);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall length 3
+	//modelStack.PushMatrix();
+	//modelStack.Translate(250, 110, 0);
+	//modelStack.Rotate(90, 0, 0, 1);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall length 4
+	//modelStack.PushMatrix();
+	//modelStack.Translate(250, 110, 100);
+	//modelStack.Rotate(90, 0, 0, 1);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall width 1
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 110, -50);
+	//modelStack.Rotate(90, 1, 0, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall width 2
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 110, 150);
+	//modelStack.Rotate(90, 1, 0, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall width 3 
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 110, -50);
+	//modelStack.Rotate(90, 1, 0, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall width 4
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 110, 150);
+	//modelStack.Rotate(90, 1, 0, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship roof 1
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 160, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+
+	////spaceship roof 2
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 160, 100);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship roof 3
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 160, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship roof 4
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 160, 100);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
 	modelStack.PushMatrix();
-	modelStack.Translate(400, 60, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Translate(0, 0, 0);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Scale(100, 1000, 100);
+	modelStack.Scale(-1, 1, 1);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 
-	//spaceship floor 2
+	//top
 	modelStack.PushMatrix();
-	modelStack.Translate(400, 60, 100);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Translate(0,50, 0);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Scale(100, 1000, 100);
+	modelStack.Scale(1, -1, 1);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 
-	//spaceship floor 3
+	//left
 	modelStack.PushMatrix();
-	modelStack.Translate(300, 60, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Translate(50,0,0);
+	modelStack.Scale(100, 100, 100);
+	modelStack.Rotate(-90, 0, 0, 1);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 
-	//spaceship floor 4
+	//right
 	modelStack.PushMatrix();
-	modelStack.Translate(300, 60, 100);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Translate(-50, 0,0);
+	modelStack.Scale(100, 100, 100);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Rotate(-90, 0, 0, 1);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 
-	//spaceship wall length 1
+	//back
 	modelStack.PushMatrix();
-	modelStack.Translate(450, 110, 0);
-	modelStack.Rotate(90,0, 0, 1);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-	
-	//spaceship wall length 2
-	modelStack.PushMatrix();
-	modelStack.Translate(450, 110, 100);
-	modelStack.Rotate(90, 0, 0, 1);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship wall length 3
-	modelStack.PushMatrix();
-	modelStack.Translate(250, 110, 0);
-	modelStack.Rotate(90, 0, 0, 1);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship wall length 4
-	modelStack.PushMatrix();
-	modelStack.Translate(250, 110, 100);
-	modelStack.Rotate(90, 0, 0, 1);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship wall width 1
-	modelStack.PushMatrix();
-	modelStack.Translate(400, 110, -50);
+	modelStack.Translate(0,0,50);
+	modelStack.Rotate(-90, 0, 0, 1);
 	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Scale(100, 100, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 
-	//spaceship wall width 2
+	//Front
 	modelStack.PushMatrix();
-	modelStack.Translate(400, 110, 150);
+	modelStack.Translate(0,0, -50);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Rotate(-90, 0, 0, 1);
 	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship wall width 3 
-	modelStack.PushMatrix();
-	modelStack.Translate(300, 110, -50);
-	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship wall width 4
-	modelStack.PushMatrix();
-	modelStack.Translate(300, 110, 150);
-	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship roof 1
-	modelStack.PushMatrix();
-	modelStack.Translate(400, 160, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-
-	//spaceship roof 2
-	modelStack.PushMatrix();
-	modelStack.Translate(400, 160, 100);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship roof 3
-	modelStack.PushMatrix();
-	modelStack.Translate(300, 160, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship roof 4
-	modelStack.PushMatrix();
-	modelStack.Translate(300, 160, 100);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Scale(100, 100, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 };
 
@@ -1760,8 +1813,8 @@ void Sp2Scene::RenderCraftingPanel()
 {
 	//crafting panel 
 		modelStack.PushMatrix();
-		modelStack.Translate(400, 65, -49);
-		modelStack.Scale(2, 2, 1);
+		modelStack.Translate(0, 3, -49);
+		modelStack.Scale(1.5, 1.5, 1);
 		RenderMesh(meshList[GEO_CRAFTINGPANEL], true);
 		modelStack.PopMatrix();
 
@@ -1789,15 +1842,15 @@ void Sp2Scene::RenderPortal1()
 		modelStack.PopMatrix();
 	}
 
-	if (gameStates == states::base)
-	{
-		//entrance portal in spaceship
-		modelStack.PushMatrix();
-		modelStack.Translate(400, 61, 100);
-		modelStack.Scale(5, 5, 5);
-		RenderMesh(meshList[GEO_PORTAL1], true);
-		modelStack.PopMatrix();
-	}
+	//if (gameStates == states::base)
+	//{
+	//	//entrance portal in spaceship
+	//	modelStack.PushMatrix();
+	//	modelStack.Translate(400, 61, 100);
+	//	modelStack.Scale(5, 5, 5);
+	//	RenderMesh(meshList[GEO_PORTAL1], true);
+	//	modelStack.PopMatrix();
+	//}
 
 };
 
@@ -1805,7 +1858,7 @@ void Sp2Scene::RenderPortal2()
 {
 	//exit portal in spaceship
 	modelStack.PushMatrix();
-	modelStack.Translate(400, 61, 0);
+	modelStack.Translate(0, 0, 40);
 	modelStack.Scale(5, 5, 5);
 	RenderMesh(meshList[GEO_PORTAL2], true);
 	modelStack.PopMatrix();
