@@ -203,6 +203,12 @@ private:
 	bool boughtSniper1 = false;
 	bool boughtShotgun1 = false;
 
+	//check if weapon is available
+	bool pistol2Avail = false;
+	bool rifle1Avail = false;
+	bool sniper1Avail = false;
+	bool shotgun1Avail = false;
+
 	bool testPortal = false;
 	bool testPortalsign = false;
 

@@ -316,36 +316,148 @@ void Sp2Scene::Update(double dt)
 {
 	camera.Update(dt);
 
-	if (gameStates == states::outside)
+	if (gameStates == states::base)
 	{
 		if (camera.craftUi() == true)
 		{
-		}
-
-		if (camera.craftUi() == true && Application::IsKeyPressed('E') == true)
-		{
 			crafting = true;
 		}
-		else
-		{
-			crafting = false;
-		}
 	}
-	/*if (Application::IsKeyPressed('E'))
-	{
-		if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
-		{
-			crafting = true;
-		}
-		else
-		{
-			crafting = false;
-		}
-	}
-	else if (!camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+	else if (camera.craftUi() == false)
 	{
 		crafting = false;
-	}*/
+	}
+
+	if (camera.craftUi() == true)
+	{
+		if (Application::IsKeyPressed('2') && crafting == true)
+		{
+			boughtRifle1 = true;
+			rifle1Avail = true;
+
+			/*if (boughtShotgun1 == false)
+			{
+			shotgun1Avail = false;
+			}
+
+			if (boughtSniper1 == false)
+			{
+			sniper1Avail = false;
+			}*/
+		}
+		if (Application::IsKeyPressed('3') && crafting == true)
+		{
+			
+			/*		if (boughtRifle1 == false)
+			{
+			rifle1Avail = false;
+			}*/
+			boughtShotgun1 = true;
+			shotgun1Avail = true;
+
+			//if (boughtSniper1 == false)
+			//{
+			//	sniper1Avail = false;
+			//}
+		}
+		if (Application::IsKeyPressed('4') && crafting == true)
+		{
+			/*if (boughtRifle1 == false)
+			{
+			rifle1Avail = false;
+			}
+
+			if (boughtShotgun1 == false)
+			{
+			shotgun1Avail = false;
+			}*/
+			cout << "3" << std::endl;
+			boughtSniper1 = true;
+			sniper1Avail = true;
+		}
+	}
+
+	}
+
+	//If pressed '1', switch to Pistol1
+	if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
+	{
+		equipPistol1 = true;
+		equipRifle1 = false;
+		equipSniper1 = false;
+		equipShotgun1 = false;
+	}
+
+	if (boughtRifle1 == true)
+	{
+		//If pressed '2', switch to Rifle1
+		if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
+		{
+			equipPistol1 = false;
+			equipRifle1 = true;
+			if (sniper1Avail == true)
+			{
+				equipSniper1 = false;
+			}
+			if (shotgun1Avail = true)
+			{
+				equipShotgun1 = false;
+			}
+		}
+	}
+
+	if (boughtShotgun1 == true)
+	{
+		//If pressed '3', switch to Sniper1
+		if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
+		{
+			equipPistol1 = false;
+			if (rifle1Avail == true)
+			{
+				equipRifle1 = false;
+			}
+
+			equipShotgun1 = true;
+
+			if (sniper1Avail == true)
+			{
+				equipSniper1 = false;
+			}
+		}
+	}
+	if (boughtSniper1 == true)
+	{
+		if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
+		{
+			equipPistol1 = false;
+			if (rifle1Avail == true)
+			{
+				equipRifle1 = false;
+			}
+			if (shotgun1Avail == true)
+			{
+				equipShotgun1 = false;
+			}
+			equipSniper1 = true;
+		}
+	}
+
+
+
+	//if (Application::IsKeyPressed('E'))
+	//{
+	//	if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+	//	{
+	//		crafting = true;
+	//	}
+
+	//}
+	//else if (!camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+	//{
+	//	crafting = false;
+	//}
+
+
 
 	//for (int i = 0; i < 50; ++i)
 	//{
