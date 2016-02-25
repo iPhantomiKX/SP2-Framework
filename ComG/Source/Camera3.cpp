@@ -121,25 +121,16 @@ void Camera3::Update(double dt)
 
 		if (xpos < 395)
 		{
-			//rotation.SetToRotation(3, up.x, up.y, up.z);
-			//view = rotation * view;
-			//target = position + view;
 			directionRotation.y += 1.5;
 		}
 		if (xpos > 405)
 		{
-			//rotation.SetToRotation(-3, up.x, up.y, up.z);
-			//view = rotation * view;
-			//target = position + view;
 			directionRotation.y -= 1.5;
 		}
 		if (ypos < 295)
 		{
 			if (directionRotation.x > -45)
 			{
-				//rotation.SetToRotation(2, right.x, right.y, right.z);
-				//view = rotation * view;
-				//target = position + view;
 				directionRotation.x -= 1.5;
 			}
 		}
@@ -147,9 +138,6 @@ void Camera3::Update(double dt)
 		{
 			if (directionRotation.x < 45)
 			{
-				//rotation.SetToRotation(-2, right.x, right.y, right.z);
-				//view = rotation * view;
-				//target = position + view;
 				directionRotation.x += 1.5;
 			}
 		}
@@ -160,25 +148,16 @@ void Camera3::Update(double dt)
 
 		if (xpos < 395)
 		{
-			//rotation.SetToRotation(3, up.x, up.y, up.z);
-			//view = rotation * view;
-			//target = position + view;
 			directionRotation.y += 3;
 		}
 		if (xpos > 405)
 		{
-			//rotation.SetToRotation(-3, up.x, up.y, up.z);
-			//view = rotation * view;
-			//target = position + view;
 			directionRotation.y -= 3;
 		}
 		if (ypos < 295)
 		{
 			if (directionRotation.x > -45)
 			{
-				//rotation.SetToRotation(2, right.x, right.y, right.z);
-				//view = rotation * view;
-				//target = position + view;
 				directionRotation.x -= 3;
 			}
 		}
@@ -186,9 +165,6 @@ void Camera3::Update(double dt)
 		{
 			if (directionRotation.x < 45)
 			{
-				//rotation.SetToRotation(-2, right.x, right.y, right.z);
-				//view = rotation * view;
-				//target = position + view;
 				directionRotation.x += 3;
 			}
 		}
@@ -197,43 +173,21 @@ void Camera3::Update(double dt)
 	{
 		if (Application::IsKeyPressed(VK_LEFT))
 		{
-			//rotation.SetToRotation(2, up.x, up.y, up.z);
-			//view = rotation * view;
-			//target = position + view;
 			directionRotation.y += 3;
 		}
 		if (Application::IsKeyPressed(VK_RIGHT))
 		{
-			//rotation.SetToRotation(-2, up.x, up.y, up.z);
-			//view = rotation * view;
-			//target = position + view;
 			directionRotation.y -= 3;
 		}
 		if (Application::IsKeyPressed(VK_UP))
 		{
-
-			/*if (view.y < 0.5)
-			{
-				rotation.SetToRotation(1.5, right.x, right.y, right.z);
-				view = rotation * view;
-				target = position + view;
-			}*/
 			if (directionRotation.x > -45)
 			{
 				directionRotation.x -= 3;
 			}
-			
-			
 		}
 		if (Application::IsKeyPressed(VK_DOWN))
 		{
-			/*if (view.y > -0.5)
-			{
-				rotation.SetToRotation(-1.5, right.x, right.y, right.z);
-				view = rotation * view;
-				target = position + view;
-			}*/
-			
 			if (directionRotation.x < 45)
 			{
 				directionRotation.x += 3;
@@ -264,47 +218,6 @@ void Camera3::Update(double dt)
 
 	camerarotation = directionRotation - gunRecoil;
 
-
-	/*if (Application::IsKeyPressed(VK_LEFT))
-	{
-		Vector3 view = (target - position).Normalized();
-		Mtx44 rotation;
-		rotation.SetToRotation(1, up.x, up.y, up.z);
-		view = rotation * view;
-		target = position + view;
-	}
-	if (Application::IsKeyPressed(VK_RIGHT))
-	{
-		Vector3 view = (target - position).Normalized();
-		Mtx44 rotation;
-		rotation.SetToRotation(-1, up.x, up.y, up.z);
-		view = rotation * view;
-		target = position + view;
-	}
-	if (Application::IsKeyPressed(VK_UP))
-	{
-		Vector3 view = (target - position).Normalized();
-		Vector3 right = view.Cross(up);
-		if (view.y < 0.5)
-		{
-			Mtx44 rotation;
-			rotation.SetToRotation(1, right.x, right.y, right.z);
-			view = rotation * view;
-			target = position + view;
-		}
-	}
-	if (Application::IsKeyPressed(VK_DOWN))
-	{
-		Vector3 view = (target - position).Normalized();
-		Vector3 right = view.Cross(up);
-		if (view.y > -0.5)
-		{
-			Mtx44 rotation;
-			rotation.SetToRotation(-1, right.x, right.y, right.z);
-			view = rotation * view;
-			target = position + view;
-		}
-	}*/
 
 	location2 = position + view*dt*speed;
 	location = position;
@@ -477,16 +390,6 @@ void Camera3::Update(double dt)
 
 	teleport();
 
-	//std::cout << direction.x - position.x << std::endl;
-	//std::cout << direction.y - position.y << std::endl;
-	//std::cout << direction.z - position.z << std::endl;
-
-	//if (Application::IsKeyPressed(VK_LBUTTON))
-	//{
-	//	std::cout << position << "cam" << std::endl;
-	//	std::cout << view << "view" << std::endl;
-	//}
-
 	if (camerarotation.x > maxCameraX)
 	{
 		camerarotation.x = maxCameraX;
@@ -496,41 +399,16 @@ void Camera3::Update(double dt)
 		camerarotation.x = -maxCameraX;
 	}
 
-	/*if (Application::IsKeyPressed('R'))
-	{
-		Reset();
-	}*/
-
-	
 	//Changing target
 	target = Vector3(sin(DegreeToRadian(camerarotation.y))*cos(DegreeToRadian(camerarotation.x)) + this->position.x, -sin(DegreeToRadian(camerarotation.x)) + this->position.y,
 		cos(DegreeToRadian(camerarotation.y))*cos(DegreeToRadian(camerarotation.x)) + this->position.z);
 
 }
 
-//void Camera3::recoil()
-//{
-//	upRecoil += 10;
-//	std::cout << upRecoil << std::endl;
-//}
-
 Vector3 Camera3::setPos()
 {
 	location2 = position;
 	return location;
-}
-
-
-bool Camera3::testhitbox(const Vector3& lowest, const Vector3& highest, double move)
-{
-	/*if (position.x + 5 + move > lowest.x && position.x - 5 + move < highest.x && position.y + 5 + move > lowest.y && position.y - 5 + move < highest.y && position.z + 5 + move > lowest.z && position.z - 5 + move < highest.z)
-	{
-		return true;
-	}
-	else
-	{*/
-	return false;
-	
 }
 
 bool Camera3::hitbox(double move)
@@ -628,24 +506,7 @@ Vector3 Camera3::maxPos(Vector3 center, double sizeX, double sizeY, double sizeZ
 }
 
 
-bool Camera3::checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez)
-{
-	//float minX = otherObjectposition.x - (sizex / 2);
-	//float maxX = otherObjectposition.x + (sizex / 2);
-	//float minZ = otherObjectposition.z - (sizez / 2);
-	//float maxZ = otherObjectposition.z + (sizez / 2);
-	//if (position.x < minX || position.x > maxX)
-	//{
-	//	return false;
-	//}
-	//if (position.z < minZ || position.z > maxZ)
-	//{
-	//	return false;
-	//}
-	//test = true;
-	//return true;
-	return false;
-}
+
 
 
 void Camera3::Reset()

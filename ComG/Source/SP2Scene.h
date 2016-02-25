@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "MatrixStack.h"
 #include "Light.h"
+#include "enemy.h"
 #include <vector>
 #include <sstream>
 #include <string>
@@ -89,6 +90,7 @@ class Sp2Scene : public Scene
 
 		GEO_SCOPE,
 		GEO_AMMO,
+		GEO_THECUBE,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -127,8 +129,9 @@ public:
 	virtual void Update(double dt);
 	virtual void Render();
 	virtual void Exit();
-private:
 	void RenderMesh(Mesh *mesh, bool enablelight);
+private:
+	
 	void RenderSkybox();
 	void RenderText(Mesh * mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh * mesh, std::string text, Color color, float size, float x, float y);
@@ -206,6 +209,7 @@ private:
 	void RenderSniper1();
 	void RenderShotgun1();
 	void RenderElements();
+	void RenderEnemy();
 
 	bool bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation);
 	/*static bool test4;
