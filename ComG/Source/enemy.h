@@ -24,15 +24,15 @@ public:
 	enemy();
 	enemy(int health, float x, float y, float z, int s);
 	void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
-	//void spawnEnemy(float x, float y, float z);
 	virtual ~enemy();
 	bool isDead();
 	void Update(double dt);
 	void Render();
+	//void AIRotation(Vector3 Player);
+
 	Vector3 pos;
 	int hp;
 	bool isDieded;
-	/*Camera3 camera;*/
 	int speed;
 };
 

@@ -573,6 +573,8 @@ void Camera3::Update(double dt)
 				target.z -= (right.z * dt * speed) / 2;
 			}
 
+
+		//if (position.y - (right.y * dt * speed) / 2 <= 900 && position.y - (right.y * dt * speed) / 2 >= -900 && hitbox(-(right.y * dt * speed) / 2) == false)
 			if (position.y - (right.y * dt * speed) / 2 <= 48 && position.y - (right.y * dt * speed) / 2 >= -48 && hitbox(-(right.y * dt * speed) / 2) == false && checkcollisionwithObject((right.y * dt * speed) / 2) == false)
 			{
 				position.z -= (right.y * dt * speed) / 2;
@@ -699,10 +701,6 @@ Vector3 Camera3::maxPos(Vector3 center, double sizeX, double sizeY, double sizeZ
 {
 	return Vector3(center.x + (sizeX / 2), center.y + (sizeY / 2), center.z + (sizeZ / 2));
 }
-
-
-
-
 
 void Camera3::Reset()
 {
