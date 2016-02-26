@@ -142,7 +142,7 @@ void Sp2Scene::Init()
 	gameStates = states::outside;
 
 	//Initialize camera settings
-	camera.Init(Vector3(1, 10, 0), Vector3(0, 10, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));
 
 	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
@@ -319,17 +319,42 @@ void Sp2Scene::Update(double dt)
 	camera.Update(dt);
 	Vector3 view = camera.position - thecube.pos;
 	view.Normalized();
-	/*********************************************
-	AI CODES!!!!!!!!!!!!!!!
-	***********************************************/
-	thecube.pos.x += (view.x * dt * thecube.speed) / 5;
+	/***********************************************/
+	/*AI CODES!!!!!!!!!!!!!!!					   */
+	/***********************************************/
+	/*thecube.pos.x += (view.x * dt * thecube.speed) / 5;
 	thecube.pos.y += (view.y * dt * thecube.speed) / 5;
-	thecube.pos.z += (view.z * dt * thecube.speed) / 5;
-	if (thecube.pos == camera.position)
+	thecube.pos.z += (view.z * dt * thecube.speed) / 5;*/
+	if (thecube.pos.x  <= 990 && thecube.pos.x >= -990 
+		&& thecube.pos.y <= 990 && thecube.pos.y >= -990 
+		&& thecube.pos.z <= 990 && thecube.pos.z >= -990 
+		&& AICheckCollisionObject(thecube.pos) == false)
 	{
-		std::cout << "reached end point" << std::endl;
+		thecube.pos.x += (view.x * dt * thecube.speed) / 5;
+		thecube.pos.y += (view.y * dt * thecube.speed) / 5;
+		thecube.pos.z += (view.z * dt * thecube.speed) / 5;
 	}
-
+	else
+	{
+		thecube.pos.x -= (view.x * dt * thecube.speed) / 5;
+		thecube.pos.y -= (view.y * dt * thecube.speed) / 5;
+		thecube.pos.z -= (view.z * dt * thecube.speed) / 5;
+	}
+	//Rotation
+	Vector3 viewInit(0, 0, 1);
+	std::cout << thecube.pos << std::endl;
+	Vector3 wantView(camera.position - thecube.pos);
+	wantView.Normalize();
+	Vector3 normal(0, 1, 0);
+	Degree = Math::RadianToDegree(acos(viewInit.Dot(wantView)));
+	Vector3 Crossed = viewInit.Cross(wantView);
+	if (Crossed.Dot(normal) < 0)
+	{
+		Degree *= -1;
+	}
+	/***********************************************/
+	/*        AI CODES!!!!!!!!!!!!!!!			   */
+	/***********************************************/
 	if (gameStates == states::base)
 	{
 		if (camera.craftUi() == true && Application::IsKeyPressed('E'))
@@ -449,69 +474,6 @@ void Sp2Scene::Update(double dt)
 		if (Application::IsKeyPressed('8'))
 		{
 			light[0].type = Light::LIGHT_SPOT;
-		}
-
-
-		if (Application::IsKeyPressed('5'))
-		{
-			meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_TOP]->textureID = LoadTGA("Image//snow_up.tga");
-			meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//snow_dn.tga");
-			meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_FRONT]->textureID = LoadTGA("Image//snow_ft.tga");
-			meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_BACK]->textureID = LoadTGA("Image//snow_bk.tga");
-			meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_LEFT]->textureID = LoadTGA("Image//snow_lf.tga");
-			meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_RIGHT]->textureID = LoadTGA("Image//snow_rt.tga");
-			meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
-			meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
-			light[0].color.Set(1, 1, 1);
-		}
-
-		if (Application::IsKeyPressed('6'))
-		{
-			meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_TOP]->textureID = LoadTGA("Image//icyhell_up.tga");
-			meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//icyhell_dn.tga");
-			meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_FRONT]->textureID = LoadTGA("Image//icyhell_ft.tga");
-			meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_BACK]->textureID = LoadTGA("Image//icyhell_bk.tga");
-			meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_LEFT]->textureID = LoadTGA("Image//icyhell_lf.tga");
-			meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_RIGHT]->textureID = LoadTGA("Image//icyhell_rt.tga");
-			meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(0.5, 0.5, 0.5), 10, 40);
-			meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(0.5, 0.5, 0.5), 10, 20);
-			light[0].color.Set(0.5, 0.5, 0.5);
-		}
-
-		if (Application::IsKeyPressed('9'))
-		{
-			meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_TOP]->textureID = LoadTGA("Image//blood_up.tga");
-			meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//blood_dn.tga");
-			meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_FRONT]->textureID = LoadTGA("Image//blood_ft.tga");
-			meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_BACK]->textureID = LoadTGA("Image//blood_bk.tga");
-			meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_LEFT]->textureID = LoadTGA("Image//blood_lf.tga");
-			meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-			meshList[GEO_RIGHT]->textureID = LoadTGA("Image//blood_rt.tga");
-
-			meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 10, 40);
-			meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 0, 0), 10, 20);
-			light[0].color.Set(1, 0, 0);
-			for (int i = 0; i < 1000; i++)
-			{
-				rainpositiony[i] -= (float)(100 * dt);
-			}
 		}
 
 		rotateAngle += (float)(10 * dt);
@@ -961,8 +923,32 @@ void Sp2Scene::Update(double dt)
 		changeStates();
 }
 
+bool Sp2Scene::AICheckCollisionObject(Vector3 AIposition)
+{
+	//to do
+	// Get all min and max (eg. minX, maxX)
 
-	
+	// Do SAT Test on all axis)
+	// eg (if (position.x < min) return false; // (Outside!)
+	//		Repeat for Max, Repeat Min + Max for Y and Z axis
+
+	std::vector<Vector3>::iterator count = minVectors.begin();
+	std::vector<Vector3>::iterator count1 = maxVectors.begin();
+
+	while (count != minVectors.end())
+	{
+		Vector3 minTemp = *count;
+		Vector3 maxTemp = *count1;
+
+		if (AIposition.x > minTemp.x && AIposition.x < maxTemp.x && AIposition.y > minTemp.y && AIposition.y < maxTemp.y && AIposition.z > minTemp.z && AIposition.z < maxTemp.z)
+		{
+			return true;
+		}
+		*count++;
+		*count1++;
+	}
+	return false;
+}
 void Sp2Scene::bulletRNG(int spray)
 {
 
@@ -1644,10 +1630,15 @@ void Sp2Scene::RenderElements()
 
 void Sp2Scene::RenderEnemy()
 {
+
 	modelStack.PushMatrix();
-	modelStack.Translate(thecube.pos.x, thecube.pos.y, thecube.pos.z);
+	modelStack.Translate(thecube.pos.x, 0, thecube.pos.z);
+	modelStack.Rotate(Degree, 0, 1, 0);
+	cout << Degree << std::endl;
+	modelStack.PushMatrix();
 	modelStack.Scale(0.5, 0.5, 0.5);
 	RenderMesh(meshList[GEO_THECUBE], true);
+	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 }
 
@@ -1705,6 +1696,10 @@ void Sp2Scene::Render()
 		modelStack.PopMatrix();
 	}
 
+	//modelStack.PushMatrix();
+	RenderEnemy();
+	//modelStack.PopMatrix();
+
 	modelStack.PushMatrix();
 	if (gameStates == states::outside)
 	{
@@ -1714,7 +1709,6 @@ void Sp2Scene::Render()
 		RenderTable();
 		RenderHealthPack();
 		RenderElements();
-		RenderEnemy();
 	}
 	if (gameStates == states::base)
 	{

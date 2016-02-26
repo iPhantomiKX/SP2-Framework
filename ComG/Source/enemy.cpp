@@ -33,6 +33,22 @@ bool enemy::isDead()
 	return isDieded;
 }
 
+//void enemy::AIRotation(Vector3 Player)
+//{
+//	Vector3 viewInit(0, 0, 1);
+//	Vector3 wantView(Player - pos);
+//	wantView.Normalized();
+//	Vector3 normal(0, 1, 0);
+//
+//	float Degree = Math::RadianToDegree(acos(viewInit.Dot(wantView)));
+//	Vector3 Crossed = viewInit.Cross(wantView);
+//
+//	if (Crossed.Dot(normal) < 0)
+//	{
+//		Degree *= -1;
+//	}
+//}
+
 //void enemy::Update(double dt)
 //{
 //	//camera.Update(dt);

@@ -186,6 +186,7 @@ private:
 	void bulletRNG(int spray);
 	void aimBulletRNG(int spray);
 	bool bulletObjectCollision(Vector3 bulletPos);
+	bool AICheckCollisionObject(Vector3 AIposition);
 	bool craftUi();
 
 	double storeRand;
@@ -259,6 +260,8 @@ private:
 	Light light[1];
 
 	states gameStates;
+
+	float Degree;
 };
 
 #endif
