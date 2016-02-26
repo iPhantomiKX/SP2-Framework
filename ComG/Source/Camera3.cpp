@@ -752,7 +752,7 @@ void Camera3::teleport()
 		&& position.x < p2Max.x && position.y < p2Max.y && position.z < p2Max.z)
 	{
 		position.x = -400; 
-		position.y = 20; 
+		position.y = 10; 
 		position.z = 1;
 		inBase = false;
 	}

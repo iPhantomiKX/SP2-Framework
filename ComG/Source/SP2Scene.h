@@ -177,6 +177,8 @@ private:
 	float rotateGunX;
 	float rotateGunY;
 
+	float Degree;
+
 	double range;
 	double gunCd;
 	double gunReload;
@@ -188,7 +190,6 @@ private:
 	void aimBulletRNG(int spray);
 	bool bulletObjectCollision(Vector3 bulletPos);
 	bool AICheckCollisionObject(Vector3 AIposition);
-	bool craftUi();
 
 	double storeRand;
 	double storeRand2;
@@ -263,8 +264,6 @@ private:
 	Light light[1];
 
 	states gameStates;
-
-	float Degree;
 };
 
 #endif

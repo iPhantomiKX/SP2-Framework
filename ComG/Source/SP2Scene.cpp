@@ -220,8 +220,8 @@ void Sp2Scene::Init()
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
 	meshList[GEO_PISTOL1]->textureID = LoadTGA("Image//pistol1texture.tga");
 
-	meshList[GEO_PISTOL2] = MeshBuilder::GenerateOBJ("pistol2model", "OBJ//pistol2.obj");
-	meshList[GEO_PISTOL2]->textureID = LoadTGA("Image//pistol2UV.tga");
+	/*meshList[GEO_PISTOL2] = MeshBuilder::GenerateOBJ("pistol2model", "OBJ//pistol2.obj");
+	meshList[GEO_PISTOL2]->textureID = LoadTGA("Image//pistol2UV.tga");*/
 
 	meshList[GEO_RIFLE1] = MeshBuilder::GenerateOBJ("rifle1model", "OBJ//AR.obj");
 	meshList[GEO_RIFLE1]->textureID = LoadTGA("Image//AR_UV.tga");
