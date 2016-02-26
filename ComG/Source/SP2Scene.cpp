@@ -375,6 +375,7 @@ void Sp2Scene::Update(double dt)
 			{
 				boughtRifle1 = true;
 				rifle1Avail = true;
+			}
 
 
 				/*if (boughtShotgun1 == false)
@@ -382,52 +383,32 @@ void Sp2Scene::Update(double dt)
 				shotgun1Avail = false;
 				}
 
-			if (boughtSniper1 == false)
-			{
-			sniper1Avail = false;
-			}*/
-		}
-		if (Application::IsKeyPressed('3') && crafting == true)
-		{
-			/*		if (boughtRifle1 == false)
-			{
-			rifle1Avail = false;
-			}*/
-			boughtShotgun1 = true;
-			shotgun1Avail = true;
-
 				if (boughtSniper1 == false)
 				{
 				sniper1Avail = false;
-				}
-			}
+				}*/
 			if (Application::IsKeyPressed('3') && crafting == true)
 			{
-
-				/*		if (boughtRifle1 == false)
-				{
-				rifle1Avail = false;
-				}*/
+					/*		if (boughtRifle1 == false)
+					{
+					rifle1Avail = false;
+					}*/
 				boughtShotgun1 = true;
 				shotgun1Avail = true;
 
-				//if (boughtSniper1 == false)
-				//{
-				//	sniper1Avail = false;
-				//}
 			}
 			if (Application::IsKeyPressed('4') && crafting == true)
 			{
-				/*if (boughtRifle1 == false)
-				{
-				rifle1Avail = false;
-				}
+					/*if (boughtRifle1 == false)
+					{
+					rifle1Avail = false;
+					}
 
-				if (boughtShotgun1 == false)
-				{
-				shotgun1Avail = false;
-				}*/
-				cout << "3" << std::endl;
+					if (boughtShotgun1 == false)
+					{
+					shotgun1Avail = false;
+					}*/
+				//cout << "3" << std::endl;
 				boughtSniper1 = true;
 				sniper1Avail = true;
 			}
@@ -1872,12 +1853,12 @@ void Sp2Scene::Render()
 			RenderImageOnScreen(meshList[GEO_PISTOL1], 0.5, 25, 15);
 			//RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
 		}
-		if (equipPistol2 == true)
-		{
-			RenderPistol2();
-			RenderImageOnScreen(meshList[GEO_PISTOL2], 0.5, 25, 15);
-		//RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
-	}
+		//if (equipPistol2 == true)
+		//{
+		//	/*RenderPistol2();
+		//	RenderImageOnScreen(meshList[GEO_PISTOL2], 0.5, 25, 15);*/
+		////RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
+		//}
 		else if (equipRifle1 == true)
 		{
 			RenderRifle1();
@@ -1928,7 +1909,6 @@ void Sp2Scene::Render()
 	string var = oss.str();
 	RenderTextOnScreen(meshList[GEO_TEXT], oss.str(), Color(0, 1, 0), 2, 2, 28);
 
-
 }
 void Sp2Scene::RenderPistol1()
 {
@@ -1976,12 +1956,7 @@ void Sp2Scene::RenderPistol1()
 		modelStack.PopMatrix();
 	}
 }
-	else
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "+", Color(0.3, 0.8, 0.3), 5, 8.28, 6);
-	}
 
-}
 void Sp2Scene::RenderPistol2()
 {
 	if (gunReload <= 0)

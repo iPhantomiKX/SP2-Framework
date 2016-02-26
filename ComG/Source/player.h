@@ -10,6 +10,7 @@ public:
 	~player();
 	void getHit(int damage);
 	void isDead();
+	void reset();
 };
 
 #endif
