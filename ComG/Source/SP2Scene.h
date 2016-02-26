@@ -67,7 +67,7 @@ class Sp2Scene : public Scene
 		GEO_BLOODY_FRONT,
 		GEO_OBJECT,
 		GEO_TEST,
-		
+
 		GEO_TARGET,
 		GEO_TARGETHIT,
 
