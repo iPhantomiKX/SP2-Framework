@@ -375,6 +375,7 @@ void Sp2Scene::Update(double dt)
 			{
 				boughtRifle1 = true;
 				rifle1Avail = true;
+			}
 
 
 				/*if (boughtShotgun1 == false)
@@ -386,47 +387,27 @@ void Sp2Scene::Update(double dt)
 				{
 				sniper1Avail = false;
 				}*/
-			}
 			if (Application::IsKeyPressed('3') && crafting == true)
 			{
-				/*		if (boughtRifle1 == false)
-				{
-				rifle1Avail = false;
-				}*/
+					/*		if (boughtRifle1 == false)
+					{
+					rifle1Avail = false;
+					}*/
 				boughtShotgun1 = true;
 				shotgun1Avail = true;
 
-				if (boughtSniper1 == false)
-				{
-					sniper1Avail = false;
-				}
-			}
-			if (Application::IsKeyPressed('3') && crafting == true)
-			{
-
-				/*		if (boughtRifle1 == false)
-				{
-				rifle1Avail = false;
-				}*/
-				boughtShotgun1 = true;
-				shotgun1Avail = true;
-
-				//if (boughtSniper1 == false)
-				//{
-				//	sniper1Avail = false;
-				//}
 			}
 			if (Application::IsKeyPressed('4') && crafting == true)
 			{
-				/*if (boughtRifle1 == false)
-				{
-				rifle1Avail = false;
-				}
+					/*if (boughtRifle1 == false)
+					{
+					rifle1Avail = false;
+					}
 
-				if (boughtShotgun1 == false)
-				{
-				shotgun1Avail = false;
-				}*/
+					if (boughtShotgun1 == false)
+					{
+					shotgun1Avail = false;
+					}*/
 				//cout << "3" << std::endl;
 				boughtSniper1 = true;
 				sniper1Avail = true;
@@ -1874,8 +1855,8 @@ void Sp2Scene::Render()
 		}
 		//if (equipPistol2 == true)
 		//{
-		//	RenderPistol2();
-		//	RenderImageOnScreen(meshList[GEO_PISTOL2], 0.5, 25, 15);
+		//	/*RenderPistol2();
+		//	RenderImageOnScreen(meshList[GEO_PISTOL2], 0.5, 25, 15);*/
 		////RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
 		//}
 		else if (equipRifle1 == true)
@@ -1928,7 +1909,6 @@ void Sp2Scene::Render()
 	string var = oss.str();
 	RenderTextOnScreen(meshList[GEO_TEXT], oss.str(), Color(0, 1, 0), 2, 2, 28);
 
-
 }
 void Sp2Scene::RenderPistol1()
 {
@@ -1976,58 +1956,53 @@ void Sp2Scene::RenderPistol1()
 		modelStack.PopMatrix();
 	}
 }
+
+void Sp2Scene::RenderPistol2()
+{
+	if (gunReload <= 0)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
+		modelStack.Rotate(rotateGunY, 0, 1, 0);
+		modelStack.Rotate(rotateGunX, 1, 0, 0);
+		modelStack.Scale(0.5, 0.5, 0.5);
+
+
+		modelStack.PushMatrix();
+
+		if (Application::IsKeyPressed(VK_SHIFT) == true || gameStates == states::base)
+		{
+			modelStack.Translate(0, -10, -10);
+			modelStack.Rotate(-60, 0, 1, 0);
+		}
+		else if (Application::IsKeyPressed(VK_RBUTTON) == true)
+		{
+			modelStack.Translate(0, -7.1, -10);
+			modelStack.Rotate(-90, 0, 1, 0);
+		}
+		else
+		{
+			modelStack.Translate(5, -10, -15);
+			modelStack.Rotate(-90, 0, 1, 0);
+		}
+		RenderMesh(meshList[GEO_PISTOL2], true);
+		modelStack.PopMatrix();
+
+		modelStack.PopMatrix();
+	}
+	if (pis.ammo < 5)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(.7, 0, 0), 3, 18, 1);
+		modelStack.PopMatrix();
+	}
 	else
 	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "+", Color(0.3, 0.8, 0.3), 5, 8.28, 6);
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0, .7, 0), 3, 18, 1);
+		modelStack.PopMatrix();
 	}
-
 }
-//void Sp2Scene::RenderPistol2()
-//{
-//	if (gunReload <= 0)
-//	{
-//		modelStack.PushMatrix();
-//		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
-//		modelStack.Rotate(rotateGunY, 0, 1, 0);
-//		modelStack.Rotate(rotateGunX, 1, 0, 0);
-//		modelStack.Scale(0.5, 0.5, 0.5);
-//
-//
-//		modelStack.PushMatrix();
-//
-//		if (Application::IsKeyPressed(VK_SHIFT) == true || gameStates == states::base)
-//		{
-//			modelStack.Translate(0, -10, -10);
-//			modelStack.Rotate(-60, 0, 1, 0);
-//		}
-//		else if (Application::IsKeyPressed(VK_RBUTTON) == true)
-//		{
-//			modelStack.Translate(0, -7.1, -10);
-//			modelStack.Rotate(-90, 0, 1, 0);
-//		}
-//		else
-//		{
-//			modelStack.Translate(5, -10, -15);
-//			modelStack.Rotate(-90, 0, 1, 0);
-//		}
-//		RenderMesh(meshList[GEO_PISTOL2], true);
-//		modelStack.PopMatrix();
-//
-//		modelStack.PopMatrix();
-//	}
-//	if (pis.ammo < 5)
-//	{
-//		modelStack.PushMatrix();
-//		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(.7, 0, 0), 3, 18, 1);
-//		modelStack.PopMatrix();
-//	}
-//	else
-//	{
-//		modelStack.PushMatrix();
-//		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0, .7, 0), 3, 18, 1);
-//		modelStack.PopMatrix();
-//	}
-//}
 void Sp2Scene::RenderRifle1()
 {
 	if (gunReload <= 0)
@@ -2036,7 +2011,7 @@ void Sp2Scene::RenderRifle1()
 		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
 		modelStack.Rotate(rotateGunY, 0, 1, 0);
 		modelStack.Rotate(rotateGunX, 1, 0, 0);
-
+	
 		modelStack.PushMatrix();
 		if (Application::IsKeyPressed(VK_SHIFT) == true || gameStates == states::base)
 		{
