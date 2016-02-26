@@ -81,6 +81,7 @@ class Sp2Scene : public Scene
 		GEO_MINERALS,
 
 		GEO_PISTOL1,
+		GEO_PISTOL2,
 		GEO_RIFLE1,
 		GEO_SNIPER1,
 		GEO_SHOTGUN1,
@@ -193,6 +194,7 @@ private:
 
 	//boolean for equipping weapons
 	bool equipPistol1 = true;
+	bool equipPistol2 = true;
 	bool equipRifle1 = false;
 	bool equipSniper1 = false;
 	bool equipShotgun1 = false;
@@ -215,6 +217,7 @@ private:
 	bool testHB = false;
 
 	void RenderPistol1();
+	void RenderPistol2();
 	void RenderRifle1();
 	void RenderSniper1();
 	void RenderShotgun1();
