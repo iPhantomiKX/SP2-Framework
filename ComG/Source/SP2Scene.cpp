@@ -225,8 +225,8 @@ void Sp2Scene::Init()
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
 	meshList[GEO_PISTOL1]->textureID = LoadTGA("Image//pistol1texture.tga");
 
-	meshList[GEO_PISTOL2] = MeshBuilder::GenerateOBJ("pistol2model", "OBJ//pistol2.obj");
-	meshList[GEO_PISTOL2]->textureID = LoadTGA("Image//pistol2UV.tga");
+	/*meshList[GEO_PISTOL2] = MeshBuilder::GenerateOBJ("pistol2model", "OBJ//pistol2.obj");
+	meshList[GEO_PISTOL2]->textureID = LoadTGA("Image//pistol2UV.tga");*/
 
 	meshList[GEO_RIFLE1] = MeshBuilder::GenerateOBJ("rifle1model", "OBJ//AR.obj");
 	meshList[GEO_RIFLE1]->textureID = LoadTGA("Image//AR_UV.tga");
@@ -1971,7 +1971,7 @@ void Sp2Scene::RenderPistol1()
 
 
 		modelStack.PushMatrix();
-		
+
 		if (Application::IsKeyPressed(VK_SHIFT) == true || gameStates == states::base)
 		{
 			modelStack.Translate(0, -10, -10);
@@ -2203,36 +2203,7 @@ void Sp2Scene::RenderShotgun1()
 		modelStack.PopMatrix();
 	}
 }
-//void Sp2Scene::RenderShotgun1()
-//{
-//	if (gunReload <= 0)
-//	{
-//		modelStack.PushMatrix();
-//		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
-//		modelStack.Rotate(rotateGunY, 0, 1, 0);
-//		modelStack.Rotate(rotateGunX, 1, 0, 0);
-//
-//		modelStack.PushMatrix();
-//		if (Application::IsKeyPressed(VK_RBUTTON) == true)
-//		{
-//			modelStack.Translate(0, -7, -10);
-//		}
-//		else
-//		{
-//			modelStack.Translate(5, -10, -15);
-//		}
-//		modelStack.Translate(0, 1.5, 0);
-//		modelStack.Rotate(-90, 0, 1, 0);
-//		modelStack.Scale(2, 2, 2);
-//		RenderMesh(meshList[GEO_SHOTGUN1], true);
-//		modelStack.PopMatrix();
-//
-//		modelStack.PopMatrix();
-//	}
-//	modelStack.PushMatrix();
-//	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0, 0.8, 0), 2, 30, 1);
-//	modelStack.PopMatrix();
-//}
+
 void Sp2Scene::Exit()
 {
 	glDeleteVertexArrays(1, &m_vertexArrayID);
