@@ -179,6 +179,9 @@ private:
 
 	float Degree;
 
+	float spawnPositionx[10];
+	float spawnPositionz[10];
+
 	double range;
 	double gunCd;
 	double gunReload;

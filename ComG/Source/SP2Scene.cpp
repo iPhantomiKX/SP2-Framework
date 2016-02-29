@@ -34,14 +34,15 @@ double Camera3::recoil = 0;
 Vector3 Camera3::location = (0, 0, 0);
 Vector3 Camera3::location2 = (0, 0, 0);
 Vector3 Camera3::direction = (0, 0, 0);
+int enemy::attackPow = 1;
 pistol pis;
 rifle rif;
 sniper sr;
 shotgun sg;
 target t;
-enemy en;
+//enemy en;
 player play;
-enemy thecube(100, 150.f, 10.f, 1.f, 5);
+enemy thecube(10, 0.f, 0, 0.f, 50);
 
 
 Sp2Scene::Sp2Scene()
@@ -314,8 +315,6 @@ void Sp2Scene::Init()
 	maxVectors.push_back(c3.maxPos(Vector3(-400, 0, 73), 120, 120, 15));
 	maxVectors.push_back(c3.maxPos(Vector3(-360, 0, 0), 45, 100, 20));
 	maxVectors.push_back(c3.maxPos(Vector3(-435, 0, 0), 40, 120, 15));
-
-	
 }
 
 static float LSPEED = 10.f;
@@ -326,7 +325,6 @@ void Sp2Scene::Update(double dt)
 {
 	
 	camera.Update(dt);
-	thecube.Update(dt, camera);
 	if (gameStates == states::base)
 	{
 		if (camera.craftUi() == true && Application::IsKeyPressed('E') && crafting == false && buttonCd == 0)
@@ -496,15 +494,15 @@ void Sp2Scene::Update(double dt)
 	//std::cout << c3.getShotsFired() << "bang" <<  std::endl; // why 0
 	if (gameStates == states::outside)
 	{
-		if (atkCd <= 0)
-		{
-			EnemyAttack(thecube.pos);
-			atkCd = 30;
-		}
-		if (atkCd > 0)
-		{
-			atkCd--;
-		}
+			if (atkCd <= 0)
+			{
+				EnemyAttack(thecube.pos);
+				atkCd = 30;
+			}
+			if (atkCd > 0)
+			{
+				atkCd--;
+			}
 		//If pressed '1', switch to Pistol1
 		if (equipPistol1 == true)
 		{
@@ -728,46 +726,13 @@ void Sp2Scene::Update(double dt)
 		t.hp = 10;
 		t.isDead = false;
 		}*/
-		if (en.isDead() == false)
+		if (thecube.isDead() == false)
 		{
-			Vector3 view = camera.position - thecube.pos;
-			view.Normalized();
-			/***********************************************/
-			/*AI CODES!!!!!!!!!!!!!!!					   */
-			/***********************************************/
-			/*thecube.pos.x += (view.x * dt * thecube.speed) / 5;
-			thecube.pos.y += (view.y * dt * thecube.speed) / 5;
-			thecube.pos.z += (view.z * dt * thecube.speed) / 5;*/
-			if (thecube.pos.x <= 990 && thecube.pos.x >= -990
-				&& thecube.pos.y <= 990 && thecube.pos.y >= -990
-				&& thecube.pos.z <= 990 && thecube.pos.z >= -990
-				&& AICheckCollisionObject(thecube.pos) == false)
-			{
-				thecube.pos.x += (view.x * dt * thecube.speed) / 5;
-				thecube.pos.y += (view.y * dt * thecube.speed) / 5;
-				thecube.pos.z += (view.z * dt * thecube.speed) / 5;
-			}
-			else
-			{
-				thecube.pos.x -= (view.x * dt * thecube.speed) / 5;
-				thecube.pos.y -= (view.y * dt * thecube.speed) / 5;
-				thecube.pos.z -= (view.z * dt * thecube.speed) / 5;
-			}
-			//Rotation
-			Vector3 viewInit(0, 0, 1);
-			//std::cout << thecube.pos << std::endl;
-			Vector3 wantView(camera.position - thecube.pos);
-			wantView.Normalize();
-			Vector3 normal(0, 1, 0);
-			Degree = Math::RadianToDegree(acos(viewInit.Dot(wantView)));
-			Vector3 Crossed = viewInit.Cross(wantView);
-			if (Crossed.Dot(normal) < 0)
-			{
-				Degree *= -1;
-			}
-			/***********************************************/
-			/*        AI CODES!!!!!!!!!!!!!!!			   */
-			/***********************************************/
+			thecube.Update(dt, camera);
+		}
+		else
+		{
+			thecube.respawnEnemy(rand() % 980 - 490, 0, rand() % 980 - 490);
 		}
 	}
 	if (Camera3::mouseControl == true)
@@ -949,6 +914,7 @@ void Sp2Scene::Update(double dt)
 		}
 	}
 	changeStates();
+	std::cout << thecube.hp << std::endl;
 }
 
 bool Sp2Scene::AICheckCollisionObject(Vector3 AIposition)
@@ -1153,9 +1119,10 @@ void Sp2Scene::bulletPos()
 			Vector3 temp1 = *count1;
 			*count += *count1;
 			//std::cout << temp << "look at me" << std::endl;
-			if (bulletEnemyCollision(temp, thecube.pos) && en.isDieded == false )
+			//std::cout << thecube.pos << std::endl;
+			if (bulletEnemyCollision(temp, thecube.pos) == true)
 			{
-				en.hp -= *count2;
+				thecube.hp -= *count2;
 				std::cout << "hit" << std::endl;
 				count = shotsFired.erase(count);
 				count1 = shotsDir.erase(count1);
@@ -1215,6 +1182,7 @@ void Sp2Scene::changeStates()
 
 bool Sp2Scene::bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation)
 {
+	targetLocation.y += 10;
 	if (bulletPos.x > (targetLocation.x - (6 / 2)) && bulletPos.x < (targetLocation.x + (6 / 2)) &&
 		bulletPos.y >(targetLocation.y - (6 / 2)) && bulletPos.y < (targetLocation.y + (6 / 2)) &&
 		bulletPos.z >(targetLocation.z - (6 / 2)) && bulletPos.z < (targetLocation.z + (6 / 2)))
@@ -1229,11 +1197,11 @@ bool Sp2Scene::bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation)
 
 void Sp2Scene::EnemyAttack(Vector3 targetLocation)
 {
-	if (Camera3::location.x > (targetLocation.x - (30 / 2)) && Camera3::location.x < (targetLocation.x + (30 / 2)) &&
-		Camera3::location.y >(targetLocation.y - (30 / 2)) && Camera3::location.y < (targetLocation.y + (30 / 2)) &&
-		Camera3::location.z >(targetLocation.z - (30 / 2)) && Camera3::location.z < (targetLocation.z + (30 / 2)))
+	if (Camera3::location.x > (targetLocation.x - (50 / 2)) && Camera3::location.x < (targetLocation.x + (50 / 2)) &&
+		Camera3::location.y >(targetLocation.y - (50 / 2)) && Camera3::location.y < (targetLocation.y + (50 / 2)) &&
+		Camera3::location.z >(targetLocation.z - (50 / 2)) && Camera3::location.z < (targetLocation.z + (50 / 2)))
 	{
-		play.getHit(1);
+		play.getHit(enemy::attackPow);
 	}
 }
 
@@ -1720,15 +1688,18 @@ void Sp2Scene::RenderElements()
 
 void Sp2Scene::RenderEnemy()
 {
-	modelStack.PushMatrix();
-	modelStack.Translate(thecube.pos.x, 0, thecube.pos.z);
-	modelStack.Rotate(Degree, 0, 1, 0);
-	//cout << Degree << std::endl;
-	modelStack.PushMatrix();
-	modelStack.Scale(0.5, 0.5, 0.5);
-	RenderMesh(meshList[GEO_THECUBE], true);
-	modelStack.PopMatrix();
-	modelStack.PopMatrix();
+	for (int i = 0; i < 10; ++i)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(thecube.pos.x, 0, thecube.pos.z);
+		modelStack.Rotate(thecube.Degree, 0, 1, 0);
+		//cout << Degree << std::endl;
+		modelStack.PushMatrix();
+		modelStack.Scale(0.5, 0.5, 0.5);
+		RenderMesh(meshList[GEO_THECUBE], true);
+		modelStack.PopMatrix();
+		modelStack.PopMatrix();
+	}
 }
 
 void Sp2Scene::Render()
@@ -1786,7 +1757,7 @@ void Sp2Scene::Render()
 	}*/
 
 	//modelStack.PushMatrix();
-	if (en.isDead() == false)
+	if (thecube.isDead() == false)
 	{
 		RenderEnemy();
 	}
@@ -1956,7 +1927,7 @@ void Sp2Scene::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], "Health:  " + std::to_string(play.getHp()), Color(0.3, 0.8, 0.3), 2, 15, 5);
 	if (play.isDead() == true)
 	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "U DIEDED", Color(0.3, 0.8, 0.3), 5, 5, 5);
+		RenderTextOnScreen(meshList[GEO_TEXT], "U DIEDED", Color(0.8, 0, 0), 5, 5, 5);
 	}
 }
 void Sp2Scene::RenderPistol1()

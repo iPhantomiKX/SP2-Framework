@@ -28,6 +28,8 @@ public:
 	bool isDead();
 	void Update(double dt, Camera3 camera);
 	void Render();
+	void respawnEnemy(int x, int y, int z);
+	Vector3 returnPos();
 	//void AIRotation(Vector3 Player);
 
 	Vector3 pos;
@@ -35,6 +37,8 @@ public:
 	bool isDieded;
 	int speed;
 	float Degree;
+	static int attackPow;
+	int enemyUpgrade;
 };
 
 #endif
