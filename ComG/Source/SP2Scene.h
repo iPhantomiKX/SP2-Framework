@@ -218,6 +218,8 @@ private:
 	bool testPortal = false;
 	bool testPortalsign = false;
 
+	int buttonCd;
+
 	bool testHB = false;
 
 	void RenderPistol1();
@@ -229,6 +231,8 @@ private:
 	void RenderEnemy();
 
 	bool bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation);
+	void Sp2Scene::EnemyAttack(Vector3 targetLocation);
+	int atkCd;
 	/*static bool test4;
 	static bool test5;*/
 
@@ -240,6 +244,8 @@ private:
 	void RenderPortal2();
 	void RenderTable();
 	void RenderHealthPack();
+
+	
 
 	void changeStates();
 

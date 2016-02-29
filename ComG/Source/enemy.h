@@ -26,7 +26,7 @@ public:
 	void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
 	virtual ~enemy();
 	bool isDead();
-	void Update(double dt);
+	void Update(double dt, Camera3 camera);
 	void Render();
 	//void AIRotation(Vector3 Player);
 
@@ -34,6 +34,7 @@ public:
 	int hp;
 	bool isDieded;
 	int speed;
+	float Degree;
 };
 
 #endif

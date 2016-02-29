@@ -62,7 +62,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	minVectors.push_back(minPos(Vector3(-338, 0, 38), 20, 120, 90));
 	minVectors.push_back(minPos(Vector3(-460, 0, 38), 20, 120, 90));
 	minVectors.push_back(minPos(Vector3(-400, 0, 73), 120, 120, 20));
-	minVectors.push_back(minPos(Vector3(-360, 0, 0), 58, 120, 20));
+	minVectors.push_back(minPos(Vector3(-360, 0, 0), 70, 100, 30));
 	minVectors.push_back(minPos(Vector3(-435, 0, 0), 58, 120, 20));
 
 	/*maxVectors.push_back(maxPos(Vector3(400, 60, 0), 100, 20, 100));
@@ -84,7 +84,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	maxVectors.push_back(maxPos(Vector3(-338, 0, 38), 20, 120, 90));
 	maxVectors.push_back(maxPos(Vector3(-460, 0, 38), 20, 120, 90));
 	maxVectors.push_back(maxPos(Vector3(-400, 0, 73), 120, 120, 20));
-	maxVectors.push_back(maxPos(Vector3(-360, 0, 0), 52, 120, 20));
+	maxVectors.push_back(maxPos(Vector3(-360, 0, 0), 70, 100, 30));
 	maxVectors.push_back(maxPos(Vector3(-435, 0, 0), 52, 120, 20));	
 
 
@@ -115,7 +115,7 @@ void Camera3::Update(double dt)
 		delay2--;
 	}
 	Mtx44 rotation;
-	//std::cout << xpos << " " << ypos << std::endl;
+	//std::s << xpos << " " << ypos << std::endl;
 	if (mouseControl == true && Application::IsKeyPressed(VK_RBUTTON))
 	{
 		xpos, ypos = a.Mouse(xpos, ypos);
