@@ -56,6 +56,8 @@ public:
 	Vector3 diffz;
 	std::vector<Vector3> minVectors;
 	std::vector<Vector3> maxVectors;
+	std::vector<Vector3> minMineralVectors;
+	std::vector<Vector3> maxMineralVectors;
 
 	Camera3();
 	~Camera3();
@@ -64,10 +66,12 @@ public:
 	bool testhitbox(const Vector3& lowest, const Vector3& highest, double move);
 	bool hitbox(double move);
 	bool checkcollisionwithObject(double move);
+	bool checkcollisionwithOres(double move); 
 	//bool checkBulletcollisionwithObject(Vector3 bulletPos);
 	bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	void teleport();
+	bool mining();
 	bool craftUi();
 	Vector3 minPos(Vector3 center, double sizeX, double sizeY, double sizeZ);
 	Vector3 maxPos(Vector3 center, double sizeX, double sizeY, double sizeZ);
