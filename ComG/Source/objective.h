@@ -15,9 +15,10 @@ public:
 	static int chooseObj;
 	objective();
 	~objective();
-	void getObjective();
-	int objectiveProgress(int amt);
-	void objComplete();
+	int getObjective();
+	int getProgress();
+	void objectiveProgress(int amt);
+	bool objComplete();
 };
 
 #endif
