@@ -7,6 +7,9 @@
 #include "MatrixStack.h"
 #include "Light.h"
 #include "enemy.h"
+#include "gun.h"
+#include "gun2.h"
+#include "player.h"
 #include <vector>
 #include <sstream>
 #include <string>
@@ -68,6 +71,7 @@ class Sp2Scene : public Scene
 		GEO_OBJECT,
 		GEO_TEST,
 
+		GEO_MENU,
 		GEO_TARGET,
 		GEO_TARGETHIT,
 
@@ -162,7 +166,7 @@ private:
 	float elementsx[25];
 	float elementsz[25];
 
-
+	WEAPON_TYPE CurrentWeapon;
 
 	int treex[50];
 	int treez[50];
@@ -193,6 +197,7 @@ private:
 	void aimBulletRNG(int spray);
 	bool bulletObjectCollision(Vector3 bulletPos);
 	bool AICheckCollisionObject(Vector3 AIposition);
+	bool ingame;
 
 	double storeRand;
 	double storeRand2;
@@ -202,7 +207,7 @@ private:
 
 	//boolean for equipping weapons
 	bool equipPistol1 = true;
-	bool equipPistol2 = true;
+	//bool equipPistol2 = true;
 	bool equipRifle1 = false;
 	bool equipSniper1 = false;
 	bool equipShotgun1 = false;
@@ -227,6 +232,7 @@ private:
 
 	bool testHB = false;
 
+	void RenderMenu();
 	void RenderPistol1();
 	void RenderPistol2();
 	void RenderRifle1();

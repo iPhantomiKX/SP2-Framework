@@ -10,7 +10,6 @@
 #include "Utility.h"
 #include "LoadTGA.h"
 #include "LoadOBJ.h"
-#include "gun.h"
 #include "enemy.h"
 #include "player.h"
 #include "objective.h"
@@ -48,6 +47,7 @@ player play;
 objective obj;
 int objective::chooseObj = 1;
 enemy thecube(10, 0.f, 0, 0.f, 50);
+bool Camera3::inMenu = true;
 
 
 Sp2Scene::Sp2Scene()
@@ -149,12 +149,49 @@ void Sp2Scene::Init()
 	storeRand = 0;
 	storeRand2 = 0;
 	atkCd = 0;
-	gameStates = states::outside;
 	buttonCd = 0;
 	heals = 2;
+	gameStates = states::menu;
+	buttonCd = 0;
+	ingame = false;
+
 
 	//Initialize camera settings
-	camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));
+	/*camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));*/
+	camera.Init(Vector3(1, 10, 1), Vector3(1, 10, 0), Vector3(0, 1, 0));
+
+	
+	myWeapon[PISTOL1].damage = 1;
+	myWeapon[PISTOL1].RoF = 20;
+	myWeapon[PISTOL1].ammo = 12;
+	myWeapon[PISTOL1].maxAmmo = 12;
+	myWeapon[PISTOL1].reloadSpd = 100;
+	myWeapon[PISTOL1].inAccuracy = 1;
+
+	myWeapon[RIFLE1].damage = 2;
+	myWeapon[RIFLE1].RoF = 10;
+	myWeapon[RIFLE1].ammo = 30;
+	myWeapon[RIFLE1].maxAmmo = 30;
+	myWeapon[RIFLE1].reloadSpd = 150;
+	myWeapon[RIFLE1].inAccuracy = 2;
+
+	myWeapon[SNIPER1].damage = 5;
+	myWeapon[SNIPER1].RoF = 30;
+	myWeapon[SNIPER1].ammo = 10;
+	myWeapon[SNIPER1].maxAmmo = 10;
+	myWeapon[SNIPER1].reloadSpd = 200;
+	myWeapon[SNIPER1].inAccuracy = 3;
+
+	myWeapon[SHOTGUN1].damage = 1;
+	myWeapon[SHOTGUN1].RoF = 30;
+	myWeapon[SHOTGUN1].ammo = 8;
+	myWeapon[SHOTGUN1].maxAmmo = 8;
+	myWeapon[SHOTGUN1].reloadSpd = 50;
+	myWeapon[SHOTGUN1].inAccuracy = 2;
+
+	CurrentWeapon = PISTOL1;
+	myWeapon[CurrentWeapon];
+
 
 	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
@@ -223,6 +260,11 @@ void Sp2Scene::Init()
 	meshList[GEO_MINERALS] = MeshBuilder::GenerateOBJ("gold_mineral", "OBJ//GoldMineral.obj");
 	meshList[GEO_MINERALS]->textureID = LoadTGA("Image//GoldMineralsUV.tga");
 
+	meshList[GEO_MENU] = MeshBuilder::GenerateOBJ("mainmenu", "OBJ//mainMenu.obj");
+	meshList[GEO_MENU]->textureID = LoadTGA("Image//menuBackground.tga");
+
+	meshList[GEO_MOONMENU] = MeshBuilder::GenerateOBJ("moonmenu", "OBJ//moonMenu.obj");
+	meshList[GEO_MOONMENU]->textureID = LoadTGA("Image//menuMoonUV.tga");
 	
 	meshList[GEO_SCOPE] = MeshBuilder::GenerateOBJ("scopemodel", "OBJ//Scope.obj");
 	meshList[GEO_SCOPE]->textureID = LoadTGA("Image//Scope.tga");
@@ -329,7 +371,6 @@ static float SCALE_LIMIT = 5.f;
 
 void Sp2Scene::Update(double dt)
 {
-	
 	camera.Update(dt);
 	if (buttonCd > 0)
 	{
@@ -375,8 +416,8 @@ void Sp2Scene::Update(double dt)
 				}*/
 				boughtShotgun1 = true;
 				shotgun1Avail = true;
+				
 				play.spendMinerals(2000);
-
 			}
 			if (Application::IsKeyPressed('4') && crafting == true && play.getMinerals() >= 3000 && boughtSniper1 == false)
 			{
@@ -397,33 +438,6 @@ void Sp2Scene::Update(double dt)
 		}
 
 
-
-		//If pressed '1', switch to Pistol1
-
-
-
-		//if (Application::IsKeyPressed('E'))
-		//{
-		//	if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
-		//	{
-		//		crafting = true;
-		//	}
-
-		//}
-		//else if (!camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
-		//{
-		//	crafting = false;
-		//}
-
-
-		/*if (camera.craftUi() == true && Application::IsKeyPressed('E') == true)
-		{
-			crafting = true;
-		}
-		else
-		{
-			crafting = false;
-		}*/
 	}
 
 	//if (Application::IsKeyPressed('1')) //enable back face culling
@@ -462,6 +476,16 @@ void Sp2Scene::Update(double dt)
 	planet1RotAngle += (float)(5 * dt);
 	planet1RevAngle += (float)(2 * dt);
 	moon1RotAngle += (float)(50 * dt);
+
+		//if (Application::IsKeyPressed('1')) //enable back face culling
+		//glDisable(GL_CULL_FACE);
+		//if (Application::IsKeyPressed('2')) //disable back face culling
+		//glEnable(GL_CULL_FACE);
+		if (Application::IsKeyPressed('0'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
+		if (Application::IsKeyPressed('5'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+
 
 	framerate = 1 / dt;
 
@@ -905,67 +929,69 @@ void Sp2Scene::Update(double dt)
 	{
 		rotateGunX = -45;
 	}
-	if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
-	{
-		equipPistol1 = true;
-		equipRifle1 = false;
-		equipSniper1 = false;
-		equipShotgun1 = false;
-	}
+	//if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
+	//{
+	//	equipPistol1 = true;
+	//	equipRifle1 = false;
+	//	equipSniper1 = false;
+	//	equipShotgun1 = false;
+	//	
+	//}
 
-	if (boughtRifle1 == true)
-	{
-		//If pressed '2', switch to Rifle1
-		if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
-		{
-			equipPistol1 = false;
-			equipRifle1 = true;
-			if (sniper1Avail == true)
-			{
-				equipSniper1 = false;
-			}
-			if (shotgun1Avail = true)
-			{
-				equipShotgun1 = false;
-			}
-		}
-	}
+	//if (boughtRifle1 == true)
+	//{
+	//	//If pressed '2', switch to Rifle1
+	//	if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
+	//	{
+	//		equipPistol1 = false;
+	//		equipRifle1 = true;
+	//		if (sniper1Avail == true)
+	//		{
+	//			equipSniper1 = false;
+	//		}
+	//		if (shotgun1Avail = true)
+	//		{
+	//			equipShotgun1 = false;
+	//		}
+	//	}
+	//}
 
-	if (boughtShotgun1 == true)
-	{
-		//If pressed '3', switch to Sniper1
-		if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
-		{
-			equipPistol1 = false;
-			if (rifle1Avail == true)
-			{
-				equipRifle1 = false;
-			}
+	//if (boughtShotgun1 == true)
+	//{
+	//	//If pressed '3', switch to Sniper1
+	//	if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
+	//	{
+	//		equipPistol1 = false;
+	//		if (rifle1Avail == true)
+	//		{
+	//			equipRifle1 = false;
+	//		}
 
-			equipShotgun1 = true;
+	//		equipShotgun1 = true;
 
-			if (sniper1Avail == true)
-			{
-				equipSniper1 = false;
-			}
-		}
-	}
-	if (boughtSniper1 == true)
-	{
-		if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
-		{
-			equipPistol1 = false;
-			if (rifle1Avail == true)
-			{
-				equipRifle1 = false;
-			}
-			if (shotgun1Avail == true)
-			{
-				equipShotgun1 = false;
-			}
-			equipSniper1 = true;
-		}
-	}
+	//		if (sniper1Avail == true)
+	//		{
+	//			equipSniper1 = false;
+	//		}
+	//	}
+	//}
+	//if (boughtSniper1 == true)
+	//{
+	//	if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
+	//	{
+	//		equipPistol1 = false;
+	//		if (rifle1Avail == true)
+	//		{
+	//			equipRifle1 = false;
+	//		}
+	//		if (shotgun1Avail == true)
+	//		{
+	//			equipShotgun1 = false;
+	//		}
+	//		equipSniper1 = true;
+	//	}
+	//}
+	
 	changeStates();
 	std::cout << thecube.hp << std::endl;
 }
@@ -1223,7 +1249,11 @@ bool Sp2Scene::bulletObjectCollision(Vector3 bulletPos)
 
 void Sp2Scene::changeStates()
 {
-	if (Camera3::inBase == true)
+	if (ingame == false)
+	{
+		gameStates = states::menu;
+	}
+	else if (Camera3::inBase == true)
 	{
 		gameStates = states::base;
 	}
@@ -1231,6 +1261,7 @@ void Sp2Scene::changeStates()
 	{
 		gameStates = states::outside;
 	}
+	
 }
 
 bool Sp2Scene::bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation)
@@ -1464,7 +1495,6 @@ void Sp2Scene::RenderMesh(Mesh *mesh, bool enablelight)
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
-
 
 void Sp2Scene::RenderSpaceshipQuad()
 {
@@ -1799,161 +1829,176 @@ void Sp2Scene::Render()
 
 	RenderMesh(meshList[GEO_AXES], false);
 
-	/*if (targetReg > 0 && t.isDead == false)
+	/*if (gameStates == states::menu)
 	{
+		RenderImageOnScreen(meshList[GEO_MENU], 9, 4.5, 3.5);
+		RenderImageOnScreen(meshList[GEO_MOONMENU], 5, 4, 4);
+	}
+	else
+	{*/
+
+		/*if (targetReg > 0 && t.isDead == false)
+		{
 		modelStack.PushMatrix();
 		modelStack.Translate(50, 10, 0);
 		modelStack.Scale(6, 6, 6);
 		RenderMesh(meshList[GEO_TARGET], false);
 		modelStack.PopMatrix();
-	}
-	else if (t.isDead == false)
-	{
+		}
+		else if (t.isDead == false)
+		{
 		modelStack.PushMatrix();
 		modelStack.Translate(50, 10, 0);
 		modelStack.Scale(6, 6, 6);
 		RenderMesh(meshList[GEO_TARGETHIT], false);
 		modelStack.PopMatrix();
-	}*/
-
-	//modelStack.PushMatrix();
-	if (thecube.isDead() == false && gameStates == states::outside)
-	{
-		RenderEnemy();
-	}
-	//modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	if (gameStates == states::outside)
-	{
-		RenderSkybox();
-		RenderPortal1();
-		RenderSpaceHouse();
-		RenderTable();
-		RenderHealthPack();
-		RenderElements();
-	}
-	if (gameStates == states::base)
-	{
-		RenderSpaceshipQuad();
-		RenderCraftingPanel();
-		RenderPortal1();
-		RenderPortal2();
-	}
-	modelStack.PopMatrix();
-
-
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 499, 0);
-	modelStack.Scale(10, 10, 10);
-	RenderMesh(meshList[GEO_LIGHTBALL], false);
-	modelStack.PopMatrix();
-
-	/*if (Sp2Scene::test5 == true)
-	{
-		for (int i = 0; i < 1000; i++)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(rainpositionx[i], rainpositiony[i], rainpositionz[i]);
-			modelStack.Scale(1, 6, 1);
-			RenderMesh(meshList[GEO_HEAD], false);
-			modelStack.PopMatrix();
-		}
-	}*/
-
-	/*for (int i = 0; i < 50; i++)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(treex[i], translateY, treez[i]);
-		modelStack.Scale(10, 30, 10);
-		RenderMesh(meshList[GEO_DEADTREE], true);
-		modelStack.PopMatrix();
-	}*/
-
-	/*modelStack.PushMatrix();
-	modelStack.Translate(0, -50, 0);
-	modelStack.Scale(1000, 1000, 1000);
-	modelStack.Scale(-1, 1, 1);
-	RenderMesh(meshList[GEO_BOTTOM], false);
-	modelStack.PopMatrix();*/
-
-	//Moon texture 
-	
-	if (gameStates == states::outside)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(0, 0, 0);
-		modelStack.Scale(2000, 2000, 2000);
-		RenderMesh(meshList[GEO_QUAD], true);
-		modelStack.PopMatrix();
-		for (std::vector<Vector3>::iterator count = shotsFired.begin(); count != shotsFired.end(); ++count)
-		{
-			test = *count;
-			modelStack.PushMatrix();
-			modelStack.Translate(test.x, test.y, test.z);
-			modelStack.Scale(0.3, 0.3, 0.3);
-			RenderMesh(meshList[GEO_SHOT], false);
-			modelStack.PopMatrix();
-		}
-
-		if (reloaded == false)
-		{
-			modelStack.PushMatrix();
-			RenderTextOnScreen(meshList[GEO_TEXT], "RELOADING", Color(0, 1, 0), 5, 4, 8);
-			modelStack.PopMatrix();
-		}
-
-		/*if (testPortalsign == true)
-		{
-		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "PRESS E TO TELEPORT", Color(0, 1, 0), 3, 4, 15);
 		}*/
 
-		if (Application::IsKeyPressed(VK_RBUTTON) || reloaded == false || Application::IsKeyPressed(VK_SHIFT))
+		//modelStack.PushMatrix();
+		if (thecube.isDead() == false && gameStates == states::outside)
 		{
+			RenderEnemy();
 		}
-		else
-		{
-			RenderTextOnScreen(meshList[GEO_TEXT], "+", Color(0.3, 0.8, 0.3), 5, 8.28, 6);
-		}
-		if (Camera3::location.x > -410 && Camera3::location.x < -370 && Camera3::location.y > 0 && Camera3::location.y < 20 && Camera3::location.z > 20 && Camera3::location.z < 60 && heals > 0 && play.getHp() < 100)
-		{
-			RenderTextOnScreen(meshList[GEO_TEXT], "E TO HEAL", Color(0.3, 0.8, 0.3), 5, 5, 5);
-		}
-		else if (Camera3::location.x > -410 && Camera3::location.x < -370 && Camera3::location.y > 0 && Camera3::location.y < 20 && Camera3::location.z > 20 && Camera3::location.z < 60 && heals > 0 && play.getHp() == 100)
-		{
-			RenderTextOnScreen(meshList[GEO_TEXT], "FULL HP", Color(0.8, 0.3, 0.3), 5, 5, 5);
-		}
-	}
+		modelStack.PushMatrix();
 
-		if (equipPistol1 == true)
-		{
-			RenderPistol1();
-			RenderImageOnScreen(meshList[GEO_PISTOL1], 0.5, 25, 15);
-			//RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
-		}
-		//if (equipPistol2 == true)
-		//{
-		//	/*RenderPistol2();
-		//	RenderImageOnScreen(meshList[GEO_PISTOL2], 0.5, 25, 15);*/
-		////RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
-		//}
-		else if (equipRifle1 == true)
-		{
-			RenderRifle1();
-			RenderImageOnScreen(meshList[GEO_RIFLE1], 4, 4, 2.5);
-		}
-		else if (equipSniper1 == true)
-		{
-			RenderSniper1();
-			RenderImageOnScreen(meshList[GEO_SNIPER1], 1, 15, 10);
+		//Starting game State
+		//gameStates = states::outside;
 
-		}
-		else if (equipShotgun1 == true)
+		if (gameStates == states::menu)
 		{
-			RenderShotgun1();
-			RenderImageOnScreen(meshList[GEO_SHOTGUN1], 0.5, 26, 18);
+			RenderSpaceshipQuad();
 		}
+		if (gameStates == states::outside)
+		{
+			RenderSkybox();
+			RenderPortal1();
+			RenderSpaceHouse();
+			RenderTable();
+			RenderHealthPack();
+			RenderElements();
+			RenderEnemy();
+
+			modelStack.PushMatrix();
+			modelStack.Translate(0, 0, 0);
+			modelStack.Scale(2000, 2000, 2000);
+			RenderMesh(meshList[GEO_QUAD], true);
+			modelStack.PopMatrix();
+			for (std::vector<Vector3>::iterator count = shotsFired.begin(); count != shotsFired.end(); ++count)
+			{
+				test = *count;
+				modelStack.PushMatrix();
+				modelStack.Translate(test.x, test.y, test.z);
+				modelStack.Scale(0.3, 0.3, 0.3);
+				RenderMesh(meshList[GEO_SHOT], false);
+				modelStack.PopMatrix();
+			}
+
+			if (reloaded == false)
+			{
+				modelStack.PushMatrix();
+				RenderTextOnScreen(meshList[GEO_TEXT], "RELOADING", Color(0, 1, 0), 5, 4, 8);
+				modelStack.PopMatrix();
+			}
+
+			/*if (testPortalsign == true)
+			{
+			modelStack.PushMatrix();
+			RenderTextOnScreen(meshList[GEO_TEXT], "PRESS E TO TELEPORT", Color(0, 1, 0), 3, 4, 15);
+			}*/
+
+			if (Application::IsKeyPressed(VK_RBUTTON) || reloaded == false || Application::IsKeyPressed(VK_SHIFT))
+			{
+			}
+			else
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "+", Color(0.3, 0.8, 0.3), 5, 8.28, 6);
+			}
+			if (Camera3::location.x > -410 && Camera3::location.x < -370 && Camera3::location.y > 0 && Camera3::location.y < 20 && Camera3::location.z > 20 && Camera3::location.z < 60 && heals > 0 && play.getHp() < 100)
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "E TO HEAL", Color(0.3, 0.8, 0.3), 5, 5, 5);
+			}
+			else if (Camera3::location.x > -410 && Camera3::location.x < -370 && Camera3::location.y > 0 && Camera3::location.y < 20 && Camera3::location.z > 20 && Camera3::location.z < 60 && heals > 0 && play.getHp() == 100)
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "FULL HP", Color(0.8, 0.3, 0.3), 5, 5, 5);
+			}
+		}
+		if (gameStates == states::base)
+		{
+			RenderSpaceshipQuad();
+			RenderCraftingPanel();
+			RenderPortal1();
+			RenderPortal2();
+
+			if (crafting == true)
+			{
+				RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
+			}
+			if (camera.craftUi() == true && crafting == false)
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "E TO CRAFT", Color(0.3, 0.8, 0.3), 5, 4, 5);
+			}
+		}
+		if (gameStates == states::outside || gameStates == states::base)
+		{
+			if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
+			{
+				CurrentWeapon = PISTOL1;
+				equipPistol1 = true;
+				equipRifle1 = false;
+				equipShotgun1 = false;
+				equipSniper1 = false;
+			}
+			if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
+			{
+				CurrentWeapon = RIFLE1;
+				equipPistol1 = false;
+				equipRifle1 = true;
+				equipShotgun1 = false;
+				equipSniper1 = false;
+			}
+			if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
+			{
+				CurrentWeapon = SHOTGUN1;
+				equipPistol1 = false;
+				equipRifle1 = false;
+				equipShotgun1 = true;
+				equipSniper1 = false;
+			}
+			if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
+			{
+				CurrentWeapon = SNIPER1;
+				equipPistol1 = false;
+				equipRifle1 = false;
+				equipShotgun1 = false;
+				equipSniper1 = true;
+			}
+			if (equipPistol1 == true)
+			{
+				RenderPistol1();
+				RenderImageOnScreen(meshList[GEO_PISTOL1], 0.5, 25, 15);
+			}
+			//if (equipPistol2 == true)
+			//{
+			//	/*RenderPistol2();
+			//	RenderImageOnScreen(meshList[GEO_PISTOL2], 0.5, 25, 15);*/
+			////RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
+			//}
+			else if (equipRifle1 == true)
+			{
+				RenderRifle1();
+				RenderImageOnScreen(meshList[GEO_RIFLE1], 4, 4, 2.5);
+			}
+			else if (equipSniper1 == true)
+			{
+				RenderSniper1();
+				RenderImageOnScreen(meshList[GEO_SNIPER1], 1, 15, 10);
+
+			}
+			else if (equipShotgun1 == true)
+			{
+				RenderShotgun1();
+				RenderImageOnScreen(meshList[GEO_SHOTGUN1], 0.5, 26, 18);
+			}
 
 	if (gameStates == states::base)
 	{
@@ -1983,37 +2028,43 @@ void Sp2Scene::Render()
 	
 	
 	
-	//Render Frame rate on screen
-	RenderTextOnScreen(meshList[GEO_TEXT], "FPS: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 25);
+			//Render Frame rate on screen
+			RenderTextOnScreen(meshList[GEO_TEXT], "FPS: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 25);
 
-	//Render camera position on screen
-	std::ostringstream oss;
-	oss << "X: " << camera.position.x << " Y: " << camera.position.y << "Z: " << camera.position.z;
-	string var = oss.str();
-	RenderTextOnScreen(meshList[GEO_TEXT], oss.str(), Color(0, 1, 0), 2, 2, 28);
+			//Render camera position on screen
+			std::ostringstream oss;
+			oss << "X: " << camera.position.x << " Y: " << camera.position.y << "Z: " << camera.position.z;
+			string var = oss.str();
+			RenderTextOnScreen(meshList[GEO_TEXT], oss.str(), Color(0, 1, 0), 2, 2, 28);
 
+			RenderTextOnScreen(meshList[GEO_TEXT], "Minerals: " + std::to_string(play.getMinerals()), Color(0.7, 0.7, 0.3), 3, 13, 15);
 
+			if (play.getHp() <= 30)
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.8, 0.3, 0.3), 3, 1, 15);
+			}
+			else
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.3, 0.8, 0.3), 3, 1, 15);
+			}
 
-	RenderTextOnScreen(meshList[GEO_TEXT], "Minerals: " + std::to_string(play.getMinerals()), Color(0.7,0.7,0.3), 3, 13, 15);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(obj.getProgress()) + "/" + std::to_string(obj.getObjective()), Color(0.7, 0.7, 0.3), 3, 10, 17);
+			if (obj.objComplete() == true)
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "U WIN", Color(0, 0.5, 0), 5, 6, 5);
+			}
+			else if (play.isDead() == true)
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "U DIEDED", Color(0.5, 0, 0), 5, 5, 5);
+			}
+		}
 
-	if (play.getHp() <= 30)
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.8, 0.3, 0.3), 3, 1, 15);
-	}
-	else
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.3, 0.8, 0.3), 3, 1, 15);
-	}
-
-	RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(obj.getProgress()) + "/" + std::to_string(obj.getObjective()), Color(0.7,0.7,0.3), 3, 10, 17);
-	if (obj.objComplete() == true)
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "U WIN", Color(0, 0.5, 0), 5, 6, 5);
-	}
-	else if (play.isDead() == true)
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "U DIEDED", Color(0.5, 0, 0), 5, 5, 5);
-	}
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 499, 0);
+		modelStack.Scale(10, 10, 10);
+		RenderMesh(meshList[GEO_LIGHTBALL], false);
+		modelStack.PopMatrix();
 }
 void Sp2Scene::RenderPistol1()
 {
@@ -2062,7 +2113,7 @@ void Sp2Scene::RenderPistol1()
 	}
 }
 
-void Sp2Scene::RenderPistol2()
+/*void Sp2Scene::RenderPistol2()
 {
 	if (gunReload <= 0)
 	{
@@ -2107,7 +2158,7 @@ void Sp2Scene::RenderPistol2()
 		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0.3, 0.8, 0.3), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
-}
+}*/
 void Sp2Scene::RenderRifle1()
 {
 	if (gunReload <= 0)
