@@ -829,46 +829,46 @@ void Sp2Scene::Update(double dt)
 		{
 			if (Camera3::xpos < 397)
 			{
-				rotateGunY += 1;
+				rotateGunY += 0.2;
 			}
 			if (Camera3::xpos > 403)
 			{
-				rotateGunY -= 1;
+				rotateGunY -= 0.2;
 			}
 			if (Camera3::ypos < 297)
 			{
-				gunDir += 1;
+				gunDir += 0.2;
 			}
 			if (Camera3::ypos > 303)
 			{
-				gunDir -= 1;
+				gunDir -= 0.2;
 			}
 			if (gunDir > 40)
 			{
-				gunDir = 40;
+				gunDir = 0.2;
 			}
 			else if (gunDir < -40)
 			{
-				gunDir = -40;
+				gunDir = -0.2;
 			}
 		}
 		else
 		{
 			if (Camera3::xpos < 397)
 			{
-				rotateGunY += 2;
+				rotateGunY += 0.4;
 			}
 			if (Camera3::xpos > 403)
 			{
-				rotateGunY -= 2;
+				rotateGunY -= 0.4;
 			}
 			if (Camera3::ypos < 297)
 			{
-				gunDir += 2;
+				gunDir += 0.4;
 			}
 			if (Camera3::ypos > 303)
 			{
-				gunDir -= 2;
+				gunDir -= 0.4;
 			}
 
 			if (gunDir > 40)

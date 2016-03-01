@@ -98,7 +98,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 void Camera3::Update(double dt)
 {
 
-	static const float CAMERA_SPEED = 500.f;
+	static const float CAMERA_SPEED = 1000.f;
 	prevPosition = position;
 	Vector3 view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
@@ -124,26 +124,26 @@ void Camera3::Update(double dt)
 		{
 			xpos, ypos = a.Mouse(xpos, ypos);
 
-			if (xpos < 397)
+			if (xpos < 395)
 			{
-				directionRotation.y += 1;
+				directionRotation.y += 0.2;
 			}
-			if (xpos > 403)
+			if (xpos > 405)
 			{
-				directionRotation.y -= 1;
+				directionRotation.y -= 0.2;
 			}
-			if (ypos < 297)
+			if (ypos < 295)
 			{
 				if (directionRotation.x > -40)
 				{
-					directionRotation.x -= 1;
+					directionRotation.x -= 0.2;
 				}
 			}
-			if (ypos > 303)
+			if (ypos > 305)
 			{
 				if (directionRotation.x < 40)
 				{
-					directionRotation.x += 1;
+					directionRotation.x += 0.2;
 				}
 			}
 		}
@@ -151,26 +151,29 @@ void Camera3::Update(double dt)
 		{
 			xpos, ypos = a.Mouse(xpos, ypos);
 
-			if (xpos < 397)
+			/*directionRotation.y -= (float)(xpos - 400);
+			directionRotation.x += (float)(ypos - 300);*/
+
+			if (xpos < 395)
 			{
-				directionRotation.y += 2;
+				directionRotation.y += 0.4;
 			}
-			if (xpos > 403)
+			if (xpos > 405)
 			{
-				directionRotation.y -= 2;
+				directionRotation.y -= 0.4;
 			}
-			if (ypos < 297)
+			if (ypos < 295)
 			{
 				if (directionRotation.x > -40)
 				{
-					directionRotation.x -= 2;
+					directionRotation.x -= 0.4;
 				}
 			}
-			if (ypos > 303)
+			if (ypos > 305)
 			{
 				if (directionRotation.x < 40)
 				{
-					directionRotation.x += 2;
+					directionRotation.x += 0.4;
 				}
 			}
 		}
@@ -618,6 +621,7 @@ void Camera3::Update(double dt)
 			}
 		}
 	teleport();
+
 	kb = (right * dt * speed);
 	if (camerarotation.x > maxCameraX)
 	{

@@ -125,22 +125,22 @@ void enemy::Update(double dt, Camera3 camera)
 		Degree *= -1;
 	}
 
-	std::vector<Vector3>::iterator count = bulletPos.begin();
-	std::vector<Vector3>::iterator count1 = bulletDir.begin();
+	//std::vector<Vector3>::iterator count = bulletPos.begin();
+	//std::vector<Vector3>::iterator count1 = bulletDir.begin();
 
-	while (count != bulletPos.end())
-	{
-		*count += *count1;
-		*count++;
-		*count1++;
-	}
+	//while (count != bulletPos.end())
+	//{
+	//	*count += *count1;
+	//	*count++;
+	//	*count1++;
+	//}
 }
 
-void enemy::shootBullet()
-{
-	bulletPos.push_back(pos);
-	bulletDir.push_back(aim);
-}
+//void enemy::shootBullet()
+//{
+//	bulletPos.push_back(pos);
+//	bulletDir.push_back(aim);
+//}
 
 Vector3 enemy::returnPos()
 {
