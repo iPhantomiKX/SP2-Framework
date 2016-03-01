@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "MatrixStack.h"
 #include "Light.h"
+#include "enemy.h"
 #include <vector>
 #include <sstream>
 #include <string>
@@ -66,7 +67,7 @@ class Sp2Scene : public Scene
 		GEO_BLOODY_FRONT,
 		GEO_OBJECT,
 		GEO_TEST,
-		
+
 		GEO_TARGET,
 		GEO_TARGETHIT,
 
@@ -82,6 +83,7 @@ class Sp2Scene : public Scene
 		GEO_ORES,
 
 		GEO_PISTOL1,
+		GEO_PISTOL2,
 		GEO_RIFLE1,
 		GEO_SNIPER1,
 		GEO_SHOTGUN1,
@@ -90,6 +92,7 @@ class Sp2Scene : public Scene
 
 		GEO_SCOPE,
 		GEO_AMMO,
+		GEO_THECUBE,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -135,8 +138,9 @@ public:
 	virtual void Update(double dt);
 	virtual void Render();
 	virtual void Exit();
-private:
 	void RenderMesh(Mesh *mesh, bool enablelight);
+private:
+	
 	void RenderSkybox();
 	void RenderText(Mesh * mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh * mesh, std::string text, Color color, float size, float x, float y);
@@ -156,10 +160,8 @@ private:
 	float rainpositiony[1000];
 	float rainpositionz[1000];
 
-	float elementsx[25];
-	float elementsz[25];
-
-
+	float elementsx[10];
+	float elementsz[10];
 
 	int treex[50];
 	int treez[50];
@@ -174,6 +176,11 @@ private:
 	float rotateGunX;
 	float rotateGunY;
 
+	float Degree;
+
+	float spawnPositionx[10];
+	float spawnPositionz[10];
+
 	double range;
 	double gunCd;
 	double gunReload;
@@ -184,7 +191,7 @@ private:
 	void bulletRNG(int spray);
 	void aimBulletRNG(int spray);
 	bool bulletObjectCollision(Vector3 bulletPos);
-	//bool craftUi();
+	bool AICheckCollisionObject(Vector3 AIposition);
 
 	double storeRand;
 	double storeRand2;
@@ -194,6 +201,7 @@ private:
 
 	//boolean for equipping weapons
 	bool equipPistol1 = true;
+	bool equipPistol2 = true;
 	bool equipRifle1 = false;
 	bool equipSniper1 = false;
 	bool equipShotgun1 = false;
@@ -213,18 +221,21 @@ private:
 	bool testPortal = false;
 	bool testPortalsign = false;
 
-	//Mining Minerals
-	bool testMining = false;
+	int buttonCd;
 
 	bool testHB = false;
 
 	void RenderPistol1();
+	void RenderPistol2();
 	void RenderRifle1();
 	void RenderSniper1();
 	void RenderShotgun1();
 	void RenderElements();
+	void RenderEnemy();
 
 	bool bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation);
+	void Sp2Scene::EnemyAttack(Vector3 targetLocation);
+	int atkCd;
 	/*static bool test4;
 	static bool test5;*/
 
@@ -237,6 +248,8 @@ private:
 	void RenderTable();
 	void RenderHealthPack();
 	void RenderOres();
+
+	
 
 	void changeStates();
 

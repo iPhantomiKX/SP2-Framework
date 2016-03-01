@@ -56,7 +56,7 @@ public:
 	Vector3 diffz;
 	std::vector<Vector3> minVectors;
 	std::vector<Vector3> maxVectors;
-	std::vector<Vector3> minMineralVectors;
+	static std::vector<Vector3> MineralVectors;
 	std::vector<Vector3> maxMineralVectors;
 
 	Camera3();

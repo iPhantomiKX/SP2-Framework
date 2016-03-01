@@ -12,6 +12,8 @@
 #include "LoadOBJ.h"
 #include "gun.h"
 #include "enemy.h"
+#include "player.h"
+#include "objective.h"
 #include <iostream>
 
 using std::cout;
@@ -33,11 +35,18 @@ double Camera3::recoil = 0;
 Vector3 Camera3::location = (0, 0, 0);
 Vector3 Camera3::location2 = (0, 0, 0);
 Vector3 Camera3::direction = (0, 0, 0);
+int enemy::attackPow = 1;
 pistol pis;
 rifle rif;
 sniper sr;
 shotgun sg;
 target t;
+//enemy en;
+player play;
+objective obj;
+int objective::chooseObj = 1;
+enemy thecube(10, 0.f, 0, 0.f, 50);
+std::vector<Vector3> Camera3::MineralVectors;
 
 
 Sp2Scene::Sp2Scene()
@@ -138,11 +147,12 @@ void Sp2Scene::Init()
 	gunDir = 0;
 	storeRand = 0;
 	storeRand2 = 0;
+	atkCd = 0;
 	gameStates = states::outside;
+	buttonCd = 0;
 
 	//Initialize camera settings
-	camera.Init(Vector3(1, 10, 0), Vector3(0, 10, 0), Vector3(0, 1, 0));
-
+	camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));
 
 	meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
@@ -223,6 +233,9 @@ void Sp2Scene::Init()
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
 	meshList[GEO_PISTOL1]->textureID = LoadTGA("Image//pistol1texture.tga");
 
+	/*meshList[GEO_PISTOL2] = MeshBuilder::GenerateOBJ("pistol2model", "OBJ//pistol2.obj");
+	meshList[GEO_PISTOL2]->textureID = LoadTGA("Image//pistol2UV.tga");*/
+
 	meshList[GEO_RIFLE1] = MeshBuilder::GenerateOBJ("rifle1model", "OBJ//AR.obj");
 	meshList[GEO_RIFLE1]->textureID = LoadTGA("Image//AR_UV.tga");
 
@@ -235,6 +248,8 @@ void Sp2Scene::Init()
 	meshList[GEO_TARGET] = MeshBuilder::GenerateCube("target", Color(1, 0, 0));
 
 	meshList[GEO_TARGETHIT] = MeshBuilder::GenerateCube("target2", Color(0, 1, 0));
+
+	meshList[GEO_THECUBE] = MeshBuilder::GenerateOBJ("thecube", "OBJ//MaleRobot.obj");
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
@@ -253,19 +268,18 @@ void Sp2Scene::Init()
 		treez[i] = rand() % 980 - 490;
 	}
 
-	for (int a = 0; a < 25; ++a)
+	for (int a = 0; a < 10; ++a)
 	{
-		elementsx[a] = rand() % 980 - 880;
-		elementsz[a] = rand() % 980 - 850;
-
+		elementsx[a] = rand() % 980 - 980;
+		elementsz[a] = rand() % 980 - 880;
 	}
 
 	translateY = -60;
 	translateX = 0;
 	translateX = 0;
 
-	///for hitboxes/// for bullet
-	minVectors.push_back(c3.minPos(Vector3(400, 60, 0), 75, 15, 75));
+	///for hitboxes///
+	/*minVectors.push_back(c3.minPos(Vector3(400, 60, 0), 75, 15, 75));
 	minVectors.push_back(c3.minPos(Vector3(400, 60, 100), 75, 15, 75));
 	minVectors.push_back(c3.minPos(Vector3(300, 60, 0), 75, 15, 75));
 	minVectors.push_back(c3.minPos(Vector3(300, 60, 100), 75, 15, 75));
@@ -280,36 +294,34 @@ void Sp2Scene::Init()
 	minVectors.push_back(c3.minPos(Vector3(400, 160, 0), 75, 10, 75));
 	minVectors.push_back(c3.minPos(Vector3(400, 160, 100), 75, 10, 75));
 	minVectors.push_back(c3.minPos(Vector3(300, 160, 0), 75, 10, 75));
-	minVectors.push_back(c3.minPos(Vector3(300, 160, 100), 75, 10, 75));
-	minVectors.push_back(c3.minPos(Vector3(-338, 0, 38), 15, 90, 60));
-	minVectors.push_back(c3.minPos(Vector3(-460, 0, 38), 15, 90, 60));
-	minVectors.push_back(c3.minPos(Vector3(-400, 0, 73), 90, 90, 15));
-	minVectors.push_back(c3.minPos(Vector3(-360, 0, 0), 30, 90, 15));
-	minVectors.push_back(c3.minPos(Vector3(-435, 0, 0), 30, 90, 15));
+	minVectors.push_back(c3.minPos(Vector3(300, 160, 100), 75, 10, 75));*/
+	minVectors.push_back(c3.minPos(Vector3(-338, 0, 38), 15, 120, 75));
+	minVectors.push_back(c3.minPos(Vector3(-460, 0, 38), 15, 120, 75));
+	minVectors.push_back(c3.minPos(Vector3(-400, 0, 73), 120, 120, 15));
+	minVectors.push_back(c3.minPos(Vector3(-360, 0, 0), 45, 100, 20));
+	minVectors.push_back(c3.minPos(Vector3(-435, 0, 0), 40, 120, 15));
 
-	maxVectors.push_back(c3.maxPos(Vector3(400, 60, 0), 75, 15, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(400, 60, 100), 75, 15, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 60, 0), 75, 15, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 60, 100), 75, 15, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(450, 110, 0), 10, 75, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(450, 110, 100), 10, 75, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(250, 110, 0), 10, 75, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(250, 110, 100), 10, 75, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(400, 110, -50), 75, 75, 10));
-	maxVectors.push_back(c3.maxPos(Vector3(400, 110, 150), 75, 75, 10));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 110, -50), 75, 75, 10));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 110, 150), 75, 75, 10));
-	maxVectors.push_back(c3.maxPos(Vector3(400, 160, 0), 75, 10, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(400, 160, 100), 75, 10, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 160, 0), 75, 10, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(300, 160, 100), 75, 10, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(-338, 0, 38), 15, 90, 60));
-	maxVectors.push_back(c3.maxPos(Vector3(-460, 0, 38), 15, 90, 60));
-	maxVectors.push_back(c3.maxPos(Vector3(-400, 0, 73), 90, 90, 15));
-	maxVectors.push_back(c3.maxPos(Vector3(-360, 0, 0), 30, 90, 15));
-	maxVectors.push_back(c3.maxPos(Vector3(-435, 0, 0), 30, 90, 15));
-
-	
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 60, 0), 75, 15, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 60, 100), 75, 15, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 60, 0), 75, 15, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 60, 100), 75, 15, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(450, 110, 0), 10, 75, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(450, 110, 100), 10, 75, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(250, 110, 0), 10, 75, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(250, 110, 100), 10, 75, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 110, -50), 75, 75, 10));
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 110, 150), 75, 75, 10));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 110, -50), 75, 75, 10));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 110, 150), 75, 75, 10));
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 160, 0), 75, 10, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(400, 160, 100), 75, 10, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 160, 0), 75, 10, 75));
+	//maxVectors.push_back(c3.maxPos(Vector3(300, 160, 100), 75, 10, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(-338, 0, 38), 15, 120, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(-460, 0, 38), 15, 120, 75));
+	maxVectors.push_back(c3.maxPos(Vector3(-400, 0, 73), 120, 120, 15));
+	maxVectors.push_back(c3.maxPos(Vector3(-360, 0, 0), 45, 100, 20));
+	maxVectors.push_back(c3.maxPos(Vector3(-435, 0, 0), 40, 120, 15));
 }
 
 static float LSPEED = 10.f;
@@ -318,52 +330,57 @@ static float SCALE_LIMIT = 5.f;
 
 void Sp2Scene::Update(double dt)
 {
+	
 	camera.Update(dt);
-
 	if (gameStates == states::base)
 	{
-		if (camera.craftUi() == true && Application::IsKeyPressed('E'))
+		if (camera.craftUi() == true && Application::IsKeyPressed('E') && crafting == false && buttonCd == 0)
 		{
 			crafting = true;
+			buttonCd = 30;
 		}
-		else if (camera.craftUi() == false)
+		else if (Application::IsKeyPressed('E') && crafting == true && buttonCd == 0|| camera.craftUi() == false)
 		{
 			crafting = false;
+			buttonCd = 30;
+		}
+
+		if (buttonCd > 0)
+		{
+			buttonCd--;
 		}
 
 		if (camera.craftUi() == true)
 		{
-			if (Application::IsKeyPressed('2') && crafting == true)
+			if (Application::IsKeyPressed('2') && crafting == true && play.getMinerals() >= 1000 && boughtRifle1 == false)
 			{
 				boughtRifle1 = true;
 				rifle1Avail = true;
-
-				/*if (boughtShotgun1 == false)
-				{
-				shotgun1Avail = false;
-				}
-
-				if (boughtSniper1 == false)
-				{
-				sniper1Avail = false;
-				}*/
+				play.spendMinerals(1000);
 			}
-			if (Application::IsKeyPressed('3') && crafting == true)
-			{
 
+
+			/*if (boughtShotgun1 == false)
+			{
+			shotgun1Avail = false;
+			}
+
+			if (boughtSniper1 == false)
+			{
+			sniper1Avail = false;
+			}*/
+			if (Application::IsKeyPressed('3') && crafting == true && play.getMinerals() >= 2000 && boughtShotgun1 == false)
+			{
 				/*		if (boughtRifle1 == false)
 				{
 				rifle1Avail = false;
 				}*/
 				boughtShotgun1 = true;
 				shotgun1Avail = true;
+				play.spendMinerals(2000);
 
-				if (boughtSniper1 == false)
-				{
-					sniper1Avail = false;
-				}
 			}
-			if (Application::IsKeyPressed('4') && crafting == true)
+			if (Application::IsKeyPressed('4') && crafting == true && play.getMinerals() >= 3000 && boughtSniper1 == false)
 			{
 				/*if (boughtRifle1 == false)
 				{
@@ -374,822 +391,576 @@ void Sp2Scene::Update(double dt)
 				{
 				shotgun1Avail = false;
 				}*/
-				cout << "3" << std::endl;
+				//cout << "3" << std::endl;
 				boughtSniper1 = true;
 				sniper1Avail = true;
+				play.spendMinerals(3000);
 			}
 		}
+
+
+
+		//If pressed '1', switch to Pistol1
+
+
+
+		//if (Application::IsKeyPressed('E'))
+		//{
+		//	if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+		//	{
+		//		crafting = true;
+		//	}
+
+		//}
+		//else if (!camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
+		//{
+		//	crafting = false;
+		//}
+
+
+		/*if (camera.craftUi() == true && Application::IsKeyPressed('E') == true)
+		{
+			crafting = true;
+		}
+		else
+		{
+			crafting = false;
+		}*/
 	}
 
+	//if (Application::IsKeyPressed('1')) //enable back face culling
+	//glDisable(GL_CULL_FACE);
+	//if (Application::IsKeyPressed('2')) //disable back face culling
+	//glEnable(GL_CULL_FACE);
+	if (Application::IsKeyPressed('0'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
+	if (Application::IsKeyPressed('5'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+
+
+	if (Application::IsKeyPressed('I'))
+		light[0].position.z -= (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('K'))
+		light[0].position.z += (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('J'))
+		light[0].position.x -= (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('L'))
+		light[0].position.x += (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('O'))
+		light[0].position.y -= (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('P'))
+		light[0].position.y += (float)(LSPEED * dt);
+
+	if (Application::IsKeyPressed('7'))
+	{
+		light[0].type = Light::LIGHT_DIRECTIONAL;
+	}
+	if (Application::IsKeyPressed('8'))
+	{
+		light[0].type = Light::LIGHT_SPOT;
+	}
+
+	rotateAngle += (float)(10 * dt);
+	planet1RotAngle += (float)(5 * dt);
+	planet1RevAngle += (float)(2 * dt);
+	moon1RotAngle += (float)(50 * dt);
+
+	framerate = 1 / dt;
+
+	/*	for (int i = 0; i < 1000; i++)
+		{
+		rainpositiony[i] -= (float)(50 * dt);
+		if (rainpositiony[i] < -499.0f)
+		{
+		rainpositiony[i] = 499.0f;
+		rainpositionx[i] = rand() % 998 - 499;
+		rainpositionz[i] = rand() % 998 - 499;
+		}
+		if (Application::IsKeyPressed(VK_SPACE))
+		{
+		rainpositiony[i] -= (float)(150 * dt);
+		}
+		if (Application::IsKeyPressed('Q'))
+		{
+		rainpositiony[i] += (float)(150 * dt);
+		}
+		if (Application::IsKeyPressed('E'))
+		{
+		rainpositiony[i] += (float)(50 * dt);
+		}
+		if (Application::IsKeyPressed('G'))
+		{
+		rainpositionx[i] -= (float)(150 * dt);
+		}
+		if (Application::IsKeyPressed('H'))
+		{
+		rainpositionx[i] += (float)(150 * dt);
+		}
+		}*/
+	//test = c3.getShotsFired();
+	//std::cout << c3.getShotsFired() << "bang" <<  std::endl; // why 0
 	if (gameStates == states::outside)
 	{
-		if (Application::IsKeyPressed('E') && camera.mining() == true)
+		if (Application::IsKeyPressed('E') && c3.checkcollisionwithOres() == true)
 		{
-				testMining = true;
+			play.earnMinerals(500);
 		}
-	}
-
-
-	//If pressed '1', switch to Pistol1
-
-
-
-	//if (Application::IsKeyPressed('E'))
-	//{
-	//	if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
-	//	{
-	//		crafting = true;
-	//	}
-
-	//}
-	//else if (!camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
-	//{
-	//	crafting = false;
-	//}
-
-
-
-	//for (int i = 0; i < 50; ++i)
-	//{
-	//	if (camera.checkcollisionwithObject(Vector3(treex[i], 0, treez[i]), 20, 40, 20) == true)
-	//	{
-	//		camera.position = camera.prevPosition;
-	//	}
-
-	//	//collision for spaceship floor 2
-	//	if (camera.checkcollisionwithObject(Vector3(400, 60, 100), 100, 15, 100))
-	//	{
-	//		camera.position = camera.prevPosition;
-	//	}
-
-	//	//collision for spaceship wall length 1
-	//	if (camera.checkcollisionwithObject(Vector3(450, 110, 0), 15, 100, 100))
-	//	{
-	//		camera.position = camera.prevPosition;
-	//		meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_TOP]->textureID = LoadTGA("Image//blood_up.tga");
-	//		meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//blood_dn.tga");
-	//		meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_FRONT]->textureID = LoadTGA("Image//blood_ft.tga");
-	//		meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_BACK]->textureID = LoadTGA("Image//blood_bk.tga");
-	//		meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_LEFT]->textureID = LoadTGA("Image//blood_lf.tga");
-	//		meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-	//		meshList[GEO_RIGHT]->textureID = LoadTGA("Image//blood_rt.tga");
-
-	//		meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 10, 40);
-	//		meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 0, 0), 10, 20);
-
-	//		meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Rock.obj");
-	//		//meshList[GEO_OBJECT]->textureID = LoadTGA("Image//chair.tga");
-
-	//		light[0].color.Set(1, 0, 0);
-	//		for (int i = 0; i < 1000; i++)
-	//		{
-	//			rainpositiony[i] -= (float)(100 * dt);
-	//		}
-	//		/*Camera3::test2 = false;
-	//		Camera3::test = false;
-	//		Camera3::test3 = true;
-	//		}*/
-			
-			//collision for spaceship floor 1
-			/*if (camera.checkcollisionwithObject(Vector3(400, 60, 0), 100, 15, 100))
+		if (play.getHp() > 0)
+		{
+			if (atkCd <= 0)
 			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship floor 2
-		/*	if (camera.checkcollisionwithObject(Vector3(400, 60, 100), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship floor 3
-			/*if (camera.checkcollisionwithObject(Vector3(300, 60, 0), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship floor 4
-			//if (camera.checkcollisionwithObject(Vector3(300, 60, 100), 100, 15, 100))
-			//{
-			//	camera.position = camera.prevPosition;
-			//}
-
-			//collision for spaceship wall length 1
-			//if (camera.checkcollisionwithObject(Vector3(450, 110, 0), 15, 100, 100))
-			//{
-			//	camera.position = camera.prevPosition;
-			//}
-
-			//collision for spaceship wall length 2
-			/*if (camera.checkcollisionwithObject(Vector3(450, 110, 100), 15, 100, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			
-			//collision for spaceship wall length 3
-			/*if (camera.checkcollisionwithObject(Vector3(250, 110, 0), 15, 100, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship wall length 4
-			/*if (camera.checkcollisionwithObject(Vector3(250, 110, 100), 15, 100, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship wall width 1
-			//if (camera.checkcollisionwithObject(Vector3(400, 110, -50), 100, 100, 15))
-			//{
-			//	camera.position = camera.prevPosition;
-			//}
-
-			//collision for spaceship wall width 2
-			/*if (camera.checkcollisionwithObject(Vector3(400, 110, 150), 100, 100, 15))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship wall width 3
-			/*if (camera.checkcollisionwithObject(Vector3(300, 110, -50), 100, 100, 15))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship wall width 4
-			/*if (camera.checkcollisionwithObject(Vector3(300, 110, 150), 100, 100, 15))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship roof 1
-			/*if (camera.checkcollisionwithObject(Vector3(400, 160, 0), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship roof 2
-			/*if (camera.checkcollisionwithObject(Vector3(400, 160, 100), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spaceship roof 3
-			//if (camera.checkcollisionwithObject(Vector3(300, 160, 0), 100, 15, 100))
-			//{
-			//	camera.position = camera.prevPosition;
-			//}
-
-			//collision for spaceship roof 4
-			/*if (camera.checkcollisionwithObject(Vector3(300, 160, 100), 100, 15, 100))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spacehouse width 1
-			/*if (camera.checkcollisionwithObject(Vector3(-338, 0, 38), 18, 120, 120))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spacehouse width 2
-			/*if (camera.checkcollisionwithObject(Vector3(-460, 0, 38), 18, 120, 120))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for spacehouse back wall 
-			/*if (camera.checkcollisionwithObject(Vector3(-400, 0, 73), 120, 120, 18))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for front wall 1
-			/*if (camera.checkcollisionwithObject(Vector3(-360, 0, 0), 52, 120, 18))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//collision for front wall 2
-			/*if (camera.checkcollisionwithObject(Vector3(-435, 0, 0), 52, 120, 18))
-			{
-				camera.position = camera.prevPosition;
-			}*/
-
-			//portal1 interaction
-			//if (camera.checkcollisionwithObject(Vector3(-435.088, 10, 50.0353), 10, 15, 10))
-			//{
-			//	camera.position = camera.prevPosition;
-			//	testPortalsign = true;
-			//	testPortal = true;
-			//	if (Application::IsKeyPressed('E') && testPortal == true)
-			//	{
-			//		camera.position.x = 399.526;
-			//		camera.position.y = 80.0759;
-			//		camera.position.z = 100.455;
-			//		testPortal = false;
-			//		testPortalsign = false;
-			//	}
-			//}
-			//else
-			//{
-			//	testPortal = false;
-			//	testPortalsign = false;
-			//}
-
-
-			//portal2 interaction
-			//if (camera.checkcollisionwithObject(Vector3(400.088, 71, 0.0353), 10, 15, 10))
-			//{
-				//camera.position = camera.prevPosition;
-			//	testPortalsign = true;
-			//	testPortal = true;
-			//	if (Application::IsKeyPressed('E') && testPortal == true)
-			//	{
-			//		camera.position.x = -400;
-			//		camera.position.y = 20;
-			//		camera.position.z = 1;
-			//		testPortal = false;
-			//		testPortalsign = false;
-	/*			}
+				EnemyAttack(thecube.pos);
+				atkCd = 30;
 			}
-			else
+			if (atkCd > 0)
 			{
-				testPortal = false;
-				testPortalsign = false;
-			}*/
-
-			////Crafting interaction
-			//if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
-			//{
-			//	camera.position = camera.prevPosition;
-
-			//	if (Application::IsKeyPressed('E'))
-			//	{
-			//		
-			//		RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
-			//		cout << "I am running";
-			//	}
-			//}
-			//else
-			//{
-
-			//}
-
-
-			//if (Application::IsKeyPressed('1')) //enable back face culling
-			//glDisable(GL_CULL_FACE);
-			//if (Application::IsKeyPressed('2')) //disable back face culling
-			//glEnable(GL_CULL_FACE);
-			if (Application::IsKeyPressed('0'))
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
-			if (Application::IsKeyPressed('5'))
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
-			
-
-			if (Application::IsKeyPressed('I'))
-				light[0].position.z -= (float)(LSPEED * dt);
-			if (Application::IsKeyPressed('K'))
-				light[0].position.z += (float)(LSPEED * dt);
-			if (Application::IsKeyPressed('J'))
-				light[0].position.x -= (float)(LSPEED * dt);
-			if (Application::IsKeyPressed('L'))
-				light[0].position.x += (float)(LSPEED * dt);
-			if (Application::IsKeyPressed('O'))
-				light[0].position.y -= (float)(LSPEED * dt);
-			if (Application::IsKeyPressed('P'))
-				light[0].position.y += (float)(LSPEED * dt);
-
-			if (Application::IsKeyPressed('7'))
-			{
-				light[0].type = Light::LIGHT_DIRECTIONAL;
+				atkCd--;
 			}
-			if (Application::IsKeyPressed('8'))
+			//If pressed '1', switch to Pistol1
+			if (equipPistol1 == true)
 			{
-				light[0].type = Light::LIGHT_SPOT;
-			}
 
-
-			/*if (Application::IsKeyPressed('5'))
-			{
-				meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_TOP]->textureID = LoadTGA("Image//snow_up.tga");
-				meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//snow_dn.tga");
-				meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_FRONT]->textureID = LoadTGA("Image//snow_ft.tga");
-				meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BACK]->textureID = LoadTGA("Image//snow_bk.tga");
-				meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_LEFT]->textureID = LoadTGA("Image//snow_lf.tga");
-				meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_RIGHT]->textureID = LoadTGA("Image//snow_rt.tga");
-				meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 1, 1), 10, 40);
-				meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
-				light[0].color.Set(1, 1, 1);
-			}
-
-			if (Application::IsKeyPressed('6'))
-			{
-				meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_TOP]->textureID = LoadTGA("Image//icyhell_up.tga");
-				meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//icyhell_dn.tga");
-				meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_FRONT]->textureID = LoadTGA("Image//icyhell_ft.tga");
-				meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BACK]->textureID = LoadTGA("Image//icyhell_bk.tga");
-				meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_LEFT]->textureID = LoadTGA("Image//icyhell_lf.tga");
-				meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_RIGHT]->textureID = LoadTGA("Image//icyhell_rt.tga");
-				meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(0.5, 0.5, 0.5), 10, 40);
-				meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(0.5, 0.5, 0.5), 10, 20);
-				light[0].color.Set(0.5, 0.5, 0.5);
-			}
-
-			if (Application::IsKeyPressed('9'))
-			{
-				meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_TOP]->textureID = LoadTGA("Image//blood_up.tga");
-				meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//blood_dn.tga");
-				meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_FRONT]->textureID = LoadTGA("Image//blood_ft.tga");
-				meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_BACK]->textureID = LoadTGA("Image//blood_bk.tga");
-				meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_LEFT]->textureID = LoadTGA("Image//blood_lf.tga");
-				meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
-				meshList[GEO_RIGHT]->textureID = LoadTGA("Image//blood_rt.tga");
-
-				meshList[GEO_HEAD] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 10, 40);
-				meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 0, 0), 10, 20);
-				light[0].color.Set(1, 0, 0);
-				for (int i = 0; i < 1000; i++)
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && pis.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
-					rainpositiony[i] -= (float)(100 * dt);
+					if (Application::IsKeyPressed(VK_RBUTTON))
+					{
+						if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+						{
+							aimBulletRNG(pis.inAccuracy);
+						}
+					}
+					else
+					{
+						bulletRNG(pis.inAccuracy);
+					}
+					shotsFired.push_back(Camera3::location2);
+					shotsDir.push_back(Camera3::direction);
+					weaponDmg.push_back(pis.damage);
+					gunCd = pis.RoF;
+					pis.ammo--;
+					Camera3::recoil += 1;
+					upRecoil += 1;
+				}
+
+				bulletPos();
+				gunCd--;
+
+				if (Application::IsKeyPressed('R') && pis.ammo < pis.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || pis.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+				{
+					gunReload = pis.reloadSpd;
+					reloaded = false;
+					Camera3::recoil = 0;
+					upRecoil = 0;
+				}
+
+				if (gunReload > 0)
+				{
+					gunReload--;
+					if (gunReload <= 0)
+					{
+						pis.ammo = pis.maxAmmo;
+						reloaded = true;
+					}
 				}
 			}
 
-			rotateAngle += (float)(10 * dt);
-			planet1RotAngle += (float)(5 * dt);
-			planet1RevAngle += (float)(2 * dt);
-			moon1RotAngle += (float)(50 * dt);*/
-
-			framerate = 1 / dt;
-
-		/*	for (int i = 0; i < 1000; i++)
+			if (equipRifle1 == true)
 			{
-				rainpositiony[i] -= (float)(50 * dt);
-				if (rainpositiony[i] < -499.0f)
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && rif.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
-					rainpositiony[i] = 499.0f;
-					rainpositionx[i] = rand() % 998 - 499;
-					rainpositionz[i] = rand() % 998 - 499;
+					if (Application::IsKeyPressed(VK_RBUTTON))
+					{
+						if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+						{
+							aimBulletRNG(rif.inAccuracy);
+						}
+					}
+					else
+					{
+						bulletRNG(rif.inAccuracy);
+					}
+					shotsFired.push_back(Camera3::location2);
+					shotsDir.push_back(Camera3::direction);
+					weaponDmg.push_back(rif.damage);
+					gunCd = rif.RoF;
+					rif.ammo--;
+					Camera3::recoil += 0.5;
+					upRecoil += 0.5;
 				}
-				if (Application::IsKeyPressed(VK_SPACE))
-				{
-					rainpositiony[i] -= (float)(150 * dt);
-				}
-				if (Application::IsKeyPressed('Q'))
-				{
-					rainpositiony[i] += (float)(150 * dt);
-				}
-				if (Application::IsKeyPressed('E'))
-				{
-					rainpositiony[i] += (float)(50 * dt);
-				}
-				if (Application::IsKeyPressed('G'))
-				{
-					rainpositionx[i] -= (float)(150 * dt);
-				}
-				if (Application::IsKeyPressed('H'))
-				{
-					rainpositionx[i] += (float)(150 * dt);
-				}
-			}*/
 
-			if (gameStates == states::outside)
+				bulletPos();
+				gunCd--;
+
+				if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || rif.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+				{
+					gunReload = rif.reloadSpd;
+					reloaded = false;
+					Camera3::recoil = 0;
+					upRecoil = 0;
+				}
+
+				if (gunReload > 0)
+				{
+					gunReload--;
+					if (gunReload <= 0)
+					{
+						rif.ammo = rif.maxAmmo;
+						reloaded = true;
+					}
+				}
+			}
+			if (equipSniper1 == true)
 			{
-				if (c3.checkcollisionwithOres() == true)
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sr.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
-					std::cout << "oi" << std::endl;
+					if (Application::IsKeyPressed(VK_RBUTTON))
+					{
+						if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+						{
+							aimBulletRNG(sr.inAccuracy);
+						}
+					}
+					else
+					{
+						bulletRNG(sr.inAccuracy);
+					}
+					shotsFired.push_back(Camera3::location2);
+					shotsDir.push_back(Camera3::direction);
+					weaponDmg.push_back(sr.damage);
+					gunCd = sr.RoF;
+					sr.ammo--;
+					Camera3::recoil += 2;
+					upRecoil += 2;
 				}
 
-				//If pressed '1', switch to Pistol1
-				if (equipPistol1 == true)
-				{
+				bulletPos();
+				gunCd--;
 
-					if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && pis.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+				if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sr.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+				{
+					gunReload = sr.reloadSpd;
+					reloaded = false;
+					Camera3::recoil = 0;
+					upRecoil = 0;
+				}
+
+				if (gunReload > 0)
+				{
+					gunReload--;
+					if (gunReload <= 0)
+					{
+						sr.ammo = sr.maxAmmo;
+						reloaded = true;
+					}
+				}
+			}
+
+			if (equipShotgun1 == true)
+			{
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sg.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+				{
+					for (int shots = 0; shots < 6; ++shots)
 					{
 						if (Application::IsKeyPressed(VK_RBUTTON))
 						{
-							if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-							{
-								aimBulletRNG(pis.inAccuracy);
-							}
+							bulletRNG(sg.inAccuracy - 1);
 						}
 						else
 						{
-							bulletRNG(pis.inAccuracy);
+							bulletRNG(sg.inAccuracy);
 						}
 						shotsFired.push_back(Camera3::location2);
 						shotsDir.push_back(Camera3::direction);
-						weaponDmg.push_back(pis.damage);
-						gunCd = pis.RoF;
-						pis.ammo--;
-						Camera3::recoil += 1;
-						upRecoil += 1;
+						weaponDmg.push_back(sg.damage);
 					}
-
-					bulletPos();
-					gunCd--;
-
-					if (Application::IsKeyPressed('R') && pis.ammo < pis.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || pis.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
-					{
-						gunReload = pis.reloadSpd;
-						reloaded = false;
-						Camera3::recoil = 0;
-						upRecoil = 0;
-					}
-
-					if (gunReload > 0)
-					{
-						gunReload--;
-						if (gunReload <= 0)
-						{
-							pis.ammo = pis.maxAmmo;
-							reloaded = true;
-						}
-					}
+					gunCd = sg.RoF;
+					sg.ammo--;
+					Camera3::recoil += 2;
+					upRecoil += 2;
 				}
 
-				if (equipRifle1 == true)
+				bulletPos();
+				gunCd--;
+
+				if (Application::IsKeyPressed('R') && sg.ammo < sg.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sg.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
-					if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && rif.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
-					{
-						if (Application::IsKeyPressed(VK_RBUTTON))
-						{
-							if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-							{
-								aimBulletRNG(rif.inAccuracy);
-							}
-						}
-						else
-						{
-							bulletRNG(rif.inAccuracy);
-						}
-						shotsFired.push_back(Camera3::location2);
-						shotsDir.push_back(Camera3::direction);
-						weaponDmg.push_back(rif.damage);
-						gunCd = rif.RoF;
-						rif.ammo--;
-						Camera3::recoil += 0.5;
-						upRecoil += 0.5;
-					}
+					gunReload = sg.reloadSpd;
+					reloaded = false;
+					Camera3::recoil = 0;
+					upRecoil = 0;
 
-					bulletPos();
-					gunCd--;
-
-					if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || rif.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
-					{
-						gunReload = rif.reloadSpd;
-						reloaded = false;
-						Camera3::recoil = 0;
-						upRecoil = 0;
-					}
-
-					if (gunReload > 0)
-					{
-						gunReload--;
-						if (gunReload <= 0)
-						{
-							rif.ammo = rif.maxAmmo;
-							reloaded = true;
-						}
-					}
-				}
-				if (equipSniper1 == true)
-				{
-					if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sr.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
-					{
-						if (Application::IsKeyPressed(VK_RBUTTON))
-						{
-							if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-							{
-								aimBulletRNG(sr.inAccuracy);
-							}
-						}
-						else
-						{
-							bulletRNG(sr.inAccuracy);
-						}
-						shotsFired.push_back(Camera3::location2);
-						shotsDir.push_back(Camera3::direction);
-						weaponDmg.push_back(sr.damage);
-						gunCd = sr.RoF;
-						sr.ammo--;
-						Camera3::recoil += 2;
-						upRecoil += 2;
-					}
-
-					bulletPos();
-					gunCd--;
-
-					if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sr.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
-					{
-						gunReload = sr.reloadSpd;
-						reloaded = false;
-						Camera3::recoil = 0;
-						upRecoil = 0;
-					}
-
-					if (gunReload > 0)
-					{
-						gunReload--;
-						if (gunReload <= 0)
-						{
-							sr.ammo = sr.maxAmmo;
-							reloaded = true;
-						}
-					}
 				}
 
-				if (equipShotgun1 == true)
+				if (gunReload > 0)
 				{
-					if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sg.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+					gunReload--;
+					if (Application::IsKeyPressed(VK_LBUTTON))
 					{
-						for (int shots = 0; shots < 6; ++shots)
+						reloaded = true;
+						gunReload = 0;
+					}
+					else
+					{
+						if (gunReload <= 0)
 						{
-							if (Application::IsKeyPressed(VK_RBUTTON))
+							if (sg.ammo < sg.maxAmmo)
 							{
-								bulletRNG(sg.inAccuracy - 1);
+								sg.ammo++;
+								gunReload = sg.reloadSpd;
 							}
 							else
 							{
-								bulletRNG(sg.inAccuracy);
-							}
-							shotsFired.push_back(Camera3::location2);
-							shotsDir.push_back(Camera3::direction);
-							weaponDmg.push_back(sg.damage);
-						}
-						gunCd = sg.RoF;
-						sg.ammo--;
-						Camera3::recoil += 2;
-						upRecoil += 2;
-					}
-
-					bulletPos();
-					gunCd--;
-
-					if (Application::IsKeyPressed('R') && sg.ammo < sg.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sg.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
-					{
-						gunReload = sg.reloadSpd;
-						reloaded = false;
-						Camera3::recoil = 0;
-						upRecoil = 0;
-
-					}
-
-					if (gunReload > 0)
-					{
-						gunReload--;
-						if (Application::IsKeyPressed(VK_LBUTTON))
-						{
-							reloaded = true;
-							gunReload = 0;
-						}
-						else
-						{
-							if (gunReload <= 0)
-							{
-								if (sg.ammo < sg.maxAmmo)
-								{
-									sg.ammo++;
-									gunReload = sg.reloadSpd;
-								}
-								else
-								{
-									reloaded = true;
-								}
+								reloaded = true;
 							}
 						}
 					}
 				}
-
-				if (testHB == true)
-				{
-					targetReg = 100;
-					testHB = false;
-				}
-				else
-				{
-					if (targetReg > 0)
-					{
-						targetReg--;
-					}
-				}
-
-				if (t.hp <= 0)
-				{
-					t.isDead = true;
-				}
-				if (Application::IsKeyPressed('P'))
-				{
-					t.hp = 10;
-					t.isDead = false;
-				}
-			}
-			if (Camera3::mouseControl == true)
-			{
-				if (Application::IsKeyPressed(VK_RBUTTON))
-				{
-					if (Camera3::xpos < 395)
-					{
-						rotateGunY += 1.5;
-					}
-					if (Camera3::xpos > 405)
-					{
-						rotateGunY -= 1.5;
-					}
-					if (Camera3::ypos < 295)
-					{
-						gunDir += 1.5;
-					}
-					if (Camera3::ypos > 305)
-					{
-						gunDir -= 1.5;
-					}
-					if (gunDir > 45)
-					{
-						gunDir = 45;
-					}
-					else if (gunDir < -45)
-					{
-						gunDir = -45;
-					}
-				}
-				else
-				{
-					if (Camera3::xpos < 395)
-					{
-						rotateGunY += 3;
-					}
-					if (Camera3::xpos > 405)
-					{
-						rotateGunY -= 3;
-					}
-					if (Camera3::ypos < 295)
-					{
-						gunDir += 3;
-					}
-					if (Camera3::ypos > 305)
-					{
-						gunDir -= 3;
-					}
-
-					if (gunDir > 45)
-					{
-						gunDir = 45;
-					}
-					else if (gunDir < -45)
-					{
-						gunDir = -45;
-					}
-				}
-			}
-			else if (Camera3::mouseControl == false)
-			{
-				if (Application::IsKeyPressed(VK_LEFT))
-				{
-					rotateGunY += 3;
-				}
-				if (Application::IsKeyPressed(VK_RIGHT))
-				{
-					rotateGunY -= 3;
-				}
-				if (Application::IsKeyPressed(VK_UP))
-				{
-					gunDir += 3;
-				}
-				if (Application::IsKeyPressed(VK_DOWN))
-				{
-					gunDir -= 3;
-				}
-
-				//Boundaries for gun rotation
-				if (gunDir > 45)
-				{
-					gunDir = 45;
-				}
-				else if (gunDir < -45)
-				{
-					gunDir = -45;
-				}
 			}
 
-			if (upRecoil > 20)
+			/*if (testHB == true)
 			{
-				upRecoil = 20;
+			targetReg = 100;
+			testHB = false;
+			}
+			else
+			{
+			if (targetReg > 0)
+			{
+			targetReg--;
+			}
 			}
 
-			rotateGunX = gunDir + upRecoil;
-			if (Application::IsKeyPressed(VK_LBUTTON))
+			if (t.hp <= 0)
 			{
-				sRecoilCd = 20;
+			t.isDead = true;
 			}
-			else if (sRecoilCd > 0)
+			if (Application::IsKeyPressed('P'))
 			{
-				sRecoilCd--;
+			t.hp = 10;
+			t.isDead = false;
+			}*/
+			if (thecube.isDead() == false && gameStates == states::outside)
+			{
+				thecube.Update(dt, camera);
+			}
+			else
+			{
+				if (objective::chooseObj == 1)
+				{
+					obj.objectiveProgress(1);
+				}
+				thecube.respawnEnemy(rand() % 980 - 490, 0, rand() % 980 - 490);
+			}
+		}
+	}
+	if (Camera3::mouseControl == true)
+	{
+		if (Application::IsKeyPressed(VK_RBUTTON))
+		{
+			if (Camera3::xpos < 395)
+			{
+				rotateGunY += 1.5;
+			}
+			if (Camera3::xpos > 405)
+			{
+				rotateGunY -= 1.5;
+			}
+			if (Camera3::ypos < 295)
+			{
+				gunDir += 1.5;
+			}
+			if (Camera3::ypos > 305)
+			{
+				gunDir -= 1.5;
+			}
+			if (gunDir > 45)
+			{
+				gunDir = 45;
+			}
+			else if (gunDir < -45)
+			{
+				gunDir = -45;
+			}
+		}
+		else
+		{
+			if (Camera3::xpos < 395)
+			{
+				rotateGunY += 3;
+			}
+			if (Camera3::xpos > 405)
+			{
+				rotateGunY -= 3;
+			}
+			if (Camera3::ypos < 295)
+			{
+				gunDir += 3;
+			}
+			if (Camera3::ypos > 305)
+			{
+				gunDir -= 3;
 			}
 
+			if (gunDir > 45)
+			{
+				gunDir = 45;
+			}
+			else if (gunDir < -45)
+			{
+				gunDir = -45;
+			}
+		}
+	}
+	else if (Camera3::mouseControl == false)
+	{
+		if (Application::IsKeyPressed(VK_LEFT))
+		{
+			rotateGunY += 3;
+		}
+		if (Application::IsKeyPressed(VK_RIGHT))
+		{
+			rotateGunY -= 3;
+		}
+		if (Application::IsKeyPressed(VK_UP))
+		{
+			gunDir += 3;
+		}
+		if (Application::IsKeyPressed(VK_DOWN))
+		{
+			gunDir -= 3;
+		}
 
-			if (upRecoil > 0 && sRecoilCd == 0)
-			{
-				upRecoil -= 0.2;
-			}
+		//Boundaries for gun rotation
+		if (gunDir > 45)
+		{
+			gunDir = 45;
+		}
+		else if (gunDir < -45)
+		{
+			gunDir = -45;
+		}
+	}
 
-			if (rotateGunX > 45)
+	if (upRecoil > 20)
+	{
+		upRecoil = 20;
+	}
+
+	rotateGunX = gunDir + upRecoil;
+	if (Application::IsKeyPressed(VK_LBUTTON))
+	{
+		sRecoilCd = 20;
+	}
+	else if (sRecoilCd > 0)
+	{
+		sRecoilCd--;
+	}
+
+
+	if (upRecoil > 0 && sRecoilCd == 0)
+	{
+		upRecoil -= 0.2;
+	}
+
+	if (rotateGunX > 45)
+	{
+		rotateGunX = 45;
+	}
+	if (rotateGunX < -45)
+	{
+		rotateGunX = -45;
+	}
+	if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
+	{
+		equipPistol1 = true;
+		equipRifle1 = false;
+		equipSniper1 = false;
+		equipShotgun1 = false;
+	}
+
+	if (boughtRifle1 == true)
+	{
+		//If pressed '2', switch to Rifle1
+		if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
+		{
+			equipPistol1 = false;
+			equipRifle1 = true;
+			if (sniper1Avail == true)
 			{
-				rotateGunX = 45;
-			}
-			if (rotateGunX < -45)
-			{
-				rotateGunX = -45;
-			}
-			if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
-			{
-				equipPistol1 = true;
-				equipRifle1 = false;
 				equipSniper1 = false;
+			}
+			if (shotgun1Avail = true)
+			{
 				equipShotgun1 = false;
 			}
+		}
+	}
 
-			if (boughtRifle1 == true)
+	if (boughtShotgun1 == true)
+	{
+		//If pressed '3', switch to Sniper1
+		if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
+		{
+			equipPistol1 = false;
+			if (rifle1Avail == true)
 			{
-				//If pressed '2', switch to Rifle1
-				if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
-				{
-					equipPistol1 = false;
-					equipRifle1 = true;
-					if (sniper1Avail == true)
-					{
-						equipSniper1 = false;
-					}
-					if (shotgun1Avail = true)
-					{
-						equipShotgun1 = false;
-					}
-				}
+				equipRifle1 = false;
 			}
 
-			if (boughtShotgun1 == true)
-			{
-				//If pressed '3', switch to Sniper1
-				if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
-				{
-					equipPistol1 = false;
-					if (rifle1Avail == true)
-					{
-						equipRifle1 = false;
-					}
+			equipShotgun1 = true;
 
-					equipShotgun1 = true;
-
-					if (sniper1Avail == true)
-					{
-						equipSniper1 = false;
-					}
-				}
-			}
-			if (boughtSniper1 == true)
+			if (sniper1Avail == true)
 			{
-				if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
-				{
-					equipPistol1 = false;
-					if (rifle1Avail == true)
-					{
-						equipRifle1 = false;
-					}
-					if (shotgun1Avail == true)
-					{
-						equipShotgun1 = false;
-					}
-					equipSniper1 = true;
-				}
+				equipSniper1 = false;
 			}
-		changeStates();
+		}
+	}
+	if (boughtSniper1 == true)
+	{
+		if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
+		{
+			equipPistol1 = false;
+			if (rifle1Avail == true)
+			{
+				equipRifle1 = false;
+			}
+			if (shotgun1Avail == true)
+			{
+				equipShotgun1 = false;
+			}
+			equipSniper1 = true;
+		}
+	}
+	changeStates();
+	std::cout << thecube.hp << std::endl;
 }
 
+bool Sp2Scene::AICheckCollisionObject(Vector3 AIposition)
+{
+	//to do
+	// Get all min and max (eg. minX, maxX)
 
-	
+	// Do SAT Test on all axis)
+	// eg (if (position.x < min) return false; // (Outside!)
+	//		Repeat for Max, Repeat Min + Max for Y and Z axis
+
+	std::vector<Vector3>::iterator count = minVectors.begin();
+	std::vector<Vector3>::iterator count1 = maxVectors.begin();
+
+	while (count != minVectors.end())
+	{
+		Vector3 minTemp = *count;
+		Vector3 maxTemp = *count1;
+
+		if (AIposition.x > minTemp.x && AIposition.x < maxTemp.x && AIposition.y > minTemp.y && AIposition.y < maxTemp.y && AIposition.z > minTemp.z && AIposition.z < maxTemp.z)
+		{
+			return true;
+		}
+		*count++;
+		*count1++;
+	}
+	return false;
+}
 void Sp2Scene::bulletRNG(int spray)
 {
 
@@ -1274,7 +1045,7 @@ void Sp2Scene::bulletRNG(int spray)
 	{
 		random = (rand() % (spray));
 		temp = (2 * (random + 1)*(rand() % 2)) - (random + 1);
-		std::cout << temp << std::endl;
+		//std::cout << temp << std::endl;
 		Camera3::direction.x += temp / 10;
 		random = (rand() % (spray));
 		temp = (2 * (random + 1)*(rand() % 2)) - (random + 1);
@@ -1366,10 +1137,10 @@ void Sp2Scene::bulletPos()
 			Vector3 temp1 = *count1;
 			*count += *count1;
 			//std::cout << temp << "look at me" << std::endl;
-			if (bulletEnemyCollision(temp, Vector3(50, 10, 0)) == true && t.isDead == false )
+			//std::cout << thecube.pos << std::endl;
+			if (bulletEnemyCollision(temp, thecube.pos) == true)
 			{
-				t.hp -= *count2;
-				testHB = true;
+				thecube.hp -= *count2;
 				std::cout << "hit" << std::endl;
 				count = shotsFired.erase(count);
 				count1 = shotsDir.erase(count1);
@@ -1429,6 +1200,7 @@ void Sp2Scene::changeStates()
 
 bool Sp2Scene::bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation)
 {
+	targetLocation.y += 10;
 	if (bulletPos.x > (targetLocation.x - (6 / 2)) && bulletPos.x < (targetLocation.x + (6 / 2)) &&
 		bulletPos.y >(targetLocation.y - (6 / 2)) && bulletPos.y < (targetLocation.y + (6 / 2)) &&
 		bulletPos.z >(targetLocation.z - (6 / 2)) && bulletPos.z < (targetLocation.z + (6 / 2)))
@@ -1438,6 +1210,16 @@ bool Sp2Scene::bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation)
 	else
 	{
 		return false;
+	}
+}
+
+void Sp2Scene::EnemyAttack(Vector3 targetLocation)
+{
+	if (Camera3::location.x > (targetLocation.x - (50 / 2)) && Camera3::location.x < (targetLocation.x + (50 / 2)) &&
+		Camera3::location.y >(targetLocation.y - (50 / 2)) && Camera3::location.y < (targetLocation.y + (50 / 2)) &&
+		Camera3::location.z >(targetLocation.z - (50 / 2)) && Camera3::location.z < (targetLocation.z + (50 / 2)))
+	{
+		play.getHit(enemy::attackPow);
 	}
 }
 
@@ -1650,125 +1432,178 @@ void Sp2Scene::RenderMesh(Mesh *mesh, bool enablelight)
 
 void Sp2Scene::RenderSpaceshipQuad()
 {
-	//spaceship floor 1
+	////spaceship floor 1
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 60, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship floor 2
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 60, 100);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship floor 3
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 60, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship floor 4
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 60, 100);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall length 1
+	//modelStack.PushMatrix();
+	//modelStack.Translate(450, 110, 0);
+	//modelStack.Rotate(90,0, 0, 1);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+	//
+	////spaceship wall length 2
+	//modelStack.PushMatrix();
+	//modelStack.Translate(450, 110, 100);
+	//modelStack.Rotate(90, 0, 0, 1);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall length 3
+	//modelStack.PushMatrix();
+	//modelStack.Translate(250, 110, 0);
+	//modelStack.Rotate(90, 0, 0, 1);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall length 4
+	//modelStack.PushMatrix();
+	//modelStack.Translate(250, 110, 100);
+	//modelStack.Rotate(90, 0, 0, 1);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall width 1
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 110, -50);
+	//modelStack.Rotate(90, 1, 0, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall width 2
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 110, 150);
+	//modelStack.Rotate(90, 1, 0, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall width 3 
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 110, -50);
+	//modelStack.Rotate(90, 1, 0, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship wall width 4
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 110, 150);
+	//modelStack.Rotate(90, 1, 0, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship roof 1
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 160, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+
+	////spaceship roof 2
+	//modelStack.PushMatrix();
+	//modelStack.Translate(400, 160, 100);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship roof 3
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 160, 0);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
+	////spaceship roof 4
+	//modelStack.PushMatrix();
+	//modelStack.Translate(300, 160, 100);
+	//modelStack.Scale(100, 1, 100);
+	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	//modelStack.PopMatrix();
+
 	modelStack.PushMatrix();
-	modelStack.Translate(400, 60, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Translate(0, 0, 0);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Scale(100, 1000, 100);
+	modelStack.Scale(-1, 1, 1);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 
-	//spaceship floor 2
+	//top
 	modelStack.PushMatrix();
-	modelStack.Translate(400, 60, 100);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Translate(0,50, 0);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Scale(100, 1000, 100);
+	modelStack.Scale(1, -1, 1);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 
-	//spaceship floor 3
+	//left
 	modelStack.PushMatrix();
-	modelStack.Translate(300, 60, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Translate(50,0,0);
+	modelStack.Scale(100, 100, 100);
+	modelStack.Rotate(-90, 0, 0, 1);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 
-	//spaceship floor 4
+	//right
 	modelStack.PushMatrix();
-	modelStack.Translate(300, 60, 100);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Translate(-50, 0,0);
+	modelStack.Scale(100, 100, 100);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Rotate(-90, 0, 0, 1);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 
-	//spaceship wall length 1
+	//back
 	modelStack.PushMatrix();
-	modelStack.Translate(450, 110, 0);
-	modelStack.Rotate(90,0, 0, 1);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-	
-	//spaceship wall length 2
-	modelStack.PushMatrix();
-	modelStack.Translate(450, 110, 100);
-	modelStack.Rotate(90, 0, 0, 1);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship wall length 3
-	modelStack.PushMatrix();
-	modelStack.Translate(250, 110, 0);
-	modelStack.Rotate(90, 0, 0, 1);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship wall length 4
-	modelStack.PushMatrix();
-	modelStack.Translate(250, 110, 100);
-	modelStack.Rotate(90, 0, 0, 1);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship wall width 1
-	modelStack.PushMatrix();
-	modelStack.Translate(400, 110, -50);
+	modelStack.Translate(0,0,50);
+	modelStack.Rotate(-90, 0, 0, 1);
 	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Scale(100, 100, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 
-	//spaceship wall width 2
+	//Front
 	modelStack.PushMatrix();
-	modelStack.Translate(400, 110, 150);
+	modelStack.Translate(0,0, -50);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Rotate(-90, 0, 0, 1);
 	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship wall width 3 
-	modelStack.PushMatrix();
-	modelStack.Translate(300, 110, -50);
-	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship wall width 4
-	modelStack.PushMatrix();
-	modelStack.Translate(300, 110, 150);
-	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship roof 1
-	modelStack.PushMatrix();
-	modelStack.Translate(400, 160, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-
-	//spaceship roof 2
-	modelStack.PushMatrix();
-	modelStack.Translate(400, 160, 100);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship roof 3
-	modelStack.PushMatrix();
-	modelStack.Translate(300, 160, 0);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	modelStack.PopMatrix();
-
-	//spaceship roof 4
-	modelStack.PushMatrix();
-	modelStack.Translate(300, 160, 100);
-	modelStack.Scale(100, 1, 100);
-	RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
+	modelStack.Scale(100, 100, 100);
+	RenderMesh(meshList[GEO_SPACESHIPQUAD], false);
 	modelStack.PopMatrix();
 };
 
@@ -1776,8 +1611,8 @@ void Sp2Scene::RenderCraftingPanel()
 {
 	//crafting panel 
 		modelStack.PushMatrix();
-		modelStack.Translate(400, 65, -49);
-		modelStack.Scale(2, 2, 1);
+		modelStack.Translate(0, 3, -49);
+		modelStack.Scale(1.5, 1.5, 1);
 		RenderMesh(meshList[GEO_CRAFTINGPANEL], true);
 		modelStack.PopMatrix();
 
@@ -1805,15 +1640,15 @@ void Sp2Scene::RenderPortal1()
 		modelStack.PopMatrix();
 	}
 
-	if (gameStates == states::base)
-	{
-		//entrance portal in spaceship
-		modelStack.PushMatrix();
-		modelStack.Translate(400, 61, 100);
-		modelStack.Scale(5, 5, 5);
-		RenderMesh(meshList[GEO_PORTAL1], true);
-		modelStack.PopMatrix();
-	}
+	//if (gameStates == states::base)
+	//{
+	//	//entrance portal in spaceship
+	//	modelStack.PushMatrix();
+	//	modelStack.Translate(400, 61, 100);
+	//	modelStack.Scale(5, 5, 5);
+	//	RenderMesh(meshList[GEO_PORTAL1], true);
+	//	modelStack.PopMatrix();
+	//}
 
 };
 
@@ -1821,7 +1656,7 @@ void Sp2Scene::RenderPortal2()
 {
 	//exit portal in spaceship
 	modelStack.PushMatrix();
-	modelStack.Translate(400, 61, 0);
+	modelStack.Translate(0, 0, 40);
 	modelStack.Scale(5, 5, 5);
 	RenderMesh(meshList[GEO_PORTAL2], true);
 	modelStack.PopMatrix();
@@ -1858,25 +1693,35 @@ void Sp2Scene::RenderHealthPack()
 
 void Sp2Scene::RenderElements()
 {
-	for (int a = 0; a < 25; ++a)
+	std::vector<Vector3>::iterator count = Camera3::MineralVectors.begin();
+
+	while (count != Camera3::MineralVectors.end())
 	{
+		Vector3 temp = *count;
 		modelStack.PushMatrix();
-		modelStack.Translate(elementsx[a], -5, elementsz[a]);
+		modelStack.Translate(temp.x, -10, temp.z);
 		modelStack.Scale(2, 2, 2);
 		RenderMesh(meshList[GEO_MINERALS], true);
 		modelStack.PopMatrix();
+		*count++;
 	}
 	
 };
 
-void Sp2Scene::RenderOres()
+void Sp2Scene::RenderEnemy()
 {
+	for (int i = 0; i < 10; ++i)
+	{
 		modelStack.PushMatrix();
-		modelStack.Translate(0, 0, 0);
-		modelStack.Rotate(-90, 1, 0, 0);
+		modelStack.Translate(thecube.pos.x, 0, thecube.pos.z);
+		modelStack.Rotate(thecube.Degree, 0, 1, 0);
+		//cout << Degree << std::endl;
+		modelStack.PushMatrix();
 		modelStack.Scale(0.5, 0.5, 0.5);
-		RenderMesh(meshList[GEO_ORES], true);
+		RenderMesh(meshList[GEO_THECUBE], true);
 		modelStack.PopMatrix();
+		modelStack.PopMatrix();
+	}
 }
 
 void Sp2Scene::Render()
@@ -1916,7 +1761,7 @@ void Sp2Scene::Render()
 
 	RenderMesh(meshList[GEO_AXES], false);
 
-	if (targetReg > 0 && t.isDead == false)
+	/*if (targetReg > 0 && t.isDead == false)
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(50, 10, 0);
@@ -1931,7 +1776,14 @@ void Sp2Scene::Render()
 		modelStack.Scale(6, 6, 6);
 		RenderMesh(meshList[GEO_TARGETHIT], false);
 		modelStack.PopMatrix();
+	}*/
+
+	//modelStack.PushMatrix();
+	if (thecube.isDead() == false && gameStates == states::outside)
+	{
+		RenderEnemy();
 	}
+	//modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	if (gameStates == states::outside)
@@ -1942,7 +1794,6 @@ void Sp2Scene::Render()
 		RenderTable();
 		RenderHealthPack();
 		RenderElements();
-		RenderOres();
 	}
 	if (gameStates == states::base)
 	{
@@ -1959,7 +1810,6 @@ void Sp2Scene::Render()
 	modelStack.Scale(10, 10, 10);
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();
-
 
 	/*if (Sp2Scene::test5 == true)
 	{
@@ -2036,6 +1886,12 @@ void Sp2Scene::Render()
 			RenderImageOnScreen(meshList[GEO_PISTOL1], 0.5, 25, 15);
 			//RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
 		}
+		//if (equipPistol2 == true)
+		//{
+		//	/*RenderPistol2();
+		//	RenderImageOnScreen(meshList[GEO_PISTOL2], 0.5, 25, 15);*/
+		////RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
+		//}
 		else if (equipRifle1 == true)
 		{
 			RenderRifle1();
@@ -2053,12 +1909,6 @@ void Sp2Scene::Render()
 			RenderImageOnScreen(meshList[GEO_SHOTGUN1], 0.5, 26, 18);
 		}
 
-		/*else if (testMining == true)
-		{
-			RenderOres();
-			RenderImageOnScreen(meshList[GEO_ORES], 1, 4, 4);
-		}*/
-		
 	if (gameStates == states::base)
 	{
 		if (crafting == true)
@@ -2067,12 +1917,12 @@ void Sp2Scene::Render()
 		}
 	}
 
-		modelStack.PushMatrix();
-		modelStack.Translate(-150, 50, -200);
-		modelStack.Scale(10, 10, 10);
-		RenderText(meshList[GEO_TEXT], "Welcome To The Moon", Color(1, 0, 0));
-		modelStack.PopMatrix();
-	
+	modelStack.PushMatrix();
+	modelStack.Translate(-150, 50, -200);
+	modelStack.Scale(10, 10, 10);
+	RenderText(meshList[GEO_TEXT], "Welcome To The Moon", Color(1, 0, 0));
+	modelStack.PopMatrix();
+
 	//modelStack.PushMatrix();
 	//modelStack.Translate(0,5,0);
 	//modelStack.Scale(1, 1, 1);
@@ -2093,6 +1943,27 @@ void Sp2Scene::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], oss.str(), Color(0, 1, 0), 2, 2, 28);
 
 
+
+	RenderTextOnScreen(meshList[GEO_TEXT], "Minerals: " + std::to_string(play.getMinerals()), Color(0.7,0.7,0.3), 3, 13, 15);
+
+	if (play.getHp() <= 30)
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.8, 0.3, 0.3), 3, 1, 15);
+	}
+	else
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.3, 0.8, 0.3), 3, 1, 15);
+	}
+
+	RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(obj.getProgress()) + "/" + std::to_string(obj.getObjective()), Color(0.7,0.7,0.3), 3, 10, 17);
+	if (obj.objComplete() == true)
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "U WIN", Color(0, 0.5, 0), 5, 6, 5);
+	}
+	else if (play.isDead() == true)
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "U DIEDED", Color(0.5, 0, 0), 5, 5, 5);
+	}
 }
 void Sp2Scene::RenderPistol1()
 {
@@ -2106,7 +1977,7 @@ void Sp2Scene::RenderPistol1()
 
 
 		modelStack.PushMatrix();
-		
+
 		if (Application::IsKeyPressed(VK_SHIFT) == true || gameStates == states::base)
 		{
 			modelStack.Translate(0, -10, -10);
@@ -2130,13 +2001,60 @@ void Sp2Scene::RenderPistol1()
 	if (pis.ammo < 5)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(.7, 0, 0), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0.8, 0.3, 0.3), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 	else
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0, .7, 0), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0.3, 0.8,0.3), 3, 18, 1);
+		modelStack.PopMatrix();
+	}
+}
+
+void Sp2Scene::RenderPistol2()
+{
+	if (gunReload <= 0)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
+		modelStack.Rotate(rotateGunY, 0, 1, 0);
+		modelStack.Rotate(rotateGunX, 1, 0, 0);
+		modelStack.Scale(0.5, 0.5, 0.5);
+
+
+		modelStack.PushMatrix();
+
+		if (Application::IsKeyPressed(VK_SHIFT) == true || gameStates == states::base)
+		{
+			modelStack.Translate(0, -10, -10);
+			modelStack.Rotate(-60, 0, 1, 0);
+		}
+		else if (Application::IsKeyPressed(VK_RBUTTON) == true)
+		{
+			modelStack.Translate(0, -7.1, -10);
+			modelStack.Rotate(-90, 0, 1, 0);
+		}
+		else
+		{
+			modelStack.Translate(5, -10, -15);
+			modelStack.Rotate(-90, 0, 1, 0);
+		}
+		RenderMesh(meshList[GEO_PISTOL2], true);
+		modelStack.PopMatrix();
+
+		modelStack.PopMatrix();
+	}
+	if (pis.ammo < 5)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0.8, 0.3, 0.3), 3, 18, 1);
+		modelStack.PopMatrix();
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0.3, 0.8, 0.3), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 }
@@ -2179,13 +2097,13 @@ void Sp2Scene::RenderRifle1()
 	if (rif.ammo < 11)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(.7, 0, 0), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0.8, 0.3, 0.3), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 	else
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0, .7, 0), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0.3, 0.8, 0.3), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 }
@@ -2230,13 +2148,13 @@ void Sp2Scene::RenderSniper1()
 	if (sr.ammo < 4)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0.7, 0, 0), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), (0.8, 0.3, 0.3), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 	else
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0, 0.7, 0), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0.3, 0.8, 0.3), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 }
@@ -2281,46 +2199,17 @@ void Sp2Scene::RenderShotgun1()
 	if (sg.ammo < 3)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0.7, 0, 0), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0.8, 0.3, 0.3), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 	else
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0, 0.7, 0), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0.3, 0.8, 0.3), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 }
-//void Sp2Scene::RenderShotgun1()
-//{
-//	if (gunReload <= 0)
-//	{
-//		modelStack.PushMatrix();
-//		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
-//		modelStack.Rotate(rotateGunY, 0, 1, 0);
-//		modelStack.Rotate(rotateGunX, 1, 0, 0);
-//
-//		modelStack.PushMatrix();
-//		if (Application::IsKeyPressed(VK_RBUTTON) == true)
-//		{
-//			modelStack.Translate(0, -7, -10);
-//		}
-//		else
-//		{
-//			modelStack.Translate(5, -10, -15);
-//		}
-//		modelStack.Translate(0, 1.5, 0);
-//		modelStack.Rotate(-90, 0, 1, 0);
-//		modelStack.Scale(2, 2, 2);
-//		RenderMesh(meshList[GEO_SHOTGUN1], true);
-//		modelStack.PopMatrix();
-//
-//		modelStack.PopMatrix();
-//	}
-//	modelStack.PushMatrix();
-//	RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0, 0.8, 0), 2, 30, 1);
-//	modelStack.PopMatrix();
-//}
+
 void Sp2Scene::Exit()
 {
 	glDeleteVertexArrays(1, &m_vertexArrayID);
