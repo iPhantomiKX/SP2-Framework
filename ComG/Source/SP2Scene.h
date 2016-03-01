@@ -184,7 +184,7 @@ private:
 	void bulletRNG(int spray);
 	void aimBulletRNG(int spray);
 	bool bulletObjectCollision(Vector3 bulletPos);
-	bool craftUi();
+	//bool craftUi();
 
 	double storeRand;
 	double storeRand2;
@@ -213,6 +213,9 @@ private:
 	bool testPortal = false;
 	bool testPortalsign = false;
 
+	//Mining Minerals
+	bool testMining = false;
+
 	bool testHB = false;
 
 	void RenderPistol1();
@@ -233,6 +236,7 @@ private:
 	void RenderPortal2();
 	void RenderTable();
 	void RenderHealthPack();
+	void RenderOres();
 
 	void changeStates();
 

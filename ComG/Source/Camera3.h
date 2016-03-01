@@ -66,7 +66,7 @@ public:
 	bool testhitbox(const Vector3& lowest, const Vector3& highest, double move);
 	bool hitbox(double move);
 	bool checkcollisionwithObject(double move);
-	bool checkcollisionwithOres(double move); 
+	bool checkcollisionwithOres(); 
 	//bool checkBulletcollisionwithObject(Vector3 bulletPos);
 	bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);

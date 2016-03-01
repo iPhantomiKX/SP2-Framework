@@ -381,6 +381,14 @@ void Sp2Scene::Update(double dt)
 		}
 	}
 
+	if (gameStates == states::outside)
+	{
+		if (Application::IsKeyPressed('E') && camera.mining() == true)
+		{
+				testMining = true;
+		}
+	}
+
 
 	//If pressed '1', switch to Pistol1
 
@@ -770,7 +778,11 @@ void Sp2Scene::Update(double dt)
 
 			if (gameStates == states::outside)
 			{
-				
+				if (c3.checkcollisionwithOres() == true)
+				{
+					std::cout << "oi" << std::endl;
+				}
+
 				//If pressed '1', switch to Pistol1
 				if (equipPistol1 == true)
 				{
@@ -1857,6 +1869,16 @@ void Sp2Scene::RenderElements()
 	
 };
 
+void Sp2Scene::RenderOres()
+{
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 0, 0);
+		modelStack.Rotate(-90, 1, 0, 0);
+		modelStack.Scale(0.5, 0.5, 0.5);
+		RenderMesh(meshList[GEO_ORES], true);
+		modelStack.PopMatrix();
+}
+
 void Sp2Scene::Render()
 {
 	// Render VBO here
@@ -1920,6 +1942,7 @@ void Sp2Scene::Render()
 		RenderTable();
 		RenderHealthPack();
 		RenderElements();
+		RenderOres();
 	}
 	if (gameStates == states::base)
 	{
@@ -2030,6 +2053,12 @@ void Sp2Scene::Render()
 			RenderImageOnScreen(meshList[GEO_SHOTGUN1], 0.5, 26, 18);
 		}
 
+		/*else if (testMining == true)
+		{
+			RenderOres();
+			RenderImageOnScreen(meshList[GEO_ORES], 1, 4, 4);
+		}*/
+		
 	if (gameStates == states::base)
 	{
 		if (crafting == true)
@@ -2038,12 +2067,12 @@ void Sp2Scene::Render()
 		}
 	}
 
-	modelStack.PushMatrix();
-	modelStack.Translate(-150, 50, -200);
-	modelStack.Scale(10, 10, 10);
-	RenderText(meshList[GEO_TEXT], "Welcome To The Moon", Color(1, 0, 0));
-	modelStack.PopMatrix();
-
+		modelStack.PushMatrix();
+		modelStack.Translate(-150, 50, -200);
+		modelStack.Scale(10, 10, 10);
+		RenderText(meshList[GEO_TEXT], "Welcome To The Moon", Color(1, 0, 0));
+		modelStack.PopMatrix();
+	
 	//modelStack.PushMatrix();
 	//modelStack.Translate(0,5,0);
 	//modelStack.Scale(1, 1, 1);
