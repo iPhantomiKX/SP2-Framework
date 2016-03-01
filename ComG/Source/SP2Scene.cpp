@@ -47,7 +47,11 @@ target t;
 player play;
 objective obj;
 int objective::chooseObj = 1;
-enemy thecube(10, 0.f, 0, 0.f, 50);
+enemy thecube(10, -100.f, 0, -100.f, 50);
+enemy thecube2(10, 200.f, 0, -300.f, 50);
+enemy thecube3(10, -300.f, 0, 200.f, 50);
+std::vector<Vector3> enemy::bulletPos;
+std::vector<Vector3> enemy::bulletDir;
 
 
 Sp2Scene::Sp2Scene()
@@ -499,6 +503,9 @@ void Sp2Scene::Update(double dt)
 	//std::cout << c3.getShotsFired() << "bang" <<  std::endl; // why 0
 	if (gameStates == states::outside)
 	{
+		/*thecube.shootBullet();
+		thecube2.shootBullet();
+		thecube3.shootBullet();*/
 		if (Camera3::location.x > -410 && Camera3::location.x < -370 && Camera3::location.y > 0 && Camera3::location.y < 20 && Camera3::location.z > 20 && Camera3::location.z < 60 && Application::IsKeyPressed('E') && heals > 0 && play.getHp() < 100 && buttonCd == 0)
 		{
 			play.healHp(50);
@@ -510,12 +517,15 @@ void Sp2Scene::Update(double dt)
 			if (atkCd <= 0)
 			{
 				EnemyAttack(thecube.pos);
+				EnemyAttack(thecube2.pos);
+				EnemyAttack(thecube3.pos);
 				atkCd = 30;
 			}
 			if (atkCd > 0)
 			{
 				atkCd--;
 			}
+			
 			//If pressed '1', switch to Pistol1
 				if (equipPistol1 == true)
 				{
@@ -771,19 +781,44 @@ void Sp2Scene::Update(double dt)
 				}
 				else
 				{
-					if (thecube.isDead() == false && gameStates == states::outside)
+					if (thecube.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
 					{
 						thecube.Update(dt, camera);
 					}
-
 					else
 					{
 						if (objective::chooseObj == 1)
 						{
 							obj.objectiveProgress(1);
 						}
-						play.earnMinerals(500);
-						thecube.respawnEnemy(rand() % 980 - 490, 0, rand() % 980 - 490);
+						play.earnMinerals(100);
+						thecube.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
+					}
+					if (thecube2.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
+					{
+						thecube2.Update(dt, camera);
+					}
+					else
+					{
+						if (objective::chooseObj == 1)
+						{
+							obj.objectiveProgress(1);
+						}
+						play.earnMinerals(100);
+						thecube2.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
+					}
+					if (thecube3.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
+					{
+						thecube3.Update(dt, camera);
+					}
+					else
+					{
+						if (objective::chooseObj == 1)
+						{
+							obj.objectiveProgress(1);
+						}
+						play.earnMinerals(100);
+						thecube3.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
 					}
 				}
 		}
@@ -998,70 +1033,6 @@ bool Sp2Scene::AICheckCollisionObject(Vector3 AIposition)
 }
 void Sp2Scene::bulletRNG(int spray)
 {
-
-	/*if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-	{
-		storeRand = rand() % ((spray + 2));
-	}
-	else
-	{
-		storeRand = rand() % (spray + 1);
-	}
-	storeRand2 = rand() % 2;
-	if (storeRand2 == 1)
-	{
-		storeRand -= (storeRand + storeRand);
-	}
-	if (storeRand == 0)
-	{
-
-	}
-	else
-	{
-		Camera3::direction.x += storeRand / 10;
-	}
-	if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-	{
-		storeRand = rand() % ((spray + 2));
-	}
-	else
-	{
-		storeRand = rand() % (spray + 1);
-	}
-	storeRand2 = rand() % 2;
-	if (storeRand2 == 1)
-	{
-		storeRand -= (storeRand + storeRand);
-	}
-	if (storeRand == 0)
-	{
-
-	}
-	else
-	{
-		Camera3::direction.y += storeRand / 10;
-	}
-	if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-	{
-		storeRand = rand() % ((spray + 2));
-	}
-	else
-	{
-		storeRand = rand() % (spray + 1);
-	}
-	storeRand2 = rand() % 2;
-	if (storeRand2 == 1)
-	{
-		storeRand -= (storeRand + storeRand);
-	}
-	if (storeRand == 0)
-	{
-
-	}
-	else
-	{
-		Camera3::direction.z += storeRand / 10;
-	}*/ 
 	double temp = 0;
 	int random = 0;
 	if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
@@ -1181,6 +1152,22 @@ void Sp2Scene::bulletPos()
 				count1 = shotsDir.erase(count1);
 				count2 = weaponDmg.erase(count2);
 			}
+			else if (bulletEnemyCollision(temp, thecube2.pos) == true)
+			{
+				thecube2.hp -= *count2;
+				std::cout << "hit" << std::endl;
+				count = shotsFired.erase(count);
+				count1 = shotsDir.erase(count1);
+				count2 = weaponDmg.erase(count2);
+			}
+			else if (bulletEnemyCollision(temp, thecube3.pos) == true)
+			{
+				thecube3.hp -= *count2;
+				std::cout << "hit" << std::endl;
+				count = shotsFired.erase(count);
+				count1 = shotsDir.erase(count1);
+				count2 = weaponDmg.erase(count2);
+			}
 			else if (temp.y <= 0 || temp.x >= 1000 || temp.z >= 1000 || temp.y >= 1000 || temp.x <= -1000 || temp.z <= -1000 || temp.y <= -1000 || bulletObjectCollision(temp) == true)
 			{
 				count = shotsFired.erase(count);
@@ -1263,7 +1250,7 @@ void Sp2Scene::RenderSkybox()
 {
 	//bottom
 	modelStack.PushMatrix();
-	modelStack.Translate(0 + Camera3::location.x, -499 + Camera3::location.y, 0 + Camera3::location.z);
+	modelStack.Translate(0 + Camera3::location.x, -999 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Scale(-1, 1, 1);
@@ -1272,7 +1259,7 @@ void Sp2Scene::RenderSkybox()
 
 	//top
 	modelStack.PushMatrix();
-	modelStack.Translate(0 + Camera3::location.x, 499 + Camera3::location.y, 0 + Camera3::location.z);
+	modelStack.Translate(0 + Camera3::location.x, 999 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Scale(1, -1, 1);
@@ -1281,7 +1268,7 @@ void Sp2Scene::RenderSkybox()
 
 	//left
 	modelStack.PushMatrix();
-	modelStack.Translate(499 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
+	modelStack.Translate(999 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Rotate(-90, 0, 0, 1);
 	RenderMesh(meshList[GEO_LEFT], false);
@@ -1289,7 +1276,7 @@ void Sp2Scene::RenderSkybox()
 
 	//right
 	modelStack.PushMatrix();
-	modelStack.Translate(-499 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
+	modelStack.Translate(-999 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Rotate(-90, 0, 0, 1);
@@ -1298,7 +1285,7 @@ void Sp2Scene::RenderSkybox()
 
 	//back
 	modelStack.PushMatrix();
-	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, 499 + Camera3::location.z);
+	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, 999 + Camera3::location.z);
 	modelStack.Rotate(-90, 0, 0, 1);
 	modelStack.Rotate(90, 1, 0, 0);
 	modelStack.Scale(1000, 1000, 1000);
@@ -1307,7 +1294,7 @@ void Sp2Scene::RenderSkybox()
 
 	//Front
 	modelStack.PushMatrix();
-	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, -499 + Camera3::location.z);
+	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, -999 + Camera3::location.z);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Rotate(-90, 0, 0, 1);
 	modelStack.Rotate(90, 1, 0, 0);
@@ -1748,8 +1735,7 @@ void Sp2Scene::RenderElements()
 
 void Sp2Scene::RenderEnemy()
 {
-	for (int i = 0; i < 10; ++i)
-	{
+
 		modelStack.PushMatrix();
 		modelStack.Translate(thecube.pos.x, 0, thecube.pos.z);
 		modelStack.Rotate(thecube.Degree, 0, 1, 0);
@@ -1759,7 +1745,26 @@ void Sp2Scene::RenderEnemy()
 		RenderMesh(meshList[GEO_THECUBE], true);
 		modelStack.PopMatrix();
 		modelStack.PopMatrix();
-	}
+
+		modelStack.PushMatrix();
+		modelStack.Translate(thecube2.pos.x, 0, thecube2.pos.z);
+		modelStack.Rotate(thecube2.Degree, 0, 1, 0);
+		//cout << Degree << std::endl;
+		modelStack.PushMatrix();
+		modelStack.Scale(0.5, 0.5, 0.5);
+		RenderMesh(meshList[GEO_THECUBE], true);
+		modelStack.PopMatrix();
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(thecube3.pos.x, 0, thecube3.pos.z);
+		modelStack.Rotate(thecube3.Degree, 0, 1, 0);
+		//cout << Degree << std::endl;
+		modelStack.PushMatrix();
+		modelStack.Scale(0.5, 0.5, 0.5);
+		RenderMesh(meshList[GEO_THECUBE], true);
+		modelStack.PopMatrix();
+		modelStack.PopMatrix();
 }
 
 void Sp2Scene::Render()
@@ -1887,6 +1892,16 @@ void Sp2Scene::Render()
 		RenderMesh(meshList[GEO_QUAD], true);
 		modelStack.PopMatrix();
 		for (std::vector<Vector3>::iterator count = shotsFired.begin(); count != shotsFired.end(); ++count)
+		{
+			test = *count;
+			modelStack.PushMatrix();
+			modelStack.Translate(test.x, test.y, test.z);
+			modelStack.Scale(0.3, 0.3, 0.3);
+			RenderMesh(meshList[GEO_SHOT], false);
+			modelStack.PopMatrix();
+		}
+
+		for (std::vector<Vector3>::iterator count = enemy::bulletPos.begin(); count != enemy::bulletPos.end(); ++count)
 		{
 			test = *count;
 			modelStack.PushMatrix();
