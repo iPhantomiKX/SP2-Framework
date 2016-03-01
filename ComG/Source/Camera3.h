@@ -50,6 +50,9 @@ public:
 	Vector3 directionRotation;
 	int cRecoilCd;
 	static bool inBase;
+	static bool knockback;
+	int stamina;
+	int staminaDelay;
 
 
 	Vector3 diffx;
@@ -68,10 +71,11 @@ public:
 	bool checkcollisionwithObject(double move);
 	bool checkcollisionwithOres(); 
 	//bool checkBulletcollisionwithObject(Vector3 bulletPos);
-	bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
-	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
+	/*bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
+	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);*/
 	void teleport();
 	bool mining();
+	Vector3 kb;
 	bool craftUi();
 	Vector3 minPos(Vector3 center, double sizeX, double sizeY, double sizeZ);
 	Vector3 maxPos(Vector3 center, double sizeX, double sizeY, double sizeZ);

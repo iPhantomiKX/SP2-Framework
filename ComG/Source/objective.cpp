@@ -3,7 +3,7 @@
 objective::objective()
 {
 	enemiesDieded = 0;
-	maxEnemiesDieded = 10;
+	maxEnemiesDieded = 100;
 }
 
 

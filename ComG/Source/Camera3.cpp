@@ -43,6 +43,8 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	//cd = 10;
 	cameraStore = 0;
 	cRecoilCd = 0;
+	stamina = 300;
+	staminaDelay = 0;
 
 	///for hitboxes///
 	/*minVectors.push_back(minPos(Vector3(400, 60, 0), 100, 20, 100));
@@ -111,7 +113,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 void Camera3::Update(double dt)
 {
 
-	static const float CAMERA_SPEED = 500.f;
+	static const float CAMERA_SPEED = 1000.f;
 	prevPosition = position;
 	Vector3 view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
@@ -139,24 +141,24 @@ void Camera3::Update(double dt)
 
 			if (xpos < 395)
 			{
-				directionRotation.y += 1.5;
+				directionRotation.y += 0.2;
 			}
 			if (xpos > 405)
 			{
-				directionRotation.y -= 1.5;
+				directionRotation.y -= 0.2;
 			}
 			if (ypos < 295)
 			{
-				if (directionRotation.x > -45)
+				if (directionRotation.x > -40)
 				{
-					directionRotation.x -= 1.5;
+					directionRotation.x -= 0.2;
 				}
 			}
 			if (ypos > 305)
 			{
-				if (directionRotation.x < 45)
+				if (directionRotation.x < 40)
 				{
-					directionRotation.x += 1.5;
+					directionRotation.x += 0.2;
 				}
 			}
 		}
@@ -164,26 +166,29 @@ void Camera3::Update(double dt)
 		{
 			xpos, ypos = a.Mouse(xpos, ypos);
 
+			/*directionRotation.y -= (float)(xpos - 400);
+			directionRotation.x += (float)(ypos - 300);*/
+
 			if (xpos < 395)
 			{
-				directionRotation.y += 3;
+				directionRotation.y += 0.4;
 			}
 			if (xpos > 405)
 			{
-				directionRotation.y -= 3;
+				directionRotation.y -= 0.4;
 			}
 			if (ypos < 295)
 			{
-				if (directionRotation.x > -45)
+				if (directionRotation.x > -40)
 				{
-					directionRotation.x -= 3;
+					directionRotation.x -= 0.4;
 				}
 			}
 			if (ypos > 305)
 			{
-				if (directionRotation.x < 45)
+				if (directionRotation.x < 40)
 				{
-					directionRotation.x += 3;
+					directionRotation.x += 0.4;
 				}
 			}
 		}
@@ -236,6 +241,15 @@ void Camera3::Update(double dt)
 
 		camerarotation = directionRotation - gunRecoil;
 
+		if (stamina < 100 && staminaDelay == 0)
+		{
+			stamina++;
+		}
+
+		if (staminaDelay > 0)
+		{
+			staminaDelay--;
+		}
 
 		location2 = position + view*dt*speed;
 		location = position;
@@ -251,12 +265,12 @@ void Camera3::Update(double dt)
 					position.x += (view.x * dt * speed) / 2;
 					target.x += (view.x * dt * speed) / 2;
 				}
-				if (position.z + (view.z * dt * speed) / 2 <= 48 && position.z + (view.z * dt * speed) / 2 >= -48 && hitbox((view.z * dt * speed) / 2) == false && checkcollisionwithObject((view.z * dt * speed) / 2) == false )
+				if (position.z + (view.z * dt * speed) / 2 <= 48 && position.z + (view.z * dt * speed) / 2 >= -48 && hitbox((view.z * dt * speed) / 2) == false && checkcollisionwithObject((view.z * dt * speed) / 2) == false)
 				{
 					position.z += (view.z * dt * speed) / 2;
 					target.z += (view.z * dt * speed) / 2;
 				}
-				if (Application::IsKeyPressed(VK_SPACE) && position.y + (view.y * dt * speed) / 2 <= 48 && position.y + (view.y * dt * speed) / 2 >= 10 && hitbox((position.y * dt * speed) / 2) == false && checkcollisionwithObject((view.y * dt * speed) / 2) == false )
+				if (Application::IsKeyPressed(VK_SPACE) && position.y + (view.y * dt * speed) / 2 <= 48 && position.y + (view.y * dt * speed) / 2 >= 10 && hitbox((position.y * dt * speed) / 2) == false && checkcollisionwithObject((view.y * dt * speed) / 2) == false)
 				{
 					position.y += (view.y * dt * speed) / 2;
 					target.y += (view.y * dt * speed) / 2;
@@ -266,13 +280,13 @@ void Camera3::Update(double dt)
 			{
 				Vector3 view = (target - position).Normalized();
 
-				if (position.x - (view.x * dt * speed) / 2 <= 48 && position.x - (view.x * dt * speed) / 2 >= -48 && hitbox(-(view.x * dt * speed) / 2) == false && checkcollisionwithObject(-(view.x * dt * speed) / 2) == false )
+				if (position.x - (view.x * dt * speed) / 2 <= 48 && position.x - (view.x * dt * speed) / 2 >= -48 && hitbox(-(view.x * dt * speed) / 2) == false && checkcollisionwithObject(-(view.x * dt * speed) / 2) == false)
 				{
 					position.x -= (view.x * dt * speed) / 2;
 					target.x -= (view.x * dt * speed) / 2;
 				}
 
-				if (position.z - (view.z * dt * speed) / 2 <= 48 && position.z - (view.z * dt * speed) / 2 >= -48 && hitbox(-(view.z * dt * speed) / 2) == false && checkcollisionwithObject(-(view.z * dt * speed) / 2) == false )
+				if (position.z - (view.z * dt * speed) / 2 <= 48 && position.z - (view.z * dt * speed) / 2 >= -48 && hitbox(-(view.z * dt * speed) / 2) == false && checkcollisionwithObject(-(view.z * dt * speed) / 2) == false)
 				{
 					position.z -= (view.z * dt * speed) / 2;
 					target.z -= (view.z * dt * speed) / 2;
@@ -318,7 +332,7 @@ void Camera3::Update(double dt)
 					target.x -= (right.x * dt * speed) / 2;
 				}
 
-				if (position.z - (right.z * dt * speed) / 2 <= 48 && position.z - (right.z * dt * speed) / 2 >= -48 && hitbox(-(right.z * dt * speed) / 2) == false && checkcollisionwithObject(-(right.z * dt * speed) / 2) == false )
+				if (position.z - (right.z * dt * speed) / 2 <= 48 && position.z - (right.z * dt * speed) / 2 >= -48 && hitbox(-(right.z * dt * speed) / 2) == false && checkcollisionwithObject(-(right.z * dt * speed) / 2) == false)
 				{
 					position.z -= (right.z * dt * speed) / 2;
 					target.z -= (right.z * dt * speed) / 2;
@@ -326,7 +340,7 @@ void Camera3::Update(double dt)
 
 
 				//if (position.y - (right.y * dt * speed) / 2 <= 900 && position.y - (right.y * dt * speed) / 2 >= -900 && hitbox(-(right.y * dt * speed) / 2) == false)
-				if (position.y - (right.y * dt * speed) / 2 <= 48 && position.y - (right.y * dt * speed) / 2 >= -48 && hitbox(-(right.y * dt * speed) / 2) == false && checkcollisionwithObject((right.y * dt * speed) / 2) == false )
+				if (position.y - (right.y * dt * speed) / 2 <= 48 && position.y - (right.y * dt * speed) / 2 >= -48 && hitbox(-(right.y * dt * speed) / 2) == false && checkcollisionwithObject((right.y * dt * speed) / 2) == false)
 				{
 					position.z -= (right.y * dt * speed) / 2;
 					target.z -= (right.y * dt * speed) / 2;
@@ -354,17 +368,19 @@ void Camera3::Update(double dt)
 						target.z += (view.z * dt * speed) / 5;
 					}
 
-					if (Application::IsKeyPressed(VK_SPACE) && position.y + (view.y * dt * speed) / 5 <= 990 && position.y + (view.y * dt * speed) / 5 >= 10 && hitbox((position.y * dt * speed) / 5) == false && checkcollisionwithObject((view.y * dt * speed) / 5) == false )
+					/*if (Application::IsKeyPressed(VK_SPACE) && position.y + (view.y * dt * speed) / 5 <= 990 && position.y + (view.y * dt * speed) / 5 >= 10 && hitbox((position.y * dt * speed) / 5) == false && checkcollisionwithObject((view.y * dt * speed) / 5) == false && stamina > 0)
 					{
 						position.y += (view.y * dt * speed) / 5;
 						target.y += (view.y * dt * speed) / 5;
-					}
+						stamina--;
+						staminaDelay = 100;
+					}*/
 				}
 				if (Application::IsKeyPressed('S'))
 				{
 					Vector3 view = (target - position).Normalized();
 
-					if (position.x - (view.x * dt * speed) / 5 <= 990 && position.x - (view.x * dt * speed) / 5 >= -990 && hitbox(-(view.x * dt * speed) / 5) == false && checkcollisionwithObject(-(view.x * dt * speed) / 5) == false )
+					if (position.x - (view.x * dt * speed) / 5 <= 990 && position.x - (view.x * dt * speed) / 5 >= -990 && hitbox(-(view.x * dt * speed) / 5) == false && checkcollisionwithObject(-(view.x * dt * speed) / 5) == false)
 					{
 						position.x -= (view.x * dt * speed) / 5;
 						target.x -= (view.x * dt * speed) / 5;
@@ -376,24 +392,26 @@ void Camera3::Update(double dt)
 						target.z -= (view.z * dt * speed) / 5;
 					}
 
-					if (Application::IsKeyPressed(VK_SPACE) && position.y - (view.y * dt * speed) / 5 <= 990 && position.y - (view.y * dt * speed) / 5 >= 10 && hitbox(-(view.y * dt * speed) / 5) == false && checkcollisionwithObject(-(view.y * dt * speed) / 5) == false )
+					/*if (Application::IsKeyPressed(VK_SPACE) && position.y - (view.y * dt * speed) / 5 <= 990 && position.y - (view.y * dt * speed) / 5 >= 10 && hitbox(-(view.y * dt * speed) / 5) == false && checkcollisionwithObject(-(view.y * dt * speed) / 5) == false && stamina > 0)
 					{
 						position.y -= (view.y * dt * speed) / 5;
 						target.y -= (view.y * dt * speed) / 5;
-					}
+						stamina--;
+						staminaDelay = 100;
+					}*/
 				}
 				if (Application::IsKeyPressed('D'))
 				{
 					Vector3 view = (target - position).Normalized();
 					Vector3 right = view.Cross(up);
 
-					if (position.x + (right.x * dt * speed) / 5 <= 990 && position.x + (right.x * dt * speed) / 5 >= -990 && hitbox((right.x * dt * speed) / 5) == false && checkcollisionwithObject((right.x * dt * speed) / 5) == false )
+					if (position.x + (right.x * dt * speed) / 5 <= 990 && position.x + (right.x * dt * speed) / 5 >= -990 && hitbox((right.x * dt * speed) / 5) == false && checkcollisionwithObject((right.x * dt * speed) / 5) == false)
 					{
 						position.x += (right.x * dt * speed) / 5;
 						target.x += (right.x * dt * speed) / 5;
 					}
 
-					if (position.z + (right.z * dt * speed) / 5 <= 990 && position.z + (right.z * dt * speed) / 5 >= -990 && hitbox((right.z * dt * speed) / 5) == false && checkcollisionwithObject((right.z * dt * speed) / 5) == false )
+					if (position.z + (right.z * dt * speed) / 5 <= 990 && position.z + (right.z * dt * speed) / 5 >= -990 && hitbox((right.z * dt * speed) / 5) == false && checkcollisionwithObject((right.z * dt * speed) / 5) == false)
 					{
 						position.z += (right.z * dt * speed) / 5;
 						target.z += (right.z * dt * speed) / 5;
@@ -410,24 +428,24 @@ void Camera3::Update(double dt)
 					Vector3 view = (target - position).Normalized();
 					Vector3 right = view.Cross(up);
 
-					if (position.x - (right.x * dt * speed) / 5 <= 990 && position.x - (right.x * dt * speed) / 5 >= -990 && hitbox(-(right.x * dt * speed) / 5) == false && checkcollisionwithObject(-(right.x * dt * speed) / 5) == false )
+					if (position.x - (right.x * dt * speed) / 5 <= 990 && position.x - (right.x * dt * speed) / 5 >= -990 && hitbox(-(right.x * dt * speed) / 5) == false && checkcollisionwithObject(-(right.x * dt * speed) / 5) == false)
 					{
 						position.x -= (right.x * dt * speed) / 5;
 						target.x -= (right.x * dt * speed) / 5;
 					}
-					if (position.z - (right.z * dt * speed) / 5 <= 990 && position.z - (right.z * dt * speed) / 5 >= -990 && hitbox(-(right.z * dt * speed) / 5) == false && checkcollisionwithObject(-(right.z * dt * speed) / 5) == false )
+					if (position.z - (right.z * dt * speed) / 5 <= 990 && position.z - (right.z * dt * speed) / 5 >= -990 && hitbox(-(right.z * dt * speed) / 5) == false && checkcollisionwithObject(-(right.z * dt * speed) / 5) == false)
 					{
 						position.z -= (right.z * dt * speed) / 5;
 						target.z -= (right.z * dt * speed) / 5;
 					}
-					if (position.y - (right.y * dt * speed) / 5 <= 990 && position.y - (right.y * dt * speed) / 5 >= -990 && hitbox(-(right.y * dt * speed) / 5) == false && checkcollisionwithObject(-(right.y * dt * speed) / 5) == false )
+					if (position.y - (right.y * dt * speed) / 5 <= 990 && position.y - (right.y * dt * speed) / 5 >= -990 && hitbox(-(right.y * dt * speed) / 5) == false && checkcollisionwithObject(-(right.y * dt * speed) / 5) == false)
 					{
 						position.z -= (right.y * dt * speed) / 5;
 						target.z -= (right.y * dt * speed) / 5;
 					}
 				}
 			}
-			else if (Application::IsKeyPressed(VK_SHIFT))
+			else if (Application::IsKeyPressed(VK_SHIFT) && stamina > 0)
 			{
 				if (Application::IsKeyPressed('W'))
 				{
@@ -437,35 +455,35 @@ void Camera3::Update(double dt)
 						position.x += (view.x * dt * speed);
 						target.x += (view.x * dt * speed);
 					}
-					if (position.z + (view.z * dt * speed) <= 990 && position.z + (view.z * dt * speed) >= -990 && hitbox((view.z * dt * speed)) == false && checkcollisionwithObject((view.z * dt * speed)) == false )
+					if (position.z + (view.z * dt * speed) <= 990 && position.z + (view.z * dt * speed) >= -990 && hitbox((view.z * dt * speed)) == false && checkcollisionwithObject((view.z * dt * speed)) == false)
 					{
 						position.z += (view.z * dt * speed);
 						target.z += (view.z * dt * speed);
 					}
-					if (Application::IsKeyPressed(VK_SPACE) && position.y + (view.y * dt * speed) <= 990 && position.y + (view.y * dt * speed) >= 10 && hitbox((position.y * dt * speed)) == false && checkcollisionwithObject((view.y * dt * speed)) == false)
+					/*if (Application::IsKeyPressed(VK_SPACE) && position.y + (view.y * dt * speed) <= 990 && position.y + (view.y * dt * speed) >= 10 && hitbox((position.y * dt * speed)) == false && checkcollisionwithObject((view.y * dt * speed)) == false)
 					{
 						position.y += (view.y * dt * speed);
 						target.y += (view.y * dt * speed);
-					}
+					}*/
 				}
 				if (Application::IsKeyPressed('S'))
 				{
 					Vector3 view = (target - position).Normalized();
-					if (position.x - (view.x * dt * speed) <= 990 && position.x - (view.x * dt * speed) >= -990 && hitbox(-(view.x * dt * speed)) == false && checkcollisionwithObject(-(view.x * dt * speed)) == false )
+					if (position.x - (view.x * dt * speed) <= 990 && position.x - (view.x * dt * speed) >= -990 && hitbox(-(view.x * dt * speed)) == false && checkcollisionwithObject(-(view.x * dt * speed)) == false)
 					{
 						position.x -= (view.x * dt * speed);
 						target.x -= (view.x * dt * speed);
 					}
-					if (position.z - (view.z * dt * speed) <= 990 && position.z - (view.z * dt * speed) >= -990 && hitbox(-(view.z * dt * speed)) == false && checkcollisionwithObject(-(view.z * dt * speed)) == false )
+					if (position.z - (view.z * dt * speed) <= 990 && position.z - (view.z * dt * speed) >= -990 && hitbox(-(view.z * dt * speed)) == false && checkcollisionwithObject(-(view.z * dt * speed)) == false)
 					{
 						position.z -= (view.z * dt * speed);
 						target.z -= (view.z * dt * speed);
 					}
-					if (Application::IsKeyPressed(VK_SPACE) && position.y - (view.y * dt * speed) <= 990 && position.y - (view.y * dt * speed) >= 10 && hitbox(-(view.y * dt * speed)) == false && checkcollisionwithObject(-(view.y * dt * speed)) == false)
+					/*if (Application::IsKeyPressed(VK_SPACE) && position.y - (view.y * dt * speed) <= 990 && position.y - (view.y * dt * speed) >= 10 && hitbox(-(view.y * dt * speed)) == false && checkcollisionwithObject(-(view.y * dt * speed)) == false)
 					{
 						position.y -= (view.y * dt * speed);
 						target.y -= (view.y * dt * speed);
-					}
+					}*/
 				}
 				if (Application::IsKeyPressed('D'))
 				{
@@ -507,6 +525,8 @@ void Camera3::Update(double dt)
 						target.z -= (right.y * dt * speed);
 					}
 				}
+				stamina--;
+				staminaDelay = 100;
 			}
 			else
 			{
@@ -523,11 +543,13 @@ void Camera3::Update(double dt)
 						position.z += (view.z * dt * speed) / 2;
 						target.z += (view.z * dt * speed) / 2;
 					}
-					if (Application::IsKeyPressed(VK_SPACE) && position.y + (view.y * dt * speed) / 2 <= 990 && position.y + (view.y * dt * speed) / 2 >= 10 && hitbox((position.y * dt * speed) / 2) == false && checkcollisionwithObject((view.y * dt * speed) / 2) == false)
+					/*if (Application::IsKeyPressed(VK_SPACE) && position.y + (view.y * dt * speed) / 2 <= 990 && position.y + (view.y * dt * speed) / 2 >= 10 && hitbox((position.y * dt * speed) / 2) == false && checkcollisionwithObject((view.y * dt * speed) / 2) == false && stamina > 0)
 					{
 						position.y += (view.y * dt * speed) / 2;
 						target.y += (view.y * dt * speed) / 2;
-					}
+						stamina--;
+						staminaDelay = 100;
+					}*/
 				}
 				if (Application::IsKeyPressed('S'))
 				{
@@ -545,11 +567,13 @@ void Camera3::Update(double dt)
 						target.z -= (view.z * dt * speed) / 2;
 					}
 
-					if (Application::IsKeyPressed(VK_SPACE) && position.y - (view.y * dt * speed) / 2 <= 990 && position.y - (view.y * dt * speed) / 2 >= 10 && hitbox(-(view.y * dt * speed) / 2) == false && checkcollisionwithObject(-(view.y * dt * speed) / 2) == false)
+					/*if (Application::IsKeyPressed(VK_SPACE) && position.y - (view.y * dt * speed) / 2 <= 990 && position.y - (view.y * dt * speed) / 2 >= 10 && hitbox(-(view.y * dt * speed) / 2) == false && checkcollisionwithObject(-(view.y * dt * speed) / 2) == false && stamina > 0)
 					{
 						position.y -= (view.y * dt * speed) / 2;
 						target.y -= (view.y * dt * speed) / 2;
-					}
+						stamina--;
+						staminaDelay = 100;
+					}*/
 				}
 				if (Application::IsKeyPressed('D'))
 				{
@@ -599,9 +623,21 @@ void Camera3::Update(double dt)
 				}
 			}
 		}
-
+		if (knockback == true)
+		{
+			knockback = false;
+			if (position.x - (view.x * dt * speed)*10 <= 990 && position.x - (view.x * dt * speed)*10 >= -990 && hitbox(-(view.x * dt * speed)*10) == false && checkcollisionwithObject(-(view.x * dt * speed)*10) == false)
+			{
+				position.x -= (view.x * dt * speed) * 10;
+			}
+			if (position.z - (view.z * dt * speed) * 10 <= 990 && position.z - (view.z * dt * speed) * 10 >= -990 && hitbox(-(view.z * dt * speed) * 10) == false && checkcollisionwithObject(-(view.z * dt * speed) * 10) == false)
+			{
+				position.z -= (view.z * dt * speed) * 10;
+			}
+		}
 	teleport();
 
+	kb = (right * dt * speed);
 	if (camerarotation.x > maxCameraX)
 	{
 		camerarotation.x = maxCameraX;

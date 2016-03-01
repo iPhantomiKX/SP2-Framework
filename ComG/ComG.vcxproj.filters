@@ -17,9 +17,24 @@
     <ClCompile Include="Source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Source\shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+=======
+    <ClCompile Include="Source\Scene1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Assignment1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+>>>>>>> origin/master
     <ClCompile Include="Source\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -29,12 +44,28 @@
     <ClCompile Include="Source\MeshBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="Source\Scene3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Assignment2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+>>>>>>> origin/master
     <ClCompile Include="Source\Camera2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Source\LoadTGA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,6 +85,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\objective.cpp">
+=======
+    <ClCompile Include="Source\SceneLight2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadTGA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneSkybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadOBJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SP2Scene.cpp">
+>>>>>>> origin/master
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -61,6 +119,12 @@
     <ClInclude Include="Source\Application.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
+=======
+    <ClInclude Include="Source\Assignment1.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+>>>>>>> origin/master
     <ClInclude Include="Source\Camera.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -73,9 +137,33 @@
     <ClInclude Include="Source\Scene.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Source\shader.hpp">
       <Filter>Resource Files</Filter>
     </ClInclude>
+=======
+    <ClInclude Include="Source\Scene1.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\shader.hpp">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene4.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assignment2.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneLight.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+>>>>>>> origin/master
     <ClInclude Include="Source\Camera2.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -91,6 +179,7 @@
     <ClInclude Include="Source\Vertex.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Source\LoadTGA.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -113,6 +202,36 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\objective.h">
+=======
+    <ClInclude Include="Source\SceneLight2.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneTexture.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LoadTGA.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneSkybox.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LoadOBJ.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneModel.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneText.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera3.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SP2Scene.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\gun.h">
+>>>>>>> origin/master
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>

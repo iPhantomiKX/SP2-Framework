@@ -22,7 +22,12 @@ enemy::enemy(int health, float x, float y, float z, int s)
 
 void enemy::respawnEnemy(int x, int y, int z)
 {
-	enemyUpgrade++;
+	upgradeCount++;
+	if (upgradeCount == 5)
+	{
+		upgradeCount = 0;
+		enemyUpgrade++;
+	}
 	if (x < -300 && x > -500 && z > -30 && z < 100)
 	{
 		x = 0;
@@ -30,7 +35,7 @@ void enemy::respawnEnemy(int x, int y, int z)
 	}
 	pos = Vector3(x,y,z);
 	hp = 10 + (enemyUpgrade * 5);
-	attackPow = 1 + (enemyUpgrade);
+	attackPow = 1 + (enemyUpgrade/2);
 	//speed = speed + 20;
 	isDieded = false;
 }
@@ -88,7 +93,7 @@ void enemy::Update(double dt, Camera3 camera)
 	{
 		if (pos.x + (direction.x * dt * speed) < -330 && pos.x + (direction.x * dt *speed) > -470)
 		{
-			pos.z++;
+			pos.z--;
 		}
 		if (pos.z + (direction.z * dt *speed) > -10 && pos.z + (direction.z * dt *speed) < 80)
 		{
@@ -102,6 +107,7 @@ void enemy::Update(double dt, Camera3 camera)
 	else
 	{
 		pos.x += (direction.x * dt * speed);
+		//std::cout << (direction.x * dt * speed) * ((enemyUpgrade / 4) + 1) << std::endl;
 		//pos.y += (direction.y * dt * speed);
 		pos.z += (direction.z * dt * speed);
 	}
@@ -115,7 +121,23 @@ void enemy::Update(double dt, Camera3 camera)
 	{
 		Degree *= -1;
 	}
+
+	//std::vector<Vector3>::iterator count = bulletPos.begin();
+	//std::vector<Vector3>::iterator count1 = bulletDir.begin();
+
+	//while (count != bulletPos.end())
+	//{
+	//	*count += *count1;
+	//	*count++;
+	//	*count1++;
+	//}
 }
+
+//void enemy::shootBullet()
+//{
+//	bulletPos.push_back(pos);
+//	bulletDir.push_back(aim);
+//}
 
 Vector3 enemy::returnPos()
 {
