@@ -3,7 +3,7 @@
 player::player()
 {
 	hp = 100;
-	minerals = 3000;
+	minerals = 0;
 }
 player::~player()
 {
@@ -20,6 +20,10 @@ void player::getHit(int damage)
 void player::healHp(int heal)
 {
 	hp += heal;
+	if (hp > 100)
+	{
+		hp = 100;
+	}
 }
 void player::spendMinerals(int amt)
 {

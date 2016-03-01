@@ -30,7 +30,7 @@ void enemy::respawnEnemy(int x, int y, int z)
 	}
 	pos = Vector3(x,y,z);
 	hp = 10 + (enemyUpgrade * 5);
-	attackPow = 1 + (enemyUpgrade);
+	attackPow = 1 + (enemyUpgrade/2);
 	//speed = speed + 20;
 	isDieded = false;
 }
@@ -84,11 +84,12 @@ void enemy::Update(double dt, Camera3 camera)
 	Vector3 direction = camera.position - pos;
 	direction = direction.Normalized();
 	
+
 	if (pos.x + (direction.x * dt * speed) < -330 && pos.x + (direction.x * dt *speed) > -470 && pos.z + (direction.z * dt *speed) > -10 && pos.z + (direction.z * dt *speed) < 80)
 	{
 		if (pos.x + (direction.x * dt * speed) < -330 && pos.x + (direction.x * dt *speed) > -470)
 		{
-			pos.z++;
+			pos.z--;
 		}
 		if (pos.z + (direction.z * dt *speed) > -10 && pos.z + (direction.z * dt *speed) < 80)
 		{
@@ -101,10 +102,12 @@ void enemy::Update(double dt, Camera3 camera)
 	}
 	else
 	{
-		pos.x += (direction.x * dt * speed);
+		pos.x += (direction.x * dt * speed) * ((enemyUpgrade/5) + 1);
+		//std::cout << (direction.x * dt * speed) * ((enemyUpgrade / 4) + 1) << std::endl;
 		//pos.y += (direction.y * dt * speed);
-		pos.z += (direction.z * dt * speed);
+		pos.z += (direction.z * dt * speed) * ((enemyUpgrade/5) + 1);
 	}
+
 
 	//Rotation of AI
 	Vector3 directionInit(0, 0, 1);

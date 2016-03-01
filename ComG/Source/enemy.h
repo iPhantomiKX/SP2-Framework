@@ -30,6 +30,7 @@ public:
 	void Render();
 	void respawnEnemy(int x, int y, int z);
 	Vector3 returnPos();
+	static Vector3 kB;
 	//void AIRotation(Vector3 Player);
 
 	Vector3 pos;
