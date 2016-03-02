@@ -87,10 +87,8 @@ void enemy::Update(double dt, Camera3 camera)
 {
 	//positioning of AI
 	Vector3 direction = camera.position - pos;
-	aim = direction;
 	direction = direction.Normalized();
 	
-
 	if (pos.x + (direction.x * dt * speed) < -330 && pos.x + (direction.x * dt *speed) > -470 && pos.z + (direction.z * dt *speed) > -10 && pos.z + (direction.z * dt *speed) < 80)
 	{
 		if (pos.x + (direction.x * dt * speed) < -330 && pos.x + (direction.x * dt *speed) > -470)
@@ -113,7 +111,6 @@ void enemy::Update(double dt, Camera3 camera)
 		//pos.y += (direction.y * dt * speed);
 		pos.z += (direction.z * dt * speed) * (1 + (enemyUpgrade / 4));
 	}
-
 
 	//Rotation of AI
 	Vector3 directionInit(0, 0, 1);

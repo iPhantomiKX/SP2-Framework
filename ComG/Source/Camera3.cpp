@@ -700,7 +700,7 @@ bool Camera3::checkcollisionwithOres()
 	while (count != MineralVectors.end())
 	{
 		Vector3 temp = *count;
-		if (location.x > temp.x - 10 && location.x < temp.x + 10 && location.y > temp.y - 10 && location.y < temp.y + 10 && location.z > temp.z - 10 && location.z < temp.z + 10)
+		if (location.x > temp.x -10 && location.x < temp.x + 10 && location.y > temp.y - 10 && location.y < temp.y + 10 && location.z > temp.z - 10 && location.z < temp.z + 10)
 		{
 			MineralVectors.erase(count);
 			return true;
@@ -709,7 +709,6 @@ bool Camera3::checkcollisionwithOres()
 	}
 	return false;
 }
-
 
 void Camera3::teleport()
 {
