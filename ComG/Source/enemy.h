@@ -29,6 +29,7 @@ public:
 	void Update(double dt, Camera3 camera);
 	void Render();
 	void respawnEnemy(int x, int y, int z);
+	void shootBullet();
 	Vector3 returnPos();
 	static Vector3 kB;
 	//void AIRotation(Vector3 Player);
@@ -39,7 +40,11 @@ public:
 	int speed;
 	float Degree;
 	static int attackPow;
-	int enemyUpgrade;
+	float enemyUpgrade = 0;
+	int upgradeCount = 0;
+	Vector3 aim;
+	static std::vector<Vector3> bulletPos;
+	static std::vector<Vector3> bulletDir;
 };
 
 #endif

@@ -22,7 +22,12 @@ enemy::enemy(int health, float x, float y, float z, int s)
 
 void enemy::respawnEnemy(int x, int y, int z)
 {
-	enemyUpgrade++;
+	upgradeCount++;
+	if (upgradeCount == 5)
+	{
+		upgradeCount = 0;
+		enemyUpgrade++;
+	}
 	if (x < -300 && x > -500 && z > -30 && z < 100)
 	{
 		x = 0;
@@ -84,7 +89,6 @@ void enemy::Update(double dt, Camera3 camera)
 	Vector3 direction = camera.position - pos;
 	direction = direction.Normalized();
 	
-
 	if (pos.x + (direction.x * dt * speed) < -330 && pos.x + (direction.x * dt *speed) > -470 && pos.z + (direction.z * dt *speed) > -10 && pos.z + (direction.z * dt *speed) < 80)
 	{
 		if (pos.x + (direction.x * dt * speed) < -330 && pos.x + (direction.x * dt *speed) > -470)
@@ -102,12 +106,11 @@ void enemy::Update(double dt, Camera3 camera)
 	}
 	else
 	{
-		pos.x += (direction.x * dt * speed) * ((enemyUpgrade/5) + 1);
+		pos.x += (direction.x * dt * speed) * (1 + (enemyUpgrade/4));
 		//std::cout << (direction.x * dt * speed) * ((enemyUpgrade / 4) + 1) << std::endl;
 		//pos.y += (direction.y * dt * speed);
-		pos.z += (direction.z * dt * speed) * ((enemyUpgrade/5) + 1);
+		pos.z += (direction.z * dt * speed) * (1 + (enemyUpgrade / 4));
 	}
-
 
 	//Rotation of AI
 	Vector3 directionInit(0, 0, 1);
@@ -118,7 +121,23 @@ void enemy::Update(double dt, Camera3 camera)
 	{
 		Degree *= -1;
 	}
+
+	//std::vector<Vector3>::iterator count = bulletPos.begin();
+	//std::vector<Vector3>::iterator count1 = bulletDir.begin();
+
+	//while (count != bulletPos.end())
+	//{
+	//	*count += *count1;
+	//	*count++;
+	//	*count1++;
+	//}
 }
+
+//void enemy::shootBullet()
+//{
+//	bulletPos.push_back(pos);
+//	bulletDir.push_back(aim);
+//}
 
 Vector3 enemy::returnPos()
 {

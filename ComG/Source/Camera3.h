@@ -53,12 +53,15 @@ public:
 	static bool knockback;
 	int stamina;
 	int staminaDelay;
+	static float gunRotatex;
+	static float gunRotatey;
 
 
 	Vector3 diffx;
 	Vector3 diffz;
 	std::vector<Vector3> minVectors;
 	std::vector<Vector3> maxVectors;
+	static std::vector<Vector3> MineralVectors;
 
 	Camera3();
 	~Camera3();
@@ -67,10 +70,12 @@ public:
 	bool testhitbox(const Vector3& lowest, const Vector3& highest, double move);
 	bool hitbox(double move);
 	bool checkcollisionwithObject(double move);
+	bool checkcollisionwithOres(); 
 	//bool checkBulletcollisionwithObject(Vector3 bulletPos);
 	/*bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);*/
 	void teleport();
+	//bool checkcollisionwithOres();
 	Vector3 kb;
 	bool craftUi();
 	Vector3 minPos(Vector3 center, double sizeX, double sizeY, double sizeZ);
