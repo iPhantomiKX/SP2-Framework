@@ -4,6 +4,8 @@ objective::objective()
 {
 	enemiesDieded = 0;
 	maxEnemiesDieded = 100;
+	resourcesCollected = 0;
+	maxResourcesCollected = 10;
 }
 
 
@@ -17,6 +19,10 @@ int objective::getProgress()
 	{
 		return enemiesDieded;
 	}
+	else if (chooseObj == 2)
+	{
+		return resourcesCollected;
+	}
 }
 int objective::getObjective()
 {
@@ -24,12 +30,20 @@ int objective::getObjective()
 	{
 		return maxEnemiesDieded;
 	}
+	else if (chooseObj == 2)
+	{
+		return maxResourcesCollected;
+	}
 }
 void objective::objectiveProgress(int amt)
 {
 	if (chooseObj == 1)
 	{
-		enemiesDieded++;
+		enemiesDieded += amt;
+	}
+	else if (chooseObj == 2)
+	{
+		resourcesCollected += amt;
 	}
 }
 bool objective::objComplete()
@@ -37,6 +51,17 @@ bool objective::objComplete()
 	if (chooseObj == 1)
 	{
 		if (enemiesDieded == maxEnemiesDieded)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	if (chooseObj == 2)
+	{
+		if (resourcesCollected == maxResourcesCollected)
 		{
 			return true;
 		}

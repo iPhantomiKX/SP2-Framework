@@ -108,10 +108,10 @@ void enemy::Update(double dt, Camera3 camera)
 	}
 	else
 	{
-		pos.x += (direction.x * dt * speed);
+		pos.x += (direction.x * dt * speed) * (1 + (enemyUpgrade/4));
 		//std::cout << (direction.x * dt * speed) * ((enemyUpgrade / 4) + 1) << std::endl;
 		//pos.y += (direction.y * dt * speed);
-		pos.z += (direction.z * dt * speed);
+		pos.z += (direction.z * dt * speed) * (1 + (enemyUpgrade / 4));
 	}
 
 

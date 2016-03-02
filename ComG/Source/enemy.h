@@ -40,7 +40,7 @@ public:
 	int speed;
 	float Degree;
 	static int attackPow;
-	int enemyUpgrade = 0;
+	float enemyUpgrade = 0;
 	int upgradeCount = 0;
 	Vector3 aim;
 	static std::vector<Vector3> bulletPos;

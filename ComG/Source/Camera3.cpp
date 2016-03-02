@@ -91,6 +91,17 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	maxVectors.push_back(maxPos(Vector3(-360, 0, 0), 70, 100, 30));
 	maxVectors.push_back(maxPos(Vector3(-435, 0, 0), 52, 120, 20));	
 
+	//Minerals hitbox
+	MineralVectors.push_back(Vector3(-113, 5, -66));
+	MineralVectors.push_back(Vector3(-126, 5, -394));
+	MineralVectors.push_back(Vector3(590, 5, -395));
+	MineralVectors.push_back(Vector3(270, 5, 201));
+	MineralVectors.push_back(Vector3(223, 5, 934));
+	MineralVectors.push_back(Vector3(84, 5, 522));
+	MineralVectors.push_back(Vector3(-516, 5, 809));
+	MineralVectors.push_back(Vector3(361, 5, 772));
+	MineralVectors.push_back(Vector3(-643, 5, 825));
+	MineralVectors.push_back(Vector3(-415, 5, 174));
 
 	//mouseSpeed = 0.005f;
 }
@@ -98,7 +109,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 void Camera3::Update(double dt)
 {
 
-	static const float CAMERA_SPEED = 1000.f;
+	static const float CAMERA_SPEED = 100.f;
 	prevPosition = position;
 	Vector3 view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
@@ -119,64 +130,60 @@ void Camera3::Update(double dt)
 		delay2--;
 	}
 	Mtx44 rotation;
-	//std::s << xpos << " " << ypos << std::endl;
-		if (mouseControl == true && Application::IsKeyPressed(VK_RBUTTON))
-		{
-			xpos, ypos = a.Mouse(xpos, ypos);
+	if (mouseControl == true && Application::IsKeyPressed(VK_RBUTTON))
+	{
+		xpos, ypos = a.Mouse(xpos, ypos);
 
-			if (xpos < 395)
+		if (xpos < 399)
+		{
+			directionRotation.y += .5;
+		}
+		if (xpos > 401)
+		{
+			directionRotation.y -= .5;
+		}
+		if (ypos < 299)
+		{
+			if (directionRotation.x > -30)
 			{
-				directionRotation.y += 0.2;
-			}
-			if (xpos > 405)
-			{
-				directionRotation.y -= 0.2;
-			}
-			if (ypos < 295)
-			{
-				if (directionRotation.x > -40)
-				{
-					directionRotation.x -= 0.2;
-				}
-			}
-			if (ypos > 305)
-			{
-				if (directionRotation.x < 40)
-				{
-					directionRotation.x += 0.2;
-				}
+				directionRotation.x -= .5;
 			}
 		}
-		else if (mouseControl == true)
+		if (ypos > 301)
 		{
-			xpos, ypos = a.Mouse(xpos, ypos);
-
-			/*directionRotation.y -= (float)(xpos - 400);
-			directionRotation.x += (float)(ypos - 300);*/
-
-			if (xpos < 395)
+			if (directionRotation.x < 30)
 			{
-				directionRotation.y += 0.4;
-			}
-			if (xpos > 405)
-			{
-				directionRotation.y -= 0.4;
-			}
-			if (ypos < 295)
-			{
-				if (directionRotation.x > -40)
-				{
-					directionRotation.x -= 0.4;
-				}
-			}
-			if (ypos > 305)
-			{
-				if (directionRotation.x < 40)
-				{
-					directionRotation.x += 0.4;
-				}
+				directionRotation.x += .5;
 			}
 		}
+	}
+	else if (mouseControl == true)
+	{
+		xpos, ypos = a.Mouse(xpos, ypos);
+
+		if (xpos < 399)
+		{
+			directionRotation.y += 2;
+		}
+		if (xpos > 401)
+		{
+			directionRotation.y -= 2;
+		}
+		if (ypos < 299)
+		{
+			if (directionRotation.x > -30)
+			{
+				directionRotation.x -= 2;
+			}
+		}
+		if (ypos > 301)
+		{
+			if (directionRotation.x < 30)
+			{
+				directionRotation.x += 2;
+			}
+		}
+	}
 		else
 		{
 			if (Application::IsKeyPressed(VK_LEFT))
@@ -686,6 +693,23 @@ bool Camera3::checkcollisionwithObject(double move)
 	}
 	return false;
 }
+
+bool Camera3::checkcollisionwithOres()
+{
+	std::vector<Vector3>::iterator count = MineralVectors.begin();
+	while (count != MineralVectors.end())
+	{
+		Vector3 temp = *count;
+		if (location.x > temp.x - 10 && location.x < temp.x + 10 && location.y > temp.y - 10 && location.y < temp.y + 10 && location.z > temp.z - 10 && location.z < temp.z + 10)
+		{
+			MineralVectors.erase(count);
+			return true;
+		}
+		*count++;
+	}
+	return false;
+}
+
 
 void Camera3::teleport()
 {

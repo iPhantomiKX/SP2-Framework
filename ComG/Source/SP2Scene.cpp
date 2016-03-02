@@ -46,12 +46,13 @@ target t;
 //enemy en;
 player play;
 objective obj;
-int objective::chooseObj = 1;
+int objective::chooseObj = 2;
 enemy thecube(10, -100.f, 0, -100.f, 50);
 enemy thecube2(10, 200.f, 0, -300.f, 50);
 enemy thecube3(10, -300.f, 0, 200.f, 50);
 std::vector<Vector3> enemy::bulletPos;
 std::vector<Vector3> enemy::bulletDir;
+std::vector<Vector3> Camera3::MineralVectors;
 
 
 Sp2Scene::Sp2Scene()
@@ -503,6 +504,14 @@ void Sp2Scene::Update(double dt)
 	//std::cout << c3.getShotsFired() << "bang" <<  std::endl; // why 0
 	if (gameStates == states::outside)
 	{
+		if (Application::IsKeyPressed('E') && c3.checkcollisionwithOres() == true)
+		{
+			play.earnMinerals(500);
+			if (objective::chooseObj == 2)
+			{
+				obj.objectiveProgress(1);
+			}
+		}
 		/*thecube.shootBullet();
 		thecube2.shootBullet();
 		thecube3.shootBullet();*/
@@ -827,57 +836,57 @@ void Sp2Scene::Update(double dt)
 	{
 		if (Application::IsKeyPressed(VK_RBUTTON))
 		{
-			if (Camera3::xpos < 397)
+			if (Camera3::xpos < 399)
 			{
-				rotateGunY += 0.2;
+				rotateGunY += 0.5;
 			}
-			if (Camera3::xpos > 403)
+			if (Camera3::xpos > 401)
 			{
-				rotateGunY -= 0.2;
+				rotateGunY -= 0.5;
 			}
-			if (Camera3::ypos < 297)
+			if (Camera3::ypos < 299)
 			{
-				gunDir += 0.2;
+				gunDir += 0.5;
 			}
-			if (Camera3::ypos > 303)
+			if (Camera3::ypos > 301)
 			{
-				gunDir -= 0.2;
+				gunDir -= 0.5;
 			}
-			if (gunDir > 40)
+			if (gunDir > 30)
 			{
-				gunDir = 0.2;
+				gunDir = 30;
 			}
-			else if (gunDir < -40)
+			else if (gunDir < -30)
 			{
-				gunDir = -0.2;
+				gunDir = -30;
 			}
 		}
 		else
 		{
-			if (Camera3::xpos < 397)
+			if (Camera3::xpos < 399)
 			{
-				rotateGunY += 0.4;
+				rotateGunY += 2;
 			}
-			if (Camera3::xpos > 403)
+			if (Camera3::xpos > 401)
 			{
-				rotateGunY -= 0.4;
+				rotateGunY -= 2;
 			}
-			if (Camera3::ypos < 297)
+			if (Camera3::ypos < 299)
 			{
-				gunDir += 0.4;
+				gunDir += 2;
 			}
-			if (Camera3::ypos > 303)
+			if (Camera3::ypos > 301)
 			{
-				gunDir -= 0.4;
+				gunDir -= 2;
 			}
 
-			if (gunDir > 40)
+			if (gunDir > 30)
 			{
-				gunDir = 40;
+				gunDir = 30;
 			}
-			else if (gunDir < -40)
+			else if (gunDir < -30)
 			{
-				gunDir = -40;
+				gunDir = -30;
 			}
 		}
 	}
@@ -1250,7 +1259,7 @@ void Sp2Scene::RenderSkybox()
 {
 	//bottom
 	modelStack.PushMatrix();
-	modelStack.Translate(0 + Camera3::location.x, -999 + Camera3::location.y, 0 + Camera3::location.z);
+	modelStack.Translate(0 + Camera3::location.x, -500 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Scale(-1, 1, 1);
@@ -1259,7 +1268,7 @@ void Sp2Scene::RenderSkybox()
 
 	//top
 	modelStack.PushMatrix();
-	modelStack.Translate(0 + Camera3::location.x, 999 + Camera3::location.y, 0 + Camera3::location.z);
+	modelStack.Translate(0 + Camera3::location.x, 500 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Scale(1, -1, 1);
@@ -1268,7 +1277,7 @@ void Sp2Scene::RenderSkybox()
 
 	//left
 	modelStack.PushMatrix();
-	modelStack.Translate(999 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
+	modelStack.Translate(500 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Rotate(-90, 0, 0, 1);
 	RenderMesh(meshList[GEO_LEFT], false);
@@ -1276,7 +1285,7 @@ void Sp2Scene::RenderSkybox()
 
 	//right
 	modelStack.PushMatrix();
-	modelStack.Translate(-999 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
+	modelStack.Translate(-500 + Camera3::location.x, 0 + Camera3::location.y, 0 + Camera3::location.z);
 	modelStack.Scale(1000, 1000, 1000);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Rotate(-90, 0, 0, 1);
@@ -1285,7 +1294,7 @@ void Sp2Scene::RenderSkybox()
 
 	//back
 	modelStack.PushMatrix();
-	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, 999 + Camera3::location.z);
+	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, 500 + Camera3::location.z);
 	modelStack.Rotate(-90, 0, 0, 1);
 	modelStack.Rotate(90, 1, 0, 0);
 	modelStack.Scale(1000, 1000, 1000);
@@ -1294,7 +1303,7 @@ void Sp2Scene::RenderSkybox()
 
 	//Front
 	modelStack.PushMatrix();
-	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, -999 + Camera3::location.z);
+	modelStack.Translate(0 + Camera3::location.x, 0 + Camera3::location.y, -500 + Camera3::location.z);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Rotate(-90, 0, 0, 1);
 	modelStack.Rotate(90, 1, 0, 0);
@@ -1720,19 +1729,6 @@ void Sp2Scene::RenderHealthPack()
 
 };
 
-void Sp2Scene::RenderElements()
-{
-	for (int a = 0; a < 25; ++a)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(elementsx[a], -5, elementsz[a]);
-		modelStack.Scale(2, 2, 2);
-		RenderMesh(meshList[GEO_MINERALS], true);
-		modelStack.PopMatrix();
-	}
-	
-};
-
 void Sp2Scene::RenderEnemy()
 {
 
@@ -2030,6 +2026,24 @@ void Sp2Scene::Render()
 		RenderTextOnScreen(meshList[GEO_TEXT], "U DIEDED", Color(0.5, 0, 0), 5, 5, 5);
 	}
 }
+
+void Sp2Scene::RenderElements()
+{
+	std::vector<Vector3>::iterator count = Camera3::MineralVectors.begin();
+
+	while (count != Camera3::MineralVectors.end())
+	{
+		Vector3 temp = *count;
+		modelStack.PushMatrix();
+		modelStack.Translate(temp.x, -10, temp.z);
+		modelStack.Scale(2, 2, 2);
+		RenderMesh(meshList[GEO_MINERALS], true);
+		modelStack.PopMatrix();
+		*count++;
+	}
+
+};
+
 void Sp2Scene::RenderPistol1()
 {
 	if (gunReload <= 0)
