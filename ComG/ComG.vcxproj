@@ -23,29 +23,13 @@
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\objective.cpp" />
     <ClCompile Include="Source\player.cpp" />
-    <ClCompile Include="Source\Scene1.cpp" />
-    <ClCompile Include="Source\Scene2.cpp" />
-    <ClCompile Include="Source\Scene3.cpp" />
-    <ClCompile Include="Source\Scene4.cpp" />
-    <ClCompile Include="Source\SceneLight.cpp" />
-    <ClCompile Include="Source\SceneLight2.cpp" />
-    <ClCompile Include="Source\SceneModel.cpp" />
-    <ClCompile Include="Source\SceneSkybox.cpp" />
-    <ClCompile Include="Source\SceneText.cpp" />
-    <ClCompile Include="Source\SceneTexture.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\SP2Scene.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
-    <ClInclude Include="Source\Camera.h" />
-    <ClInclude Include="Source\Camera2.h" />
-    <ClInclude Include="Source\Camera3.h" />
     <ClInclude Include="Source\enemy.h" />
-    <ClInclude Include="Source\Camera.h" />
-    <ClInclude Include="Source\Camera2.h" />
-    <ClInclude Include="Source\Camera3.h" />
     <ClInclude Include="Source\gun.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadOBJ.h" />

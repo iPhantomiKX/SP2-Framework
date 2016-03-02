@@ -222,6 +222,7 @@ private:
 	bool testPortalsign = false;
 
 	int buttonCd;
+	int heals;
 
 	bool testHB = false;
 
