@@ -29,6 +29,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\Camera2.h" />
+    <ClInclude Include="Source\Camera3.h" />
     <ClInclude Include="Source\enemy.h" />
     <ClInclude Include="Source\gun.h" />
     <ClInclude Include="Source\Light.h" />

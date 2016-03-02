@@ -130,7 +130,7 @@ void Camera3::Update(double dt)
 		delay2--;
 	}
 	Mtx44 rotation;
-	if (mouseControl == true && Application::IsKeyPressed(VK_RBUTTON))
+	if (mouseControl == true && Application::IsKeyPressed(VK_RBUTTON) && inBase == false)
 	{
 		xpos, ypos = a.Mouse(xpos, ypos);
 

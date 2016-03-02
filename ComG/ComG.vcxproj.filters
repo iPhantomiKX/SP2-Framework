@@ -61,9 +61,6 @@
     <ClInclude Include="Source\Application.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Mesh.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -74,9 +71,6 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\shader.hpp">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Camera2.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Light.h">
@@ -97,9 +91,6 @@
     <ClInclude Include="Source\LoadOBJ.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera3.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SP2Scene.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -113,6 +104,15 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\objective.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera2.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera3.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>

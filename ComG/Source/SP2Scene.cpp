@@ -403,6 +403,31 @@ void Sp2Scene::Update(double dt)
 				play.spendMinerals(3000);
 			}
 		}
+		if (Camera3::xpos < 399)
+		{
+			rotateGunY += 2;
+		}
+		if (Camera3::xpos > 401)
+		{
+			rotateGunY -= 2;
+		}
+		if (Camera3::ypos < 299)
+		{
+			gunDir += 2;
+		}
+		if (Camera3::ypos > 301)
+		{
+			gunDir -= 2;
+		}
+
+		if (gunDir > 30)
+		{
+			gunDir = 30;
+		}
+		else if (gunDir < -30)
+		{
+			gunDir = -30;
+		}
 	}
 
 
@@ -572,7 +597,7 @@ void Sp2Scene::Update(double dt)
 				}
 
 				bulletPos();
-				gunCd--;
+				//gunCd--;
 
 				if (Application::IsKeyPressed('R') && pis.ammo < pis.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || pis.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
@@ -622,9 +647,10 @@ void Sp2Scene::Update(double dt)
 						Camera3::recoil += 0.5;
 						upRecoil += 0.5;
 					}
+				}
 
 					bulletPos();
-					gunCd--;
+					//gunCd--;
 
 					if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || rif.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 					{
@@ -643,33 +669,40 @@ void Sp2Scene::Update(double dt)
 							reloaded = true;
 						}
 					}
-				}
+			}
 				if (equipSniper1 == true)
 				{
-					if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sr.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+					if (Camera3::location.x < -330 && Camera3::location.x > -470 && Camera3::location.z > -10 && Camera3::location.z < 80)
 					{
-						if (Application::IsKeyPressed(VK_RBUTTON))
+
+					}
+					else
+					{
+						if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sr.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 						{
-							if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+							if (Application::IsKeyPressed(VK_RBUTTON))
 							{
-								aimBulletRNG(sr.inAccuracy);
+								if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+								{
+									aimBulletRNG(sr.inAccuracy);
+								}
 							}
+							else
+							{
+								bulletRNG(sr.inAccuracy);
+							}
+							shotsFired.push_back(Camera3::location2);
+							shotsDir.push_back(Camera3::direction);
+							weaponDmg.push_back(sr.damage);
+							gunCd = sr.RoF;
+							sr.ammo--;
+							Camera3::recoil += 2;
+							upRecoil += 2;
 						}
-						else
-						{
-							bulletRNG(sr.inAccuracy);
-						}
-						shotsFired.push_back(Camera3::location2);
-						shotsDir.push_back(Camera3::direction);
-						weaponDmg.push_back(sr.damage);
-						gunCd = sr.RoF;
-						sr.ammo--;
-						Camera3::recoil += 2;
-						upRecoil += 2;
 					}
 
 					bulletPos();
-					gunCd--;
+					//gunCd--;
 
 					if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sr.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 					{
@@ -722,9 +755,10 @@ void Sp2Scene::Update(double dt)
 								upRecoil += 2;
 							}
 						}
+					}
 
 						bulletPos();
-						gunCd--;
+						//gunCd--;
 
 						if (Application::IsKeyPressed('R') && sg.ammo < sg.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sg.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 						{
@@ -760,7 +794,6 @@ void Sp2Scene::Update(double dt)
 							}
 						}
 					}
-				}
 
 				/*if (testHB == true)
 				{
@@ -829,7 +862,6 @@ void Sp2Scene::Update(double dt)
 						thecube3.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
 					}
 				}
-			}
 		}
 		if (Camera3::mouseControl == true)
 		{
@@ -924,7 +956,6 @@ void Sp2Scene::Update(double dt)
 			upRecoil = 20;
 		}
 
-		rotateGunX = gunDir + upRecoil;
 		if (Application::IsKeyPressed(VK_LBUTTON))
 		{
 			sRecoilCd = 20;
@@ -939,6 +970,7 @@ void Sp2Scene::Update(double dt)
 		{
 			upRecoil -= 0.2;
 		}
+		std::cout << upRecoil << std::endl;
 
 		if (rotateGunX > 45)
 		{
@@ -948,70 +980,186 @@ void Sp2Scene::Update(double dt)
 		{
 			rotateGunX = -45;
 		}
-		if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
-		{
-			equipPistol1 = true;
-			equipRifle1 = false;
-			equipSniper1 = false;
-			equipShotgun1 = false;
-		}
-
-		if (boughtRifle1 == true)
-		{
-			//If pressed '2', switch to Rifle1
-			if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
-			{
-				equipPistol1 = false;
-				equipRifle1 = true;
-				if (sniper1Avail == true)
-				{
-					equipSniper1 = false;
-				}
-				if (shotgun1Avail = true)
-				{
-					equipShotgun1 = false;
-				}
-			}
-		}
-
-		if (boughtShotgun1 == true)
-		{
-			//If pressed '3', switch to Sniper1
-			if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
-			{
-				equipPistol1 = false;
-				if (rifle1Avail == true)
-				{
-					equipRifle1 = false;
-				}
-
-				equipShotgun1 = true;
-
-				if (sniper1Avail == true)
-				{
-					equipSniper1 = false;
-				}
-			}
-		}
-		if (boughtSniper1 == true)
-		{
-			if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
-			{
-				equipPistol1 = false;
-				if (rifle1Avail == true)
-				{
-					equipRifle1 = false;
-				}
-				if (shotgun1Avail == true)
-				{
-					equipShotgun1 = false;
-				}
-				equipSniper1 = true;
-			}
-		}
-		changeStates();
 		std::cout << thecube.hp << std::endl;
 	}
+	changeStates();
+	rotateGunX = gunDir + upRecoil;
+	if (rotateGunX > 30)
+	{
+		rotateGunX == 30;
+	}
+	if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
+	{
+		equipPistol1 = true;
+		equipRifle1 = false;
+		equipSniper1 = false;
+		equipShotgun1 = false;
+	}
+
+	if (boughtRifle1 == true)
+	{
+		//If pressed '2', switch to Rifle1
+		if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
+		{
+			equipPistol1 = false;
+			equipRifle1 = true;
+			if (sniper1Avail == true)
+			{
+				equipSniper1 = false;
+			}
+			if (shotgun1Avail = true)
+			{
+				equipShotgun1 = false;
+			}
+		}
+	}
+
+	if (boughtShotgun1 == true)
+	{
+		//If pressed '3', switch to Sniper1
+		if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
+		{
+			equipPistol1 = false;
+			if (rifle1Avail == true)
+			{
+				equipRifle1 = false;
+			}
+
+			equipShotgun1 = true;
+
+			if (sniper1Avail == true)
+			{
+				equipSniper1 = false;
+			}
+		}
+	}
+	if (boughtSniper1 == true)
+	{
+		if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
+		{
+			equipPistol1 = false;
+			if (rifle1Avail == true)
+			{
+				equipRifle1 = false;
+			}
+			if (shotgun1Avail == true)
+			{
+				equipShotgun1 = false;
+			}
+			equipSniper1 = true;
+		}
+	}
+	if (equipPistol1 == true)
+	{
+		bulletPos();
+		gunCd--;
+
+		if (Application::IsKeyPressed('R') && pis.ammo < pis.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || pis.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+		{
+			gunReload = pis.reloadSpd;
+			reloaded = false;
+			Camera3::recoil = 0;
+			upRecoil = 0;
+		}
+
+		if (gunReload > 0)
+		{
+			gunReload--;
+			if (gunReload <= 0)
+			{
+				pis.ammo = pis.maxAmmo;
+				reloaded = true;
+			}
+		}
+	}
+
+	if (equipRifle1 == true)
+	{
+			bulletPos();
+			gunCd--;
+
+			if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || rif.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+			{
+				gunReload = rif.reloadSpd;
+				reloaded = false;
+				Camera3::recoil = 0;
+				upRecoil = 0;
+			}
+
+			if (gunReload > 0)
+			{
+				gunReload--;
+				if (gunReload <= 0)
+				{
+					rif.ammo = rif.maxAmmo;
+					reloaded = true;
+				}
+			}
+		}
+	if (equipSniper1 == true)
+	{
+		bulletPos();
+		gunCd--;
+
+		if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sr.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+		{
+			gunReload = sr.reloadSpd;
+			reloaded = false;
+			Camera3::recoil = 0;
+			upRecoil = 0;
+		}
+
+		if (gunReload > 0)
+		{
+			gunReload--;
+			if (gunReload <= 0)
+			{
+				sr.ammo = sr.maxAmmo;
+				reloaded = true;
+			}
+		}
+	}
+
+	if (equipShotgun1 == true)
+	{
+			bulletPos();
+			gunCd--;
+
+			if (Application::IsKeyPressed('R') && sg.ammo < sg.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sg.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+			{
+				gunReload = sg.reloadSpd;
+				reloaded = false;
+				Camera3::recoil = 0;
+				upRecoil = 0;
+
+			}
+
+			if (gunReload > 0)
+			{
+				gunReload--;
+				if (Application::IsKeyPressed(VK_LBUTTON))
+				{
+					reloaded = true;
+					gunReload = 0;
+				}
+				else
+				{
+					if (gunReload <= 0)
+					{
+						if (sg.ammo < sg.maxAmmo)
+						{
+							sg.ammo++;
+							gunReload = sg.reloadSpd;
+						}
+						else
+						{
+							reloaded = true;
+						}
+					}
+				}
+			}
+		}
+std:cout << rotateGunX << std::endl;
 }
 
 bool Sp2Scene::AICheckCollisionObject(Vector3 AIposition)
