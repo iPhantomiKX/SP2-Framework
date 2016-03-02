@@ -263,8 +263,11 @@ void Sp2Scene::Init()
 	meshList[GEO_MENU] = MeshBuilder::GenerateOBJ("mainmenu", "OBJ//mainMenu.obj");
 	meshList[GEO_MENU]->textureID = LoadTGA("Image//menuBackground.tga");
 
-	meshList[GEO_MOONMENU] = MeshBuilder::GenerateOBJ("moonmenu", "OBJ//moonMenu.obj");
-	meshList[GEO_MOONMENU]->textureID = LoadTGA("Image//menuMoonUV.tga");
+	meshList[GEO_MENUPORTAL] = MeshBuilder::GenerateOBJ("menuportal", "OBJ//ScenePortal.obj");
+	meshList[GEO_MENUPORTAL]->textureID = LoadTGA("Image//ScenePortalUV.tga");
+
+	meshList[GEO_SPIRAL] = MeshBuilder::GenerateOBJ("spiral", "OBJ//spiral.obj");
+	meshList[GEO_SPIRAL]->textureID = LoadTGA("Image//Spiral1UV.tga");
 	
 	meshList[GEO_SCOPE] = MeshBuilder::GenerateOBJ("scopemodel", "OBJ//Scope.obj");
 	meshList[GEO_SCOPE]->textureID = LoadTGA("Image//Scope.tga");
@@ -1727,6 +1730,53 @@ void Sp2Scene::RenderPortal2()
 	RenderMesh(meshList[GEO_PORTAL2], true);
 	modelStack.PopMatrix();
 }
+void Sp2Scene::RenderMenuPortal()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(40, 8, 0);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_MENUPORTAL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 8, -40);
+	modelStack.Rotate(90,0,1,0);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_MENUPORTAL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 8, 40);
+	modelStack.Rotate(-90, 0, 1, 0);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_MENUPORTAL], true);
+	modelStack.PopMatrix();
+}
+void Sp2Scene::RenderSpiral()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(38, 10, 0);
+	modelStack.Rotate(rotateAngle, 1, 0, 0);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_SPIRAL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 10, 38);
+	modelStack.Rotate(rotateAngle, 0, 0, 1);
+	modelStack.Rotate(90, 0, 1, 0);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_SPIRAL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 10, -38);
+	modelStack.Rotate(rotateAngle, 0, 0, 1);
+	modelStack.Rotate(90, 0, 1, 0);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_SPIRAL], true);
+	modelStack.PopMatrix();
+}
 
 void Sp2Scene::RenderTable()
 {
@@ -1867,6 +1917,8 @@ void Sp2Scene::Render()
 		if (gameStates == states::menu)
 		{
 			RenderSpaceshipQuad();
+			RenderMenuPortal();
+			RenderSpiral();
 		}
 		if (gameStates == states::outside)
 		{

@@ -72,6 +72,8 @@ class Sp2Scene : public Scene
 		GEO_TEST,
 
 		GEO_MENU,
+		GEO_MENUPORTAL,
+		GEO_SPIRAL,
 		GEO_TARGET,
 		GEO_TARGETHIT,
 
@@ -167,6 +169,7 @@ private:
 	float elementsz[25];
 
 	WEAPON_TYPE CurrentWeapon;
+	Weapon myWeapon[MAX_COUNT];
 
 	int treex[50];
 	int treez[50];
