@@ -228,6 +228,9 @@ void Sp2Scene::Init()
 	meshList[GEO_MINERALS] = MeshBuilder::GenerateOBJ("gold_mineral", "OBJ//GoldMineral.obj");
 	meshList[GEO_MINERALS]->textureID = LoadTGA("Image//GoldMineralsUV.tga");
 
+	//Ores Image
+	meshList[GEO_ORES] = MeshBuilder::GenerateOBJ("gold_ore", "OBJ//GoldOre.obj");
+	meshList[GEO_ORES]->textureID = LoadTGA("Image//GoldOresUV.tga");
 	
 	meshList[GEO_SCOPE] = MeshBuilder::GenerateOBJ("scopemodel", "OBJ//Scope.obj");
 	meshList[GEO_SCOPE]->textureID = LoadTGA("Image//Scope.tga");
@@ -272,7 +275,7 @@ void Sp2Scene::Init()
 		treez[i] = rand() % 980 - 490;
 	}
 
-	for (int a = 0; a < 25; ++a)
+	for (int a = 0; a < 10; ++a)
 	{
 		elementsx[a] = rand() % 980 - 980;
 		elementsz[a] = rand() % 980 - 880;
@@ -604,97 +607,91 @@ void Sp2Scene::Update(double dt)
 								if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
 								{
 									aimBulletRNG(rif.inAccuracy);
-								}
-							}
-							else
-							{
-								bulletRNG(rif.inAccuracy);
-							}
-							shotsFired.push_back(Camera3::location2);
-							shotsDir.push_back(Camera3::direction);
-							weaponDmg.push_back(rif.damage);
-							gunCd = rif.RoF;
-							rif.ammo--;
-							Camera3::recoil += 0.5;
-							upRecoil += 0.5;
 						}
-					}
-
-					bulletPos();
-					gunCd--;
-
-					if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || rif.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
-					{
-						gunReload = rif.reloadSpd;
-						reloaded = false;
-						Camera3::recoil = 0;
-						upRecoil = 0;
-					}
-
-					if (gunReload > 0)
-					{
-						gunReload--;
-						if (gunReload <= 0)
-						{
-							rif.ammo = rif.maxAmmo;
-							reloaded = true;
-						}
-					}
-				}
-				if (equipSniper1 == true)
-				{
-					if (Camera3::location.x < -330 && Camera3::location.x > -470 && Camera3::location.z > -10 && Camera3::location.z < 80)
-					{
-
 					}
 					else
 					{
-						if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sr.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
-						{
-							if (Application::IsKeyPressed(VK_RBUTTON))
-							{
-								if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-								{
-									aimBulletRNG(sr.inAccuracy);
-								}
-							}
-							else
-							{
-								bulletRNG(sr.inAccuracy);
-							}
-							shotsFired.push_back(Camera3::location2);
-							shotsDir.push_back(Camera3::direction);
-							weaponDmg.push_back(sr.damage);
-							gunCd = sr.RoF;
-							sr.ammo--;
-							Camera3::recoil += 2;
-							upRecoil += 2;
-						}
+						bulletRNG(rif.inAccuracy);
 					}
-
-					bulletPos();
-					gunCd--;
-
-					if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sr.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
-					{
-						gunReload = sr.reloadSpd;
-						reloaded = false;
-						Camera3::recoil = 0;
-						upRecoil = 0;
-					}
-
-					if (gunReload > 0)
-					{
-						gunReload--;
-						if (gunReload <= 0)
-						{
-							sr.ammo = sr.maxAmmo;
-							reloaded = true;
-						}
-					}
+					shotsFired.push_back(Camera3::location2);
+					shotsDir.push_back(Camera3::direction);
+					weaponDmg.push_back(rif.damage);
+					gunCd = rif.RoF;
+					rif.ammo--;
+					Camera3::recoil += 0.5;
+					upRecoil += 0.5;
 				}
 
-				if (equipShotgun1 == true)
+				bulletPos();
+				gunCd--;
+
+				if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || rif.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+				{
+					gunReload = rif.reloadSpd;
+					reloaded = false;
+					Camera3::recoil = 0;
+					upRecoil = 0;
+				}
+
+				if (gunReload > 0)
+				{
+					gunReload--;
+					if (gunReload <= 0)
+					{
+						rif.ammo = rif.maxAmmo;
+						reloaded = true;
+					}
+				}
+			}
+			if (equipSniper1 == true)
+			{
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sr.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+				{
+					if (Application::IsKeyPressed(VK_RBUTTON))
+					{
+						if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+						{
+							aimBulletRNG(sr.inAccuracy);
+						}
+					}
+					else
+					{
+						bulletRNG(sr.inAccuracy);
+					}
+					shotsFired.push_back(Camera3::location2);
+					shotsDir.push_back(Camera3::direction);
+					weaponDmg.push_back(sr.damage);
+					gunCd = sr.RoF;
+					sr.ammo--;
+					Camera3::recoil += 2;
+					upRecoil += 2;
+				}
+
+				bulletPos();
+				gunCd--;
+
+				if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sr.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
+				{
+					gunReload = sr.reloadSpd;
+					reloaded = false;
+					Camera3::recoil = 0;
+					upRecoil = 0;
+				}
+
+				if (gunReload > 0)
+				{
+					gunReload--;
+					if (gunReload <= 0)
+					{
+						sr.ammo = sr.maxAmmo;
+						reloaded = true;
+					}
+				}
+			}
+
+			if (equipShotgun1 == true)
+			{
+				if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sg.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
 					if (Camera3::location.x < -330 && Camera3::location.x > -470 && Camera3::location.z > -10 && Camera3::location.z < 80)
 					{
@@ -758,10 +755,12 @@ void Sp2Scene::Update(double dt)
 								{
 									reloaded = true;
 								}
+>>>>>>> origin/master
 							}
 						}
 					}
 				}
+			}
 
 			/*if (testHB == true)
 			{
@@ -1729,6 +1728,23 @@ void Sp2Scene::RenderHealthPack()
 
 };
 
+void Sp2Scene::RenderElements()
+{
+	std::vector<Vector3>::iterator count = Camera3::MineralVectors.begin();
+
+	while (count != Camera3::MineralVectors.end())
+	{
+		Vector3 temp = *count;
+		modelStack.PushMatrix();
+		modelStack.Translate(temp.x, -10, temp.z);
+		modelStack.Scale(2, 2, 2);
+		RenderMesh(meshList[GEO_MINERALS], true);
+		modelStack.PopMatrix();
+		*count++;
+	}
+	
+};
+
 void Sp2Scene::RenderEnemy()
 {
 
@@ -1977,7 +1993,6 @@ void Sp2Scene::Render()
 			RenderTextOnScreen(meshList[GEO_TEXT], "E TO CRAFT", Color(0.3, 0.8, 0.3), 5, 4, 5);
 		}
 	}
-
 	//modelStack.PushMatrix();
 	//modelStack.Translate(-150, 50, -200);
 	//modelStack.Scale(10, 10, 10);

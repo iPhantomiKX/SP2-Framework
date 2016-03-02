@@ -80,6 +80,7 @@ class Sp2Scene : public Scene
 		GEO_TABLE,
 		GEO_HEALTHPACK,
 		GEO_MINERALS,
+		GEO_ORES,
 
 		GEO_PISTOL1,
 		GEO_PISTOL2,
@@ -159,10 +160,8 @@ private:
 	float rainpositiony[1000];
 	float rainpositionz[1000];
 
-	float elementsx[25];
-	float elementsz[25];
-
-
+	float elementsx[10];
+	float elementsz[10];
 
 	int treex[50];
 	int treez[50];
@@ -223,7 +222,6 @@ private:
 	bool testPortalsign = false;
 
 	int buttonCd;
-	int heals;
 
 	bool testHB = false;
 
@@ -249,6 +247,7 @@ private:
 	void RenderPortal2();
 	void RenderTable();
 	void RenderHealthPack();
+	void RenderOres();
 
 	
 

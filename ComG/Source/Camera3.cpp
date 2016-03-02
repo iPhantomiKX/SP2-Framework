@@ -710,7 +710,6 @@ bool Camera3::checkcollisionwithOres()
 	return false;
 }
 
-
 void Camera3::teleport()
 {
 	Vector3 p1Min = minPos(Vector3(-435.088, 10, 50.0353), 10, 15, 10);
