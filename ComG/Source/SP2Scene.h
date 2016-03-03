@@ -75,8 +75,6 @@ class Sp2Scene : public Scene
 		GEO_MENU,
 		GEO_MENUPORTAL,
 		GEO_SPIRAL,
-		GEO_TARGET,
-		GEO_TARGETHIT,
 
 		GEO_SHOT,
 		GEO_SPACESHIPQUAD,
@@ -255,7 +253,7 @@ private:
 
 	void RenderMenu();
 	void RenderPistol1();
-	void RenderPistol2();
+	//void RenderPistol2();
 	void RenderRifle1();
 	void RenderSniper1();
 	void RenderShotgun1();
@@ -268,8 +266,6 @@ private:
 	void Sp2Scene::EnemyAttack(Vector3 targetLocation);
 	void bossAttack(Vector3 targetLocation);
 	int atkCd;
-	/*static bool test4;
-	static bool test5;*/
 
 	void RenderSpaceshipQuad();
 	void RenderCraftingPanel();
@@ -296,7 +292,6 @@ private:
 	std::vector<Vector3> shotsFired;
 	std::vector<Vector3> shotsDir;
 	std::vector<int> weaponDmg;
-	//vector<> shotsFired;
 
 	double targetReg;
 

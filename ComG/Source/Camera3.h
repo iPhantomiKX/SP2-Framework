@@ -12,9 +12,6 @@ using Math::DegreeToRadian;
 class Camera3 : public Camera
 {
 public:
-	//Vector3 position;
-	//Vector3 target;
-	//Vector3 up;
 
 	Vector3 target, up, right, view;
 	Vector3 defaultPosition;
@@ -42,7 +39,6 @@ public:
 	static Vector3 location;
 	static Vector3 location2;
 	static Vector3 direction;
-	//Vector3 direction2;
 	static double recoil;
 	double cameraStore;
 	int recoilResist;
@@ -73,14 +69,10 @@ public:
 	bool hitbox(double move);
 	bool checkcollisionwithObject(double move);
 	bool checkcollisionwithOres(); 
-	//bool checkBulletcollisionwithObject(Vector3 bulletPos);
-	/*bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
-	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);*/
 	void teleport();
 	bool startKillGM();
 	bool startCollectGM();
 	bool startBossGM();
-	//bool checkcollisionwithOres();
 	Vector3 kb;
 	bool craftUi();
 	Vector3 minPos(Vector3 center, double sizeX, double sizeY, double sizeZ);

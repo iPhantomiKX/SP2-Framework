@@ -14,7 +14,6 @@
 #include "SP2Scene.h"
 #include "Camera3.h"
 
-Camera3 cam3;
 
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
@@ -72,8 +71,8 @@ void Application::Init()
 
 
 	//Create a window and create its OpenGL context
-	//m_window = glfwCreateWindow(800, 600, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
-	m_window = glfwCreateWindow(800, 600, "Computer Graphics",NULL, NULL);
+	m_window = glfwCreateWindow(800, 600, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
+	//m_window = glfwCreateWindow(800, 600, "Computer Graphics",NULL, NULL);
 	glfwSetWindowSizeCallback(m_window, resize_callback);
 
 	//If the window couldn't be created

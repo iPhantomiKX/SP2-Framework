@@ -18,14 +18,6 @@
 
 using std::cout;
 
-//test
-
-//bool Camera3::test = false;
-//bool Camera3::test2 = false;
-//bool Camera3::test3 = false;
-//bool Sp2Scene::test4 = false;
-//bool Sp2Scene::test5 = false;
-
 Camera3 c3;
 bool Camera3::mouseControl = true;
 bool Camera3::inBase = false;
@@ -164,7 +156,6 @@ void Sp2Scene::Init()
 
 
 	//Initialize camera settings
-	/*camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));*/
 	camera.Init(Vector3(0, 10, 40), Vector3(1, 10, 0), Vector3(0, 1, 0));
 
 	
@@ -217,13 +208,6 @@ void Sp2Scene::Init()
 	meshList[GEO_LEFT]->textureID = LoadTGA("Image//purplenebula_lf.tga");
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1000, 1000);
 	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//purplenebula_rt.tga");
-	/*meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("model1", "OBJ//chair.obj");
-	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//chair.tga");
-	meshList[GEO_AIR] = MeshBuilder::GenerateOBJ("air", "OBJ//airvehicle.obj");
-	meshList[GEO_AIR]->textureID = LoadTGA("Image//uvairvehicletexture.tga");
-	meshList[GEO_DEADTREE] = MeshBuilder::GenerateOBJ("deadtree", "OBJ//deadtree.obj");
-	meshList[GEO_DEADTREE]->textureID = LoadTGA("Image//deadtree.tga");
-	meshList[GEO_CONE] = MeshBuilder::GenerateCone("cone", Color(1, 1, 0), 20);*/
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 
@@ -231,8 +215,6 @@ void Sp2Scene::Init()
 	meshList[GEO_CRAFT_UI] = MeshBuilder::GenerateOBJ("craftin_UI","OBJ//CraftingUI.obj");
 	meshList[GEO_CRAFT_UI]->textureID = LoadTGA("Image//CraftingUI.tga");
 
-	/*meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("tricker", "OBJ//Tricker.obj");
-	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//trickeruv.tga");*/
 	meshList[GEO_TEST] = MeshBuilder::GenerateOBJ("test", "OBJ//test.obj");
 
 	//Spaceship UI Image
@@ -273,8 +255,6 @@ void Sp2Scene::Init()
 	meshList[GEO_MINERALS] = MeshBuilder::GenerateOBJ("gold_mineral", "OBJ//GoldMineral.obj");
 	meshList[GEO_MINERALS]->textureID = LoadTGA("Image//GoldMineralsUV.tga");
 
-	//meshList[GEO_MENU] = MeshBuilder::GenerateOBJ("mainmenu", "OBJ//mainMenu.obj");
-	//meshList[GEO_MENU]->textureID = LoadTGA("Image//menuBackground.tga");
 
 	meshList[GEO_MENUPORTAL] = MeshBuilder::GenerateOBJ("menuportal", "OBJ//ScenePortal.obj");
 	meshList[GEO_MENUPORTAL]->textureID = LoadTGA("Image//ScenePortalUV.tga");
@@ -290,26 +270,22 @@ void Sp2Scene::Init()
 	meshList[GEO_PISTOL1] = MeshBuilder::GenerateOBJ("pistol1model", "OBJ//pistol1.obj");
 	meshList[GEO_PISTOL1]->textureID = LoadTGA("Image//pistol1texture.tga");
 
-	/*meshList[GEO_PISTOL2] = MeshBuilder::GenerateOBJ("pistol2model", "OBJ//pistol2.obj");
-	meshList[GEO_PISTOL2]->textureID = LoadTGA("Image//pistol2UV.tga");*/
 
 	meshList[GEO_RIFLE1] = MeshBuilder::GenerateOBJ("rifle1model", "OBJ//AR.obj");
 	meshList[GEO_RIFLE1]->textureID = LoadTGA("Image//AR_UV.tga");
 
-meshList[GEO_SNIPER1] = MeshBuilder::GenerateOBJ("sniper1model", "OBJ//AK47.obj");
-meshList[GEO_SNIPER1]->textureID = LoadTGA("Image//AK47UV.tga");
+	meshList[GEO_SNIPER1] = MeshBuilder::GenerateOBJ("sniper1model", "OBJ//AK47.obj");
+	meshList[GEO_SNIPER1]->textureID = LoadTGA("Image//AK47UV.tga");
 
-meshList[GEO_SHOTGUN1] = MeshBuilder::GenerateOBJ("shotgun1model", "OBJ//Shotgun.obj");
-meshList[GEO_SHOTGUN1]->textureID = LoadTGA("Image//shotgunUV.tga");
+	meshList[GEO_SHOTGUN1] = MeshBuilder::GenerateOBJ("shotgun1model", "OBJ//Shotgun.obj");
+	meshList[GEO_SHOTGUN1]->textureID = LoadTGA("Image//shotgunUV.tga");
 
-meshList[GEO_TARGET] = MeshBuilder::GenerateCube("target", Color(1, 0, 0));
 
-meshList[GEO_TARGETHIT] = MeshBuilder::GenerateCube("target2", Color(0, 1, 0));
+	meshList[GEO_THECUBE] = MeshBuilder::GenerateOBJ("thecube", "OBJ//MaleRobot.obj");
+	meshList[GEO_THECUBE]->textureID = LoadTGA("Image//RobotUV.tga");
 
-meshList[GEO_THECUBE] = MeshBuilder::GenerateOBJ("thecube", "OBJ//MaleRobot.obj");
-
-meshList[GEO_THEBOSS] = MeshBuilder::GenerateOBJ("theboss", "OBJ//Boss.obj");
-meshList[GEO_THEBOSS]->textureID = LoadTGA("Image//BossUV.tga");
+	meshList[GEO_THEBOSS] = MeshBuilder::GenerateOBJ("theboss", "OBJ//Boss.obj");
+	meshList[GEO_THEBOSS]->textureID = LoadTGA("Image//BossUV.tga");
 
 Mtx44 projection;
 projection.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
@@ -339,44 +315,12 @@ translateX = 0;
 translateX = 0;
 
 ///for hitboxes///
-/*minVectors.push_back(c3.minPos(Vector3(400, 60, 0), 75, 15, 75));
-minVectors.push_back(c3.minPos(Vector3(400, 60, 100), 75, 15, 75));
-minVectors.push_back(c3.minPos(Vector3(300, 60, 0), 75, 15, 75));
-minVectors.push_back(c3.minPos(Vector3(300, 60, 100), 75, 15, 75));
-minVectors.push_back(c3.minPos(Vector3(450, 110, 0), 10, 75, 75));
-minVectors.push_back(c3.minPos(Vector3(450, 110, 100), 10, 75, 75));
-minVectors.push_back(c3.minPos(Vector3(250, 110, 0), 10, 75, 75));
-minVectors.push_back(c3.minPos(Vector3(250, 110, 100), 10, 75, 75));
-minVectors.push_back(c3.minPos(Vector3(400, 110, -50), 75, 75, 10));
-minVectors.push_back(c3.minPos(Vector3(400, 110, 150), 75, 75, 10));
-minVectors.push_back(c3.minPos(Vector3(300, 110, -50), 75, 75, 10));
-minVectors.push_back(c3.minPos(Vector3(300, 110, 150), 75, 75, 10));
-minVectors.push_back(c3.minPos(Vector3(400, 160, 0), 75, 10, 75));
-minVectors.push_back(c3.minPos(Vector3(400, 160, 100), 75, 10, 75));
-minVectors.push_back(c3.minPos(Vector3(300, 160, 0), 75, 10, 75));
-minVectors.push_back(c3.minPos(Vector3(300, 160, 100), 75, 10, 75));*/
 minVectors.push_back(c3.minPos(Vector3(-338, 0, 38), 15, 120, 75));
 minVectors.push_back(c3.minPos(Vector3(-460, 0, 38), 15, 120, 75));
 minVectors.push_back(c3.minPos(Vector3(-400, 0, 73), 120, 120, 15));
 minVectors.push_back(c3.minPos(Vector3(-360, 0, 0), 45, 100, 20));
 minVectors.push_back(c3.minPos(Vector3(-435, 0, 0), 40, 120, 15));
 
-//maxVectors.push_back(c3.maxPos(Vector3(400, 60, 0), 75, 15, 75));
-//maxVectors.push_back(c3.maxPos(Vector3(400, 60, 100), 75, 15, 75));
-//maxVectors.push_back(c3.maxPos(Vector3(300, 60, 0), 75, 15, 75));
-//maxVectors.push_back(c3.maxPos(Vector3(300, 60, 100), 75, 15, 75));
-//maxVectors.push_back(c3.maxPos(Vector3(450, 110, 0), 10, 75, 75));
-//maxVectors.push_back(c3.maxPos(Vector3(450, 110, 100), 10, 75, 75));
-//maxVectors.push_back(c3.maxPos(Vector3(250, 110, 0), 10, 75, 75));
-//maxVectors.push_back(c3.maxPos(Vector3(250, 110, 100), 10, 75, 75));
-//maxVectors.push_back(c3.maxPos(Vector3(400, 110, -50), 75, 75, 10));
-//maxVectors.push_back(c3.maxPos(Vector3(400, 110, 150), 75, 75, 10));
-//maxVectors.push_back(c3.maxPos(Vector3(300, 110, -50), 75, 75, 10));
-//maxVectors.push_back(c3.maxPos(Vector3(300, 110, 150), 75, 75, 10));
-//maxVectors.push_back(c3.maxPos(Vector3(400, 160, 0), 75, 10, 75));
-//maxVectors.push_back(c3.maxPos(Vector3(400, 160, 100), 75, 10, 75));
-//maxVectors.push_back(c3.maxPos(Vector3(300, 160, 0), 75, 10, 75));
-//maxVectors.push_back(c3.maxPos(Vector3(300, 160, 100), 75, 10, 75));
 maxVectors.push_back(c3.maxPos(Vector3(-338, 0, 38), 15, 120, 75));
 maxVectors.push_back(c3.maxPos(Vector3(-460, 0, 38), 15, 120, 75));
 maxVectors.push_back(c3.maxPos(Vector3(-400, 0, 73), 120, 120, 15));
@@ -403,6 +347,7 @@ void Sp2Scene::Update(double dt)
 		theboss.~boss();
 		if (c3.startKillGM() == true)
 		{
+			PlaySound(TEXT("warp.wav"), NULL, SND_ASYNC);
 			camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));
 			Camera3::inMenu = false;
 			Camera3::inBase = false;
@@ -427,6 +372,7 @@ void Sp2Scene::Update(double dt)
 		}
 		if (c3.startCollectGM() == true)
 		{
+			PlaySound(TEXT("warp.wav"), NULL, SND_ASYNC);
 			camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));
 			Camera3::inMenu = false;
 			Camera3::inBase = false;
@@ -451,6 +397,7 @@ void Sp2Scene::Update(double dt)
 		}
 		if (c3.startBossGM() == true)
 		{
+			PlaySound(TEXT("warp.wav"), NULL, SND_ASYNC);
 			camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));
 			Camera3::inMenu = false;
 			Camera3::inBase = false;
@@ -493,19 +440,21 @@ void Sp2Scene::Update(double dt)
 		{
 			if (Application::IsKeyPressed('2') && crafting == true && play.getMinerals() >= 1000 && boughtRifle1 == false)
 			{
+				PlaySound(TEXT("pay.wav"), NULL, SND_ASYNC);
 				boughtRifle1 = true;
 				rifle1Avail = true;
 				play.spendMinerals(1000);
 			}
 			if (Application::IsKeyPressed('3') && crafting == true && play.getMinerals() >= 2000 && boughtShotgun1 == false)
 			{
+				PlaySound(TEXT("pay.wav"), NULL, SND_ASYNC);
 				boughtShotgun1 = true;
 				shotgun1Avail = true;
-
 				play.spendMinerals(2000);
 			}
 			if (Application::IsKeyPressed('4') && crafting == true && play.getMinerals() >= 3000 && boughtSniper1 == false)
 			{
+				PlaySound(TEXT("pay.wav"), NULL, SND_ASYNC);
 				boughtSniper1 = true;
 				sniper1Avail = true;
 				play.spendMinerals(3000);
@@ -538,10 +487,6 @@ void Sp2Scene::Update(double dt)
 		}
 	}
 
-	//if (Application::IsKeyPressed('1')) //enable back face culling
-	//glDisable(GL_CULL_FACE);
-	//if (Application::IsKeyPressed('2')) //disable back face culling
-	//glEnable(GL_CULL_FACE);
 	if (Application::IsKeyPressed('0'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
 	if (Application::IsKeyPressed('5'))
@@ -586,13 +531,13 @@ void Sp2Scene::Update(double dt)
 		totalTranslateDist = (pow(xDist, 2.0)) + (pow(zDist, 2.0));
 
 		baseDist = sqrt(totalTranslateDist);
-		std::cout << baseDist << std::endl;
 		if (equipSniper1 == true)
 		{
 			Camera3::scopedWep = true;
 		}
 		if (Application::IsKeyPressed('E') && c3.checkcollisionwithOres() == true && buttonCd == 0)
 		{
+			PlaySound(TEXT("pay.wav"), NULL, SND_ASYNC);
 			play.earnMinerals(500);
 			if (objective::chooseObj == 2)
 			{
@@ -600,12 +545,10 @@ void Sp2Scene::Update(double dt)
 			}
 			buttonCd = 30;
 		}
-		/*thecube.shootBullet();
-		thecube2.shootBullet();
-		thecube3.shootBullet();*/
 		if (Camera3::location.x > -410 && Camera3::location.x < -370 && Camera3::location.y > 0 && Camera3::location.y < 20 && Camera3::location.z > 20 && Camera3::location.z < 60 && Application::IsKeyPressed('E') && heals > 0 && play.getHp() < 100 && buttonCd == 0)
 		{
 			play.healHp(50);
+			PlaySound(TEXT("heal.wav"), NULL, SND_ASYNC);
 			heals--;
 			buttonCd = 30;
 		}
@@ -642,7 +585,7 @@ void Sp2Scene::Update(double dt)
 				{
 					if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && pis.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 					{
-						
+						PlaySound(TEXT("shoot.wav"), NULL, SND_ASYNC);
 						bulletRNG(pis.inAccuracy);
 						shotsFired.push_back(Camera3::location2);
 						shotsDir.push_back(Camera3::direction);
@@ -655,7 +598,6 @@ void Sp2Scene::Update(double dt)
 				}
 
 				bulletPos();
-				//gunCd--;
 
 				if (Application::IsKeyPressed('R') && pis.ammo < pis.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || pis.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 				{
@@ -686,6 +628,7 @@ void Sp2Scene::Update(double dt)
 				{
 					if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && rif.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 					{
+						PlaySound(TEXT("shoot.wav"), NULL, SND_ASYNC);
 						bulletRNG(rif.inAccuracy);
 						shotsFired.push_back(Camera3::location2);
 						shotsDir.push_back(Camera3::direction);
@@ -698,7 +641,6 @@ void Sp2Scene::Update(double dt)
 				}
 
 					bulletPos();
-					//gunCd--;
 
 					if (Application::IsKeyPressed('R') && rif.ammo < rif.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || rif.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 					{
@@ -728,6 +670,7 @@ void Sp2Scene::Update(double dt)
 					{
 						if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sr.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 						{
+							PlaySound(TEXT("shoot.wav"), NULL, SND_ASYNC);
 							if (Application::IsKeyPressed(VK_RBUTTON))
 							{
 								bulletRNG(1);
@@ -747,7 +690,6 @@ void Sp2Scene::Update(double dt)
 					}
 
 					bulletPos();
-					//gunCd--;
 
 					if (Application::IsKeyPressed('R') && sr.ammo < sr.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sr.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 					{
@@ -780,6 +722,7 @@ void Sp2Scene::Update(double dt)
 						{
 							if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && sg.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 							{
+								PlaySound(TEXT("shoot.wav"), NULL, SND_ASYNC);
 								for (int shots = 0; shots < 6; ++shots)
 								{
 									bulletRNG(sg.inAccuracy);
@@ -796,7 +739,6 @@ void Sp2Scene::Update(double dt)
 					}
 
 						bulletPos();
-						//gunCd--;
 
 						if (Application::IsKeyPressed('R') && sg.ammo < sg.maxAmmo && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false || sg.ammo == 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 						{
@@ -839,7 +781,7 @@ void Sp2Scene::Update(double dt)
 				{
 					if (objective::chooseObj != 3)
 					{
-						if (thecube.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
+						if (thecube.isDead() == false && gameStates == states::outside)
 						{
 							thecube.Update(dt, camera);
 						}
@@ -852,7 +794,7 @@ void Sp2Scene::Update(double dt)
 							play.earnMinerals(100);
 							thecube.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
 						}
-						if (thecube2.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
+						if (thecube2.isDead() == false && gameStates == states::outside)
 						{
 							thecube2.Update(dt, camera);
 						}
@@ -865,7 +807,7 @@ void Sp2Scene::Update(double dt)
 							play.earnMinerals(100);
 							thecube2.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
 						}
-						if (thecube3.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
+						if (thecube3.isDead() == false && gameStates == states::outside)
 						{
 							thecube3.Update(dt, camera);
 						}
@@ -891,7 +833,7 @@ void Sp2Scene::Update(double dt)
 							boss20 = true;
 							theboss.upgradeboss();
 						}
-						if (theboss.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
+						if (theboss.isDead() == false && gameStates == states::outside)
 						{
 							theboss.Update(dt, camera);
 						}
@@ -1020,14 +962,12 @@ void Sp2Scene::Update(double dt)
 			rotateGunX = -45;
 		}
 	}
-	//changeStates();
 	rotateGunX = gunDir + upRecoil;
 	if (rotateGunX > 30)
 	{
 		rotateGunX == 30;
 	}
 	
-	std::cout << thecube.hp << std::endl;
 
 	if (boughtSniper1 == true)
 	{
@@ -1203,7 +1143,6 @@ void Sp2Scene::bulletRNG(int spray)
 	{
 		random = (rand() % (spray));
 		temp = (2 * (random)*(rand() % 2)) - (random);
-		//std::cout << temp << std::endl;
 		Camera3::direction.x += temp / 10;
 		random = (rand() % (spray));
 		temp = (2 * (random)*(rand() % 2)) - (random);
@@ -1222,19 +1161,15 @@ void Sp2Scene::bulletPos()
 	std::vector<int>::iterator count2 = weaponDmg.begin();
 
 
-	//testHB = c3.bulletEnemyCollision(store, (50, 1, 0));
 
 		while (count != shotsFired.end())
 		{
 			Vector3 temp = *count;
 			Vector3 temp1 = *count1;
 			*count += *count1;
-			//std::cout << temp << "look at me" << std::endl;
-			//std::cout << thecube.pos << std::endl;
 			if (bulletEnemyCollision(temp, thecube.pos) == true)
 			{
 				thecube.hp -= *count2;
-				std::cout << "hit" << std::endl;
 				count = shotsFired.erase(count);
 				count1 = shotsDir.erase(count1);
 				count2 = weaponDmg.erase(count2);
@@ -1242,7 +1177,6 @@ void Sp2Scene::bulletPos()
 			else if (bulletEnemyCollision(temp, thecube2.pos) == true)
 			{
 				thecube2.hp -= *count2;
-				std::cout << "hit" << std::endl;
 				count = shotsFired.erase(count);
 				count1 = shotsDir.erase(count1);
 				count2 = weaponDmg.erase(count2);
@@ -1250,7 +1184,6 @@ void Sp2Scene::bulletPos()
 			else if (bulletEnemyCollision(temp, thecube3.pos) == true)
 			{
 				thecube3.hp -= *count2;
-				std::cout << "hit" << std::endl;
 				count = shotsFired.erase(count);
 				count1 = shotsDir.erase(count1);
 				count2 = weaponDmg.erase(count2);
@@ -1258,7 +1191,6 @@ void Sp2Scene::bulletPos()
 			else if (bulletBossCollision(temp, theboss.pos) == true)
 			{
 				theboss.hp -= *count2;
-				std::cout << "hit" << std::endl;
 				count = shotsFired.erase(count);
 				count1 = shotsDir.erase(count1);
 				count2 = weaponDmg.erase(count2);
@@ -1357,6 +1289,7 @@ void Sp2Scene::EnemyAttack(Vector3 targetLocation)
 		Camera3::location.y >(targetLocation.y - (30 / 2)) && Camera3::location.y < (targetLocation.y + (30 / 2)) &&
 		Camera3::location.z >(targetLocation.z - (30 / 2)) && Camera3::location.z < (targetLocation.z + (30 / 2)))
 	{
+		PlaySound(TEXT("hurt.wav"), NULL, SND_ASYNC);
 		play.getHit(enemy::attackPow);
 		Camera3::knockback = true;
 	}
@@ -1368,6 +1301,7 @@ void Sp2Scene::bossAttack(Vector3 targetLocation)
 		Camera3::location.y >(targetLocation.y - (50 / 2)) && Camera3::location.y < (targetLocation.y + (50 / 2)) &&
 		Camera3::location.z >(targetLocation.z - (50 / 2)) && Camera3::location.z < (targetLocation.z + (50 / 2)))
 	{
+		PlaySound(TEXT("hurt.wav"), NULL, SND_ASYNC);
 		play.getHit(boss::attackPow);
 		//Camera3::knockback = true;
 	}
@@ -1613,127 +1547,6 @@ void Sp2Scene::RenderMesh(Mesh *mesh, bool enablelight)
 
 void Sp2Scene::RenderSpaceshipQuad()
 {
-	////spaceship floor 1
-	//modelStack.PushMatrix();
-	//modelStack.Translate(400, 60, 0);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship floor 2
-	//modelStack.PushMatrix();
-	//modelStack.Translate(400, 60, 100);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship floor 3
-	//modelStack.PushMatrix();
-	//modelStack.Translate(300, 60, 0);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship floor 4
-	//modelStack.PushMatrix();
-	//modelStack.Translate(300, 60, 100);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship wall length 1
-	//modelStack.PushMatrix();
-	//modelStack.Translate(450, 110, 0);
-	//modelStack.Rotate(90,0, 0, 1);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-	//
-	////spaceship wall length 2
-	//modelStack.PushMatrix();
-	//modelStack.Translate(450, 110, 100);
-	//modelStack.Rotate(90, 0, 0, 1);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship wall length 3
-	//modelStack.PushMatrix();
-	//modelStack.Translate(250, 110, 0);
-	//modelStack.Rotate(90, 0, 0, 1);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship wall length 4
-	//modelStack.PushMatrix();
-	//modelStack.Translate(250, 110, 100);
-	//modelStack.Rotate(90, 0, 0, 1);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship wall width 1
-	//modelStack.PushMatrix();
-	//modelStack.Translate(400, 110, -50);
-	//modelStack.Rotate(90, 1, 0, 0);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship wall width 2
-	//modelStack.PushMatrix();
-	//modelStack.Translate(400, 110, 150);
-	//modelStack.Rotate(90, 1, 0, 0);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship wall width 3 
-	//modelStack.PushMatrix();
-	//modelStack.Translate(300, 110, -50);
-	//modelStack.Rotate(90, 1, 0, 0);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship wall width 4
-	//modelStack.PushMatrix();
-	//modelStack.Translate(300, 110, 150);
-	//modelStack.Rotate(90, 1, 0, 0);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship roof 1
-	//modelStack.PushMatrix();
-	//modelStack.Translate(400, 160, 0);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-
-	////spaceship roof 2
-	//modelStack.PushMatrix();
-	//modelStack.Translate(400, 160, 100);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship roof 3
-	//modelStack.PushMatrix();
-	//modelStack.Translate(300, 160, 0);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
-	////spaceship roof 4
-	//modelStack.PushMatrix();
-	//modelStack.Translate(300, 160, 100);
-	//modelStack.Scale(100, 1, 100);
-	//RenderMesh(meshList[GEO_SPACESHIPQUAD], true);
-	//modelStack.PopMatrix();
-
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, 0);
 	modelStack.Rotate(180, 0, 1, 0);
@@ -1820,16 +1633,6 @@ void Sp2Scene::RenderPortal1()
 		RenderMesh(meshList[GEO_PORTAL1], true);
 		modelStack.PopMatrix();
 	}
-
-	//if (gameStates == states::base)
-	//{
-	//	//entrance portal in spaceship
-	//	modelStack.PushMatrix();
-	//	modelStack.Translate(400, 61, 100);
-	//	modelStack.Scale(5, 5, 5);
-	//	RenderMesh(meshList[GEO_PORTAL1], true);
-	//	modelStack.PopMatrix();
-	//}
 
 };
 
@@ -1932,7 +1735,7 @@ void Sp2Scene::RenderElements()
 	{
 		Vector3 temp = *count;
 		modelStack.PushMatrix();
-		modelStack.Translate(temp.x, -10, temp.z);
+		modelStack.Translate(temp.x, 0, temp.z);
 		modelStack.Scale(2, 2, 2);
 		RenderMesh(meshList[GEO_MINERALS], true);
 		modelStack.PopMatrix();
@@ -1947,7 +1750,6 @@ void Sp2Scene::RenderEnemy()
 		modelStack.PushMatrix();
 		modelStack.Translate(thecube.pos.x, 0, thecube.pos.z);
 		modelStack.Rotate(thecube.Degree, 0, 1, 0);
-		//cout << Degree << std::endl;
 		modelStack.PushMatrix();
 		modelStack.Scale(0.5, 0.5, 0.5);
 		RenderMesh(meshList[GEO_THECUBE], true);
@@ -1957,7 +1759,6 @@ void Sp2Scene::RenderEnemy()
 		modelStack.PushMatrix();
 		modelStack.Translate(thecube2.pos.x, 0, thecube2.pos.z);
 		modelStack.Rotate(thecube2.Degree, 0, 1, 0);
-		//cout << Degree << std::endl;
 		modelStack.PushMatrix();
 		modelStack.Scale(0.5, 0.5, 0.5);
 		RenderMesh(meshList[GEO_THECUBE], true);
@@ -1967,7 +1768,6 @@ void Sp2Scene::RenderEnemy()
 		modelStack.PushMatrix();
 		modelStack.Translate(thecube3.pos.x, 0, thecube3.pos.z);
 		modelStack.Rotate(thecube3.Degree, 0, 1, 0);
-		//cout << Degree << std::endl;
 		modelStack.PushMatrix();
 		modelStack.Scale(0.5, 0.5, 0.5);
 		RenderMesh(meshList[GEO_THECUBE], true);
@@ -1980,7 +1780,6 @@ void Sp2Scene::RenderBoss()
 	modelStack.PushMatrix();
 	modelStack.Translate(theboss.pos.x, -5, theboss.pos.z);
 	modelStack.Rotate(theboss.Degree, 0, 1, 0);
-	//cout << Degree << std::endl;
 	modelStack.PushMatrix();
 	modelStack.Scale(theboss.sizeIncrease, theboss.sizeIncrease, theboss.sizeIncrease);
 	RenderMesh(meshList[GEO_THEBOSS], true);
@@ -2023,34 +1822,8 @@ void Sp2Scene::Render()
 		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightposition_cameraspace.x);
 	}
 
-	RenderMesh(meshList[GEO_AXES], false);
+	//RenderMesh(meshList[GEO_AXES], false);
 
-	/*if (gameStates == states::menu)
-	{
-		RenderImageOnScreen(meshList[GEO_MENU], 9, 4.5, 3.5);
-		RenderImageOnScreen(meshList[GEO_MOONMENU], 5, 4, 4);
-	}
-	else
-	{*/
-
-		/*if (targetReg > 0 && t.isDead == false)
-		{
-		modelStack.PushMatrix();
-		modelStack.Translate(50, 10, 0);
-		modelStack.Scale(6, 6, 6);
-		RenderMesh(meshList[GEO_TARGET], false);
-		modelStack.PopMatrix();
-		}
-		else if (t.isDead == false)
-		{
-		modelStack.PushMatrix();
-		modelStack.Translate(50, 10, 0);
-		modelStack.Scale(6, 6, 6);
-		RenderMesh(meshList[GEO_TARGETHIT], false);
-		modelStack.PopMatrix();
-		}*/
-
-		//modelStack.PushMatrix();
 		if (thecube.isDead() == false && gameStates == states::outside && objective::chooseObj != 3)
 		{
 			RenderEnemy();
@@ -2082,7 +1855,6 @@ void Sp2Scene::Render()
 
 			modelStack.PushMatrix();
 			modelStack.Translate(-40, 25, 12);
-			//modelStack.Rotate(180, 0, 1, 0);
 			modelStack.Rotate(90, 0, 1, 0);
 			modelStack.Scale(2, 2, 2);
 			RenderText(meshList[GEO_TEXT], "FIGHT DR OP", Color(1, 1, 1));
@@ -2102,7 +1874,6 @@ void Sp2Scene::Render()
 			RenderTable();
 			RenderHealthPack();
 			RenderElements();
-			//RenderEnemy();
 
 			modelStack.PushMatrix();
 			modelStack.Translate(0, 0, 0);
@@ -2125,12 +1896,6 @@ void Sp2Scene::Render()
 				RenderTextOnScreen(meshList[GEO_TEXT], "RELOADING", Color(0, 1, 0), 5, 4, 8);
 				modelStack.PopMatrix();
 			}
-
-			/*if (testPortalsign == true)
-			{
-			modelStack.PushMatrix();
-			RenderTextOnScreen(meshList[GEO_TEXT], "PRESS E TO TELEPORT", Color(0, 1, 0), 3, 4, 15);
-			}*/
 
 			//Render HUD before anything else
 			RenderImageOnScreen(meshList[GEO_HUD], 6, 6.9, 5);
@@ -2206,12 +1971,6 @@ void Sp2Scene::Render()
 				RenderPistol1();
 				RenderImageOnScreen(meshList[GEO_PISTOL1], 0.5, 130, 15);
 			}
-			//if (equipPistol2 == true)
-			//{
-			//	/*RenderPistol2();
-			//	RenderImageOnScreen(meshList[GEO_PISTOL2], 0.5, 25, 15);*/
-			////RenderImageOnScreen(meshList[GEO_CRAFT_UI], 4, 10, 5);
-			//}
 			else if (equipRifle1 == true)
 			{
 				RenderRifle1();
@@ -2240,33 +1999,17 @@ void Sp2Scene::Render()
 			RenderTextOnScreen(meshList[GEO_TEXT], "E TO CRAFT", Color(0.3, 0.8, 0.3), 5, 4, 5);
 		}
 	}
-	//modelStack.PushMatrix();
-	//modelStack.Translate(-150, 50, -200);
-	//modelStack.Scale(10, 10, 10);
-	//RenderText(meshList[GEO_TEXT], "Welcome To The Moon", Color(1, 0, 0));
-	//modelStack.PopMatrix();
-
-	//modelStack.PushMatrix();
-	//modelStack.Translate(0,5,0);
-	//modelStack.Scale(1, 1, 1);
-	//RenderMesh(meshList[GEO_TEST], true);
-	//modelStack.PopMatrix();
-
-	//Check if button has pressed
-	
-	
-	
 
 
 			RenderImageOnScreen2(meshList[GEO_MINERALS], 2, 3, 2);
 			RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(play.getMinerals()), Color(0.7, 0.7, 0.3), 3, 4, 1.2);
 
-			RenderTextOnScreen(meshList[GEO_TEXT], "Base Dist: " + std::to_string(baseDist), Color(0.7, 0.7, 0.3), 2, 1, 27);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Base Dist: " + std::to_string(baseDist), Color(0.7, 0.7, 0.3), 2, 1, 28);
 
 			if (play.getHp() <= 30)
 			{
-				RenderImageOnScreen2(meshList[GEO_HEALTHUI], 1, 3, 45);
-				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(play.getHp()), Color(0.8, 0.3, 0.3), 3, 3, 15);
+				RenderImageOnScreen2(meshList[GEO_HEALTHUI], 1, 35, 6);
+				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(play.getHp()), Color(0.8, 0.3, 0.3), 3, 14, 2);
 			}
 			else
 			{
@@ -2276,23 +2019,24 @@ void Sp2Scene::Render()
 
 			if (objective::chooseObj == 1)
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(obj.getProgress()) + "/" + std::to_string(obj.getObjective()), Color(0.7, 0.7, 0.3), 2, 25, 28);
-				RenderTextOnScreen(meshList[GEO_TEXT], "Enemy Kills", Color(0.7, 0.7, 0.3), 2, 25, 27);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(obj.getProgress()) + "/" + std::to_string(obj.getObjective()), Color(0.7, 0.7, 0.3), 2, 25, 29);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Enemy Kills", Color(0.7, 0.7, 0.3), 2, 25, 28);
 			}
 			if (objective::chooseObj == 2)
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(obj.getProgress()) + "/" + std::to_string(obj.getObjective()), Color(0.7, 0.7, 0.3), 2, 25, 28);
-				RenderTextOnScreen(meshList[GEO_TEXT], "Mineral Deposits", Color(0.7, 0.7, 0.3), 2, 25, 27);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(obj.getProgress()) + "/" + std::to_string(obj.getObjective()), Color(0.7, 0.7, 0.3), 2, 25, 29);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Mineral Deposits", Color(0.7, 0.7, 0.3), 2, 25, 28);
 			}
 			if (objective::chooseObj == 3)
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(theboss.hp) + "/1000" , Color(0.7, 0.7, 0.3), 2, 20, 28);
-				RenderTextOnScreen(meshList[GEO_TEXT], "Boss HP", Color(0.7, 0.7, 0.3), 2, 25, 27);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(theboss.hp) + "/1000" , Color(0.7, 0.7, 0.3), 2, 20, 29);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Boss HP", Color(0.7, 0.7, 0.3), 2, 26, 28);
 			}
 		}
 
 		if (obj.objComplete() == true)
 		{
+			PlaySound(TEXT("win.wav"), NULL, SND_ASYNC);
 			Camera3::inMenu = true;
 			showWin = 300;
 			camera.Init(Vector3(1, 10, 1), Vector3(1, 10, 0), Vector3(0, 1, 0));
@@ -2301,6 +2045,7 @@ void Sp2Scene::Render()
 		}
 		else if (play.isDead() == true)
 		{
+			PlaySound(TEXT("lose.wav"), NULL, SND_ASYNC);
 			Camera3::inMenu = true;
 			showLose = 300;
 			camera.Init(Vector3(1, 10, 1), Vector3(1, 10, 0), Vector3(0, 1, 0));
@@ -2308,6 +2053,7 @@ void Sp2Scene::Render()
 		}
 		else if (Application::IsKeyPressed('P') && Camera3::inMenu == false)
 		{
+			PlaySound(TEXT("lose.wav"), NULL, SND_ASYNC);
 			Camera3::inMenu = true;
 			showRQ = 300;
 			camera.Init(Vector3(1, 10, 1), Vector3(1, 10, 0), Vector3(0, 1, 0));
@@ -2335,12 +2081,12 @@ void Sp2Scene::Render()
 		}
 
 		//Render camera position on screen
-		std::ostringstream oss;
+		/*std::ostringstream oss;
 		oss << "X: " << camera.position.x << " Y: " << camera.position.y << "Z: " << camera.position.z;
 		string var = oss.str();
-		RenderTextOnScreen(meshList[GEO_TEXT], oss.str(), Color(0, 1, 0), 2, 2, 29);
+		RenderTextOnScreen(meshList[GEO_TEXT], oss.str(), Color(0, 1, 0), 2, 2, 29);*/
 
-		RenderTextOnScreen(meshList[GEO_TEXT], "FPS: " + std::to_string(framerate), Color(1, 0, 0), 2, 32, 29);
+		//RenderTextOnScreen(meshList[GEO_TEXT], "FPS: " + std::to_string(framerate), Color(1, 0, 0), 2, 32, 29);
 
 		modelStack.PopMatrix();
 		modelStack.PushMatrix();
@@ -2349,23 +2095,6 @@ void Sp2Scene::Render()
 		RenderMesh(meshList[GEO_LIGHTBALL], false);
 		modelStack.PopMatrix();
 }
-
-//void Sp2Scene::RenderElements()
-//{
-//	std::vector<Vector3>::iterator count = Camera3::MineralVectors.begin();
-//
-//	while (count != Camera3::MineralVectors.end())
-//	{
-//		Vector3 temp = *count;
-//		modelStack.PushMatrix();
-//		modelStack.Translate(temp.x, -10, temp.z);
-//		modelStack.Scale(2, 2, 2);
-//		RenderMesh(meshList[GEO_MINERALS], true);
-//		modelStack.PopMatrix();
-//		*count++;
-//	}
-//
-//}
 
 void Sp2Scene::RenderPistol1()
 {
@@ -2408,52 +2137,6 @@ void Sp2Scene::RenderPistol1()
 	}
 }
 
-/*void Sp2Scene::RenderPistol2()
-{
-	if (gunReload <= 0)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(camera.position.x, camera.position.y, camera.position.z);
-		modelStack.Rotate(rotateGunY, 0, 1, 0);
-		modelStack.Rotate(rotateGunX, 1, 0, 0);
-		modelStack.Scale(0.5, 0.5, 0.5);
-
-
-		modelStack.PushMatrix();
-
-		if (Application::IsKeyPressed(VK_SHIFT) == true || gameStates == states::base || Camera3::location.x  < -330 && Camera3::location.x  > -470 && Camera3::location.z > -10 && Camera3::location.z < 80)
-		{
-			modelStack.Translate(0, -10, -10);
-			modelStack.Rotate(-60, 0, 1, 0);
-		}
-		else if (Application::IsKeyPressed(VK_RBUTTON) == true)
-		{
-			modelStack.Translate(0, -7.1, -10);
-			modelStack.Rotate(-90, 0, 1, 0);
-		}
-		else
-		{
-			modelStack.Translate(5, -10, -15);
-			modelStack.Rotate(-90, 0, 1, 0);
-		}
-		RenderMesh(meshList[GEO_PISTOL2], true);
-		modelStack.PopMatrix();
-
-		modelStack.PopMatrix();
-	}
-	if (pis.ammo < 5)
-	{
-		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0.8, 0.3, 0.3), 3, 18, 1);
-		modelStack.PopMatrix();
-	}
-	else
-	{
-		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0.3, 0.8, 0.3), 3, 18, 1);
-		modelStack.PopMatrix();
-	}
-}*/
 void Sp2Scene::RenderRifle1()
 {
 	if (gunReload <= 0)
@@ -2521,7 +2204,6 @@ void Sp2Scene::RenderSniper1()
 		{
 
 			modelStack.Translate(0, -7.1, -10);
-			//modelStack.Translate(0, -7, -10);
 			RenderImageOnScreen(meshList[GEO_SCOPE], 10, 4, 3);
 		}
 		else

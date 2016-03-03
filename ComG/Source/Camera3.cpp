@@ -47,45 +47,13 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	staminaDelay = 0;
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	///for hitboxes///
-	/*minVectors.push_back(minPos(Vector3(400, 60, 0), 100, 20, 100));
-	minVectors.push_back(minPos(Vector3(400, 60, 100), 100, 20, 100));
-	minVectors.push_back(minPos(Vector3(300, 60, 0), 100, 20, 100));
-	minVectors.push_back(minPos(Vector3(300, 60, 100), 100, 20, 100));
-	minVectors.push_back(minPos(Vector3(450, 110, 0), 15, 100, 100));
-	minVectors.push_back(minPos(Vector3(450, 110, 100), 15, 100, 100));
-	minVectors.push_back(minPos(Vector3(250, 110, 0), 15, 100, 100));
-	minVectors.push_back(minPos(Vector3(250, 110, 100), 15, 100, 100));
-	minVectors.push_back(minPos(Vector3(400, 110, -50), 100, 100, 15));
-	minVectors.push_back(minPos(Vector3(400, 110, 150), 100, 100, 15));
-	minVectors.push_back(minPos(Vector3(300, 110, -50), 100, 100, 15));
-	minVectors.push_back(minPos(Vector3(300, 110, 150), 100, 100, 15));
-	minVectors.push_back(minPos(Vector3(400, 160, 0), 100, 15, 100));
-	minVectors.push_back(minPos(Vector3(400, 160, 100), 100, 15, 100));
-	minVectors.push_back(minPos(Vector3(300, 160, 0), 100, 15, 100));
-	minVectors.push_back(minPos(Vector3(300, 160, 100), 100, 15, 100));*/
+	//for hitboxes
 	minVectors.push_back(minPos(Vector3(-338, 0, 38), 20, 120, 90));
 	minVectors.push_back(minPos(Vector3(-460, 0, 38), 20, 120, 90));
 	minVectors.push_back(minPos(Vector3(-400, 0, 73), 120, 120, 20));
 	minVectors.push_back(minPos(Vector3(-360, 0, 0), 70, 100, 30));
 	minVectors.push_back(minPos(Vector3(-435, 0, 0), 58, 120, 20));
 
-	/*maxVectors.push_back(maxPos(Vector3(400, 60, 0), 100, 20, 100));
-	maxVectors.push_back(maxPos(Vector3(400, 60, 100), 100, 20, 100));
-	maxVectors.push_back(maxPos(Vector3(300, 60, 0), 100, 20, 100));
-	maxVectors.push_back(maxPos(Vector3(300, 60, 100), 100, 20, 100));
-	maxVectors.push_back(maxPos(Vector3(450, 110, 0), 15, 100, 100));
-	maxVectors.push_back(maxPos(Vector3(450, 110, 100), 15, 100, 100));
-	maxVectors.push_back(maxPos(Vector3(250, 110, 0), 15, 100, 100));
-	maxVectors.push_back(maxPos(Vector3(250, 110, 100), 15, 100, 100));
-	maxVectors.push_back(maxPos(Vector3(400, 110, -50), 100, 100, 15));
-	maxVectors.push_back(maxPos(Vector3(400, 110, 150), 100, 100, 15));
-	maxVectors.push_back(maxPos(Vector3(300, 110, -50), 100, 100, 15));
-	maxVectors.push_back(maxPos(Vector3(300, 110, 150), 100, 100, 15));
-	maxVectors.push_back(maxPos(Vector3(400, 160, 0), 100, 15, 100));
-	maxVectors.push_back(maxPos(Vector3(400, 160, 100), 100, 15, 100));
-	maxVectors.push_back(maxPos(Vector3(300, 160, 0), 100, 15, 100));
-	maxVectors.push_back(maxPos(Vector3(300, 160, 100), 100, 15, 100));*/
 	maxVectors.push_back(maxPos(Vector3(-338, 0, 38), 20, 120, 90));
 	maxVectors.push_back(maxPos(Vector3(-460, 0, 38), 20, 120, 90));
 	maxVectors.push_back(maxPos(Vector3(-400, 0, 73), 120, 120, 20));
@@ -104,7 +72,6 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	MineralVectors.push_back(Vector3(-643, 5, 825));
 	MineralVectors.push_back(Vector3(-415, 5, 174));
 
-	//mouseSpeed = 0.005f;
 }
 
 void Camera3::Update(double dt)
@@ -246,7 +213,6 @@ void Camera3::Update(double dt)
 
 		location2 = position + view*dt*speed;
 		location = position;
-		//direction2 = view * dt * speed;
 		direction = (view*dt*speed) * 2;
 		if (inBase == true || inMenu == true)
 		{
@@ -263,11 +229,11 @@ void Camera3::Update(double dt)
 					position.z += (view.z * dt * speed) / 2;
 					target.z += (view.z * dt * speed) / 2;
 				}
-				if (Application::IsKeyPressed(VK_SPACE) && position.y + (view.y * dt * speed) / 2 <= 48 && position.y + (view.y * dt * speed) / 2 >= 10 && hitbox((position.y * dt * speed) / 2) == false && checkcollisionwithObject((view.y * dt * speed) / 2) == false)
+				/*if (Application::IsKeyPressed(VK_SPACE) && position.y + (view.y * dt * speed) / 2 <= 48 && position.y + (view.y * dt * speed) / 2 >= 10 && hitbox((position.y * dt * speed) / 2) == false && checkcollisionwithObject((view.y * dt * speed) / 2) == false)
 				{
 					position.y += (view.y * dt * speed) / 2;
 					target.y += (view.y * dt * speed) / 2;
-				}
+				}*/
 			}
 			if (Application::IsKeyPressed('S'))
 			{
@@ -285,11 +251,11 @@ void Camera3::Update(double dt)
 					target.z -= (view.z * dt * speed) / 2;
 				}
 
-				if (Application::IsKeyPressed(VK_SPACE) && position.y - (view.y * dt * speed) / 2 <= 48 && position.y - (view.y * dt * speed) / 2 >= 10 && hitbox(-(view.y * dt * speed) / 2) == false && checkcollisionwithObject(-(view.y * dt * speed) / 2) == false)
+				/*if (Application::IsKeyPressed(VK_SPACE) && position.y - (view.y * dt * speed) / 2 <= 48 && position.y - (view.y * dt * speed) / 2 >= 10 && hitbox(-(view.y * dt * speed) / 2) == false && checkcollisionwithObject(-(view.y * dt * speed) / 2) == false)
 				{
 					position.y -= (view.y * dt * speed) / 2;
 					target.y -= (view.y * dt * speed) / 2;
-				}
+				}*/
 			}
 			if (Application::IsKeyPressed('D'))
 			{
@@ -331,8 +297,6 @@ void Camera3::Update(double dt)
 					target.z -= (right.z * dt * speed) / 2;
 				}
 
-
-				//if (position.y - (right.y * dt * speed) / 2 <= 900 && position.y - (right.y * dt * speed) / 2 >= -900 && hitbox(-(right.y * dt * speed) / 2) == false)
 				if (position.y - (right.y * dt * speed) / 2 <= 48 && position.y - (right.y * dt * speed) / 2 >= -48 && hitbox(-(right.y * dt * speed) / 2) == false && checkcollisionwithObject((right.y * dt * speed) / 2) == false)
 				{
 					position.z -= (right.y * dt * speed) / 2;
@@ -661,7 +625,6 @@ bool Camera3::startKillGM()
 	if (location.x > kMin.x && location.y > kMin.y && location.z > kMin.z
 		&& location.x < kMax.x && location.y  < kMax.y && location.z < kMax.z)
 	{
-		//inMenu = false;
 		return true;
 	}
 	else
@@ -679,7 +642,6 @@ bool Camera3::startCollectGM()
 	if (location.x > kMin.x && location.y > kMin.y && location.z > kMin.z
 		&& location.x < kMax.x && location.y  < kMax.y && location.z < kMax.z)
 	{
-		//inMenu = false;
 		return true;
 	}
 	else
@@ -697,7 +659,6 @@ bool Camera3::startBossGM()
 	if (location.x > kMin.x && location.y > kMin.y && location.z > kMin.z
 		&& location.x < kMax.x && location.y  < kMax.y && location.z < kMax.z)
 	{
-		//inMenu = false;
 		return true;
 	}
 	else
@@ -715,17 +676,6 @@ Vector3 Camera3::setPos()
 
 bool Camera3::hitbox(double move)
 {
-	/*for (int i = 0; i <= 50; i++)
-	{
-		if (testhitargetLocation(Vector3(treex[i] - 20, -150, treez[i] - 20), Vector3(treex[i] + 20, 100, treez[i] + 20), move) == true)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}*/
 	return false;
 }
 
