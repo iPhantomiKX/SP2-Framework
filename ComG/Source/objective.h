@@ -17,6 +17,7 @@ public:
 	~objective();
 	int getObjective();
 	int getProgress();
+	void resetObjective();
 	void objectiveProgress(int amt);
 	bool objComplete();
 };

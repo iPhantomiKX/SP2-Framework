@@ -3,7 +3,7 @@
 objective::objective()
 {
 	enemiesDieded = 0;
-	maxEnemiesDieded = 100;
+	maxEnemiesDieded = 30;
 	resourcesCollected = 0;
 	maxResourcesCollected = 10;
 }
@@ -35,6 +35,13 @@ int objective::getObjective()
 		return maxResourcesCollected;
 	}
 }
+
+void objective::resetObjective()
+{
+	enemiesDieded = 0;
+	resourcesCollected = 0;
+}
+
 void objective::objectiveProgress(int amt)
 {
 	if (chooseObj == 1)

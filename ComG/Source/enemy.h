@@ -29,7 +29,7 @@ public:
 	void Update(double dt, Camera3 camera);
 	void Render();
 	void respawnEnemy(int x, int y, int z);
-	void shootBullet();
+	void enemyReset();
 	Vector3 returnPos();
 	static Vector3 kB;
 	//void AIRotation(Vector3 Player);

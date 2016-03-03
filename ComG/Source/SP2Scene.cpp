@@ -28,7 +28,9 @@ using std::cout;
 Camera3 c3;
 bool Camera3::mouseControl = true;
 bool Camera3::inBase = false;
+bool Camera3::inMenu = true;
 bool Camera3::knockback = false;
+bool Camera3::scopedWep = false;
 double Camera3::xpos = 0;
 double Camera3::ypos = 0;
 double Camera3::recoil = 0;
@@ -42,10 +44,10 @@ rifle rif;
 sniper sr;
 shotgun sg;
 target t;
-//enemy en;
+enemy en;
 player play;
 objective obj;
-int objective::chooseObj = 2;
+int objective::chooseObj = 0;
 enemy thecube(10, -100.f, 0, -100.f, 50);
 enemy thecube2(10, 200.f, 0, -300.f, 50);
 enemy thecube3(10, -300.f, 0, 200.f, 50);
@@ -160,7 +162,7 @@ void Sp2Scene::Init()
 
 	//Initialize camera settings
 	/*camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));*/
-	camera.Init(Vector3(1, 10, 1), Vector3(1, 10, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0, 10, 40), Vector3(1, 10, 0), Vector3(0, 1, 0));
 
 	
 	myWeapon[PISTOL1].damage = 1;
@@ -262,8 +264,8 @@ void Sp2Scene::Init()
 	meshList[GEO_MINERALS] = MeshBuilder::GenerateOBJ("gold_mineral", "OBJ//GoldMineral.obj");
 	meshList[GEO_MINERALS]->textureID = LoadTGA("Image//GoldMineralsUV.tga");
 
-	meshList[GEO_MENU] = MeshBuilder::GenerateOBJ("mainmenu", "OBJ//mainMenu.obj");
-	meshList[GEO_MENU]->textureID = LoadTGA("Image//menuBackground.tga");
+	//meshList[GEO_MENU] = MeshBuilder::GenerateOBJ("mainmenu", "OBJ//mainMenu.obj");
+	//meshList[GEO_MENU]->textureID = LoadTGA("Image//menuBackground.tga");
 
 	meshList[GEO_MENUPORTAL] = MeshBuilder::GenerateOBJ("menuportal", "OBJ//ScenePortal.obj");
 	meshList[GEO_MENUPORTAL]->textureID = LoadTGA("Image//ScenePortalUV.tga");
@@ -285,89 +287,89 @@ void Sp2Scene::Init()
 	meshList[GEO_RIFLE1] = MeshBuilder::GenerateOBJ("rifle1model", "OBJ//AR.obj");
 	meshList[GEO_RIFLE1]->textureID = LoadTGA("Image//AR_UV.tga");
 
-	meshList[GEO_SNIPER1] = MeshBuilder::GenerateOBJ("sniper1model", "OBJ//AK47.obj");
-	meshList[GEO_SNIPER1]->textureID = LoadTGA("Image//AK47UV.tga");
+meshList[GEO_SNIPER1] = MeshBuilder::GenerateOBJ("sniper1model", "OBJ//AK47.obj");
+meshList[GEO_SNIPER1]->textureID = LoadTGA("Image//AK47UV.tga");
 
-	meshList[GEO_SHOTGUN1] = MeshBuilder::GenerateOBJ("shotgun1model", "OBJ//Shotgun.obj");
-	meshList[GEO_SHOTGUN1]->textureID = LoadTGA("Image//shotgunUV.tga");
+meshList[GEO_SHOTGUN1] = MeshBuilder::GenerateOBJ("shotgun1model", "OBJ//Shotgun.obj");
+meshList[GEO_SHOTGUN1]->textureID = LoadTGA("Image//shotgunUV.tga");
 
-	meshList[GEO_TARGET] = MeshBuilder::GenerateCube("target", Color(1, 0, 0));
+meshList[GEO_TARGET] = MeshBuilder::GenerateCube("target", Color(1, 0, 0));
 
-	meshList[GEO_TARGETHIT] = MeshBuilder::GenerateCube("target2", Color(0, 1, 0));
+meshList[GEO_TARGETHIT] = MeshBuilder::GenerateCube("target2", Color(0, 1, 0));
 
-	meshList[GEO_THECUBE] = MeshBuilder::GenerateOBJ("thecube", "OBJ//MaleRobot.obj");
+meshList[GEO_THECUBE] = MeshBuilder::GenerateOBJ("thecube", "OBJ//MaleRobot.obj");
 
-	Mtx44 projection;
-	projection.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
-	projectionStack.LoadMatrix(projection);
+Mtx44 projection;
+projection.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
+projectionStack.LoadMatrix(projection);
 
-	for (int i = 0; i < 1000; i++)
-	{
-		rainpositionx[i] = rand() % 998 - 499;
-		rainpositiony[i] = rand() % 998 - 499;
-		rainpositionz[i] = rand() % 998 - 499;
-	}
+for (int i = 0; i < 1000; i++)
+{
+	rainpositionx[i] = rand() % 998 - 499;
+	rainpositiony[i] = rand() % 998 - 499;
+	rainpositionz[i] = rand() % 998 - 499;
+}
 
-	for (int i = 0; i < 50; ++i)
-	{
-		treex[i] = rand() % 980 - 490;
-		treez[i] = rand() % 980 - 490;
-	}
+for (int i = 0; i < 50; ++i)
+{
+	treex[i] = rand() % 980 - 490;
+	treez[i] = rand() % 980 - 490;
+}
 
-	for (int a = 0; a < 10; ++a)
-	{
-		elementsx[a] = rand() % 980 - 980;
-		elementsz[a] = rand() % 980 - 880;
-	}
+for (int a = 0; a < 10; ++a)
+{
+	elementsx[a] = rand() % 980 - 980;
+	elementsz[a] = rand() % 980 - 880;
+}
 
-	translateY = -60;
-	translateX = 0;
-	translateX = 0;
+translateY = -60;
+translateX = 0;
+translateX = 0;
 
-	///for hitboxes///
-	/*minVectors.push_back(c3.minPos(Vector3(400, 60, 0), 75, 15, 75));
-	minVectors.push_back(c3.minPos(Vector3(400, 60, 100), 75, 15, 75));
-	minVectors.push_back(c3.minPos(Vector3(300, 60, 0), 75, 15, 75));
-	minVectors.push_back(c3.minPos(Vector3(300, 60, 100), 75, 15, 75));
-	minVectors.push_back(c3.minPos(Vector3(450, 110, 0), 10, 75, 75));
-	minVectors.push_back(c3.minPos(Vector3(450, 110, 100), 10, 75, 75));
-	minVectors.push_back(c3.minPos(Vector3(250, 110, 0), 10, 75, 75));
-	minVectors.push_back(c3.minPos(Vector3(250, 110, 100), 10, 75, 75));
-	minVectors.push_back(c3.minPos(Vector3(400, 110, -50), 75, 75, 10));
-	minVectors.push_back(c3.minPos(Vector3(400, 110, 150), 75, 75, 10));
-	minVectors.push_back(c3.minPos(Vector3(300, 110, -50), 75, 75, 10));
-	minVectors.push_back(c3.minPos(Vector3(300, 110, 150), 75, 75, 10));
-	minVectors.push_back(c3.minPos(Vector3(400, 160, 0), 75, 10, 75));
-	minVectors.push_back(c3.minPos(Vector3(400, 160, 100), 75, 10, 75));
-	minVectors.push_back(c3.minPos(Vector3(300, 160, 0), 75, 10, 75));
-	minVectors.push_back(c3.minPos(Vector3(300, 160, 100), 75, 10, 75));*/
-	minVectors.push_back(c3.minPos(Vector3(-338, 0, 38), 15, 120, 75));
-	minVectors.push_back(c3.minPos(Vector3(-460, 0, 38), 15, 120, 75));
-	minVectors.push_back(c3.minPos(Vector3(-400, 0, 73), 120, 120, 15));
-	minVectors.push_back(c3.minPos(Vector3(-360, 0, 0), 45, 100, 20));
-	minVectors.push_back(c3.minPos(Vector3(-435, 0, 0), 40, 120, 15));
+///for hitboxes///
+/*minVectors.push_back(c3.minPos(Vector3(400, 60, 0), 75, 15, 75));
+minVectors.push_back(c3.minPos(Vector3(400, 60, 100), 75, 15, 75));
+minVectors.push_back(c3.minPos(Vector3(300, 60, 0), 75, 15, 75));
+minVectors.push_back(c3.minPos(Vector3(300, 60, 100), 75, 15, 75));
+minVectors.push_back(c3.minPos(Vector3(450, 110, 0), 10, 75, 75));
+minVectors.push_back(c3.minPos(Vector3(450, 110, 100), 10, 75, 75));
+minVectors.push_back(c3.minPos(Vector3(250, 110, 0), 10, 75, 75));
+minVectors.push_back(c3.minPos(Vector3(250, 110, 100), 10, 75, 75));
+minVectors.push_back(c3.minPos(Vector3(400, 110, -50), 75, 75, 10));
+minVectors.push_back(c3.minPos(Vector3(400, 110, 150), 75, 75, 10));
+minVectors.push_back(c3.minPos(Vector3(300, 110, -50), 75, 75, 10));
+minVectors.push_back(c3.minPos(Vector3(300, 110, 150), 75, 75, 10));
+minVectors.push_back(c3.minPos(Vector3(400, 160, 0), 75, 10, 75));
+minVectors.push_back(c3.minPos(Vector3(400, 160, 100), 75, 10, 75));
+minVectors.push_back(c3.minPos(Vector3(300, 160, 0), 75, 10, 75));
+minVectors.push_back(c3.minPos(Vector3(300, 160, 100), 75, 10, 75));*/
+minVectors.push_back(c3.minPos(Vector3(-338, 0, 38), 15, 120, 75));
+minVectors.push_back(c3.minPos(Vector3(-460, 0, 38), 15, 120, 75));
+minVectors.push_back(c3.minPos(Vector3(-400, 0, 73), 120, 120, 15));
+minVectors.push_back(c3.minPos(Vector3(-360, 0, 0), 45, 100, 20));
+minVectors.push_back(c3.minPos(Vector3(-435, 0, 0), 40, 120, 15));
 
-	//maxVectors.push_back(c3.maxPos(Vector3(400, 60, 0), 75, 15, 75));
-	//maxVectors.push_back(c3.maxPos(Vector3(400, 60, 100), 75, 15, 75));
-	//maxVectors.push_back(c3.maxPos(Vector3(300, 60, 0), 75, 15, 75));
-	//maxVectors.push_back(c3.maxPos(Vector3(300, 60, 100), 75, 15, 75));
-	//maxVectors.push_back(c3.maxPos(Vector3(450, 110, 0), 10, 75, 75));
-	//maxVectors.push_back(c3.maxPos(Vector3(450, 110, 100), 10, 75, 75));
-	//maxVectors.push_back(c3.maxPos(Vector3(250, 110, 0), 10, 75, 75));
-	//maxVectors.push_back(c3.maxPos(Vector3(250, 110, 100), 10, 75, 75));
-	//maxVectors.push_back(c3.maxPos(Vector3(400, 110, -50), 75, 75, 10));
-	//maxVectors.push_back(c3.maxPos(Vector3(400, 110, 150), 75, 75, 10));
-	//maxVectors.push_back(c3.maxPos(Vector3(300, 110, -50), 75, 75, 10));
-	//maxVectors.push_back(c3.maxPos(Vector3(300, 110, 150), 75, 75, 10));
-	//maxVectors.push_back(c3.maxPos(Vector3(400, 160, 0), 75, 10, 75));
-	//maxVectors.push_back(c3.maxPos(Vector3(400, 160, 100), 75, 10, 75));
-	//maxVectors.push_back(c3.maxPos(Vector3(300, 160, 0), 75, 10, 75));
-	//maxVectors.push_back(c3.maxPos(Vector3(300, 160, 100), 75, 10, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(-338, 0, 38), 15, 120, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(-460, 0, 38), 15, 120, 75));
-	maxVectors.push_back(c3.maxPos(Vector3(-400, 0, 73), 120, 120, 15));
-	maxVectors.push_back(c3.maxPos(Vector3(-360, 0, 0), 45, 100, 20));
-	maxVectors.push_back(c3.maxPos(Vector3(-435, 0, 0), 40, 120, 15));
+//maxVectors.push_back(c3.maxPos(Vector3(400, 60, 0), 75, 15, 75));
+//maxVectors.push_back(c3.maxPos(Vector3(400, 60, 100), 75, 15, 75));
+//maxVectors.push_back(c3.maxPos(Vector3(300, 60, 0), 75, 15, 75));
+//maxVectors.push_back(c3.maxPos(Vector3(300, 60, 100), 75, 15, 75));
+//maxVectors.push_back(c3.maxPos(Vector3(450, 110, 0), 10, 75, 75));
+//maxVectors.push_back(c3.maxPos(Vector3(450, 110, 100), 10, 75, 75));
+//maxVectors.push_back(c3.maxPos(Vector3(250, 110, 0), 10, 75, 75));
+//maxVectors.push_back(c3.maxPos(Vector3(250, 110, 100), 10, 75, 75));
+//maxVectors.push_back(c3.maxPos(Vector3(400, 110, -50), 75, 75, 10));
+//maxVectors.push_back(c3.maxPos(Vector3(400, 110, 150), 75, 75, 10));
+//maxVectors.push_back(c3.maxPos(Vector3(300, 110, -50), 75, 75, 10));
+//maxVectors.push_back(c3.maxPos(Vector3(300, 110, 150), 75, 75, 10));
+//maxVectors.push_back(c3.maxPos(Vector3(400, 160, 0), 75, 10, 75));
+//maxVectors.push_back(c3.maxPos(Vector3(400, 160, 100), 75, 10, 75));
+//maxVectors.push_back(c3.maxPos(Vector3(300, 160, 0), 75, 10, 75));
+//maxVectors.push_back(c3.maxPos(Vector3(300, 160, 100), 75, 10, 75));
+maxVectors.push_back(c3.maxPos(Vector3(-338, 0, 38), 15, 120, 75));
+maxVectors.push_back(c3.maxPos(Vector3(-460, 0, 38), 15, 120, 75));
+maxVectors.push_back(c3.maxPos(Vector3(-400, 0, 73), 120, 120, 15));
+maxVectors.push_back(c3.maxPos(Vector3(-360, 0, 0), 45, 100, 20));
+maxVectors.push_back(c3.maxPos(Vector3(-435, 0, 0), 40, 120, 15));
 }
 
 static float LSPEED = 10.f;
@@ -381,6 +383,46 @@ void Sp2Scene::Update(double dt)
 	{
 		buttonCd--;
 	}
+	if (gameStates == states::menu)
+	{
+		if (c3.startKillGM() == true)
+		{
+			camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));
+			Camera3::inMenu = false;
+			objective::chooseObj = 1;
+			rotateGunX = 0;
+			rotateGunY = 0;
+			equipPistol1 = true;
+			equipRifle1 = false;
+			equipSniper1 = false;
+			equipShotgun1 = false;
+			boughtRifle1 = false;
+			boughtSniper1 = false;
+			boughtShotgun1 = false;
+			obj.resetObjective();
+			en.enemyReset();
+			play.earnMinerals(-10000);
+		}
+		if (c3.startCollectGM() == true)
+		{
+			camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));
+			Camera3::inMenu = false;
+			objective::chooseObj = 2;
+			rotateGunX = 0;
+			rotateGunY = 0;
+			equipPistol1 = true;
+			equipRifle1 = false;
+			equipSniper1 = false;
+			equipShotgun1 = false;
+			boughtRifle1 = false;
+			boughtSniper1 = false;
+			boughtShotgun1 = false;
+			obj.resetObjective();
+			en.enemyReset();
+			play.earnMinerals(-10000);
+		}
+	}
+
 	if (gameStates == states::base)
 	{
 		if (camera.craftUi() == true && Application::IsKeyPressed('E') && crafting == false && buttonCd == 0)
@@ -579,15 +621,27 @@ void Sp2Scene::Update(double dt)
 		}*/
 	//test = c3.getShotsFired();
 	//std::cout << c3.getShotsFired() << "bang" <<  std::endl; // why 0
+	changeStates();
 	if (gameStates == states::outside)
 	{
-		if (Application::IsKeyPressed('E') && c3.checkcollisionwithOres() == true)
+		xDist = Camera3::location.x - (-400);
+		zDist = Camera3::location.z - (50);
+		totalTranslateDist = (pow(xDist, 2.0)) + (pow(zDist, 2.0));
+
+		baseDist = sqrt(totalTranslateDist);
+		std::cout << baseDist << std::endl;
+		if (equipSniper1 == true)
+		{
+			Camera3::scopedWep = true;
+		}
+		if (Application::IsKeyPressed('E') && c3.checkcollisionwithOres() == true && buttonCd == 0)
 		{
 			play.earnMinerals(500);
 			if (objective::chooseObj == 2)
 			{
 				obj.objectiveProgress(1);
 			}
+			buttonCd = 30;
 		}
 		/*thecube.shootBullet();
 		thecube2.shootBullet();
@@ -623,17 +677,8 @@ void Sp2Scene::Update(double dt)
 				{
 					if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && pis.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 					{
-						if (Application::IsKeyPressed(VK_RBUTTON))
-						{
-							if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-							{
-								aimBulletRNG(pis.inAccuracy);
-							}
-						}
-						else
-						{
-							bulletRNG(pis.inAccuracy);
-						}
+						
+						bulletRNG(pis.inAccuracy);
 						shotsFired.push_back(Camera3::location2);
 						shotsDir.push_back(Camera3::direction);
 						weaponDmg.push_back(pis.damage);
@@ -676,17 +721,7 @@ void Sp2Scene::Update(double dt)
 				{
 					if (Application::IsKeyPressed(VK_LBUTTON) && gunCd <= 0 && rif.ammo > 0 && gunReload <= 0 && reloaded == true && Application::IsKeyPressed(VK_SHIFT) == false)
 					{
-						if (Application::IsKeyPressed(VK_RBUTTON))
-						{
-							if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-							{
-								aimBulletRNG(rif.inAccuracy);
-							}
-						}
-						else
-						{
-							bulletRNG(rif.inAccuracy);
-						}
+						bulletRNG(rif.inAccuracy);
 						shotsFired.push_back(Camera3::location2);
 						shotsDir.push_back(Camera3::direction);
 						weaponDmg.push_back(rif.damage);
@@ -730,10 +765,7 @@ void Sp2Scene::Update(double dt)
 						{
 							if (Application::IsKeyPressed(VK_RBUTTON))
 							{
-								if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-								{
-									aimBulletRNG(sr.inAccuracy);
-								}
+								bulletRNG(1);
 							}
 							else
 							{
@@ -785,14 +817,7 @@ void Sp2Scene::Update(double dt)
 							{
 								for (int shots = 0; shots < 6; ++shots)
 								{
-									if (Application::IsKeyPressed(VK_RBUTTON))
-									{
-										bulletRNG(sg.inAccuracy - 1);
-									}
-									else
-									{
-										bulletRNG(sg.inAccuracy);
-									}
+									bulletRNG(sg.inAccuracy);
 									shotsFired.push_back(Camera3::location2);
 									shotsDir.push_back(Camera3::direction);
 									weaponDmg.push_back(sg.damage);
@@ -1018,7 +1043,6 @@ void Sp2Scene::Update(double dt)
 		{
 			upRecoil -= 0.2;
 		}
-		std::cout << upRecoil << std::endl;
 
 		if (rotateGunX > 45)
 		{
@@ -1028,9 +1052,8 @@ void Sp2Scene::Update(double dt)
 		{
 			rotateGunX = -45;
 		}
-		std::cout << thecube.hp << std::endl;
 	}
-	changeStates();
+	//changeStates();
 	rotateGunX = gunDir + upRecoil;
 	if (rotateGunX > 30)
 	{
@@ -1099,15 +1122,14 @@ void Sp2Scene::Update(double dt)
 	//	}
 	//}
 	
-	changeStates();
 	std::cout << thecube.hp << std::endl;
 
-			if (sniper1Avail == true)
+			/*if (sniper1Avail == true)
 			{
 				equipSniper1 = false;
 			}
 		}
-	}
+	}*/
 	if (boughtSniper1 == true)
 	{
 		if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
@@ -1269,94 +1291,94 @@ void Sp2Scene::bulletRNG(int spray)
 	if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
 	{
 		random = (rand() % (spray));
-		temp = (2*(random+2)*(rand() % 2)) - (random+2);
+		temp = (2*(random+1)*(rand() % 2)) - (random+1);
 		Camera3::direction.x += temp / 10;
 		random = (rand() % (spray));
-		temp = (2 * (random + 2)*(rand() % 2)) - (random + 2);
+		temp = (2 * (random + 1)*(rand() % 2)) - (random + 1);
 		Camera3::direction.y += temp / 10;
 		random = (rand() % (spray));
-		temp = (2 * (random + 2)*(rand() % 2)) - (random + 2);
+		temp = (2 * (random + 1)*(rand() % 2)) - (random + 1);
 		Camera3::direction.z += temp / 10;
 	}
 	else
 	{
 		random = (rand() % (spray));
-		temp = (2 * (random + 1)*(rand() % 2)) - (random + 1);
+		temp = (2 * (random)*(rand() % 2)) - (random);
 		//std::cout << temp << std::endl;
 		Camera3::direction.x += temp / 10;
 		random = (rand() % (spray));
-		temp = (2 * (random + 1)*(rand() % 2)) - (random + 1);
+		temp = (2 * (random)*(rand() % 2)) - (random);
 		Camera3::direction.y += temp / 10;
 		random = (rand() % (spray));
-		temp = (2 * (random + 1)*(rand() % 2)) - (random + 1);
+		temp = (2 * (random)*(rand() % 2)) - (random);
 		Camera3::direction.z += temp / 10;
 	}
 }
-void Sp2Scene::aimBulletRNG(int spray)
-{
-	/*if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-	{
-		storeRand = rand() % (spray);
-		storeRand2 = rand() % 2;
-		if (storeRand2 == 1)
-		{
-			storeRand -= (storeRand + storeRand);
-		}
-		if (storeRand == 0)
-		{
-
-		}
-		else
-		{
-			Camera3::direction.x += storeRand / 10;
-		}
-	}
-	if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-	{
-		storeRand = rand() % (spray);
-		storeRand2 = rand() % 2;
-		if (storeRand2 == 1)
-		{
-			storeRand -= (storeRand + storeRand);
-		}
-		if (storeRand == 0)
-		{
-
-		}
-		else
-		{
-			Camera3::direction.y += storeRand / 10;
-		}
-		if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-		{
-			storeRand = rand() % (spray);
-			storeRand2 = rand() % 2;
-			if (storeRand2 == 1)
-			{
-				storeRand -= (storeRand + storeRand);
-			}
-			if (storeRand == 0)
-			{
-
-			}
-			else
-			{
-				Camera3::direction.z += storeRand / 10;
-			}
-		}
-	}*/
-	double temp = 0;
-	int random = 0;
-	random = (rand() % (spray));
-	temp = (2 * (random)*(rand() % 2)) - (random);
-	Camera3::direction.x += temp / 10;
-	random = (rand() % (spray));
-	temp = (2 * (random)*(rand() % 2)) - (random);
-	Camera3::direction.y += temp / 10;
-	random = (rand() % (spray));
-	temp = (2 * (random)*(rand() % 2)) - (random);
-	Camera3::direction.z += temp / 10;
-}
+//void Sp2Scene::aimBulletRNG(int spray)
+//{
+//	/*if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+//	{
+//		storeRand = rand() % (spray);
+//		storeRand2 = rand() % 2;
+//		if (storeRand2 == 1)
+//		{
+//			storeRand -= (storeRand + storeRand);
+//		}
+//		if (storeRand == 0)
+//		{
+//
+//		}
+//		else
+//		{
+//			Camera3::direction.x += storeRand / 10;
+//		}
+//	}
+//	if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+//	{
+//		storeRand = rand() % (spray);
+//		storeRand2 = rand() % 2;
+//		if (storeRand2 == 1)
+//		{
+//			storeRand -= (storeRand + storeRand);
+//		}
+//		if (storeRand == 0)
+//		{
+//
+//		}
+//		else
+//		{
+//			Camera3::direction.y += storeRand / 10;
+//		}
+//		if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
+//		{
+//			storeRand = rand() % (spray);
+//			storeRand2 = rand() % 2;
+//			if (storeRand2 == 1)
+//			{
+//				storeRand -= (storeRand + storeRand);
+//			}
+//			if (storeRand == 0)
+//			{
+//
+//			}
+//			else
+//			{
+//				Camera3::direction.z += storeRand / 10;
+//			}
+//		}
+//	}*/
+//	double temp = 0;
+//	int random = 0;
+//	random = (rand() % (spray));
+//	temp = (2 * (random)*(rand() % 2)) - (random);
+//	Camera3::direction.x += temp / 10;
+//	random = (rand() % (spray));
+//	temp = (2 * (random)*(rand() % 2)) - (random);
+//	Camera3::direction.y += temp / 10;
+//	random = (rand() % (spray));
+//	temp = (2 * (random)*(rand() % 2)) - (random);
+//	Camera3::direction.z += temp / 10;
+//}
 
 void Sp2Scene::bulletPos()
 {
@@ -1441,15 +1463,15 @@ bool Sp2Scene::bulletObjectCollision(Vector3 bulletPos)
 
 void Sp2Scene::changeStates()
 {
-	if (ingame == false)
+	if (Camera3::inMenu == true)
 	{
 		gameStates = states::menu;
 	}
-	else if (Camera3::inBase == true)
+	else if (Camera3::inBase == true && Camera3::inMenu == false)
 	{
 		gameStates = states::base;
 	}
-	else if (Camera3::inBase == false)
+	else if (Camera3::inBase == false && Camera3::inMenu == false)
 	{
 		gameStates = states::outside;
 	}
@@ -1922,20 +1944,20 @@ void Sp2Scene::RenderPortal2()
 void Sp2Scene::RenderMenuPortal()
 {
 	modelStack.PushMatrix();
+	modelStack.Translate(-40, 8, 0);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_MENUPORTAL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
 	modelStack.Translate(40, 8, 0);
+	//modelStack.Rotate(90,0,1,0);
 	modelStack.Scale(3, 3, 3);
 	RenderMesh(meshList[GEO_MENUPORTAL], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 8, -40);
-	modelStack.Rotate(90,0,1,0);
-	modelStack.Scale(3, 3, 3);
-	RenderMesh(meshList[GEO_MENUPORTAL], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 8, 40);
 	modelStack.Rotate(-90, 0, 1, 0);
 	modelStack.Scale(3, 3, 3);
 	RenderMesh(meshList[GEO_MENUPORTAL], true);
@@ -1944,16 +1966,15 @@ void Sp2Scene::RenderMenuPortal()
 void Sp2Scene::RenderSpiral()
 {
 	modelStack.PushMatrix();
-	modelStack.Translate(38, 10, 0);
+	modelStack.Translate(-38, 10, 0);
 	modelStack.Rotate(rotateAngle, 1, 0, 0);
 	modelStack.Scale(3, 3, 3);
 	RenderMesh(meshList[GEO_SPIRAL], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 10, 38);
-	modelStack.Rotate(rotateAngle, 0, 0, 1);
-	modelStack.Rotate(90, 0, 1, 0);
+	modelStack.Translate(38, 10, 0);
+	modelStack.Rotate(rotateAngle, 1, 0, 0);
 	modelStack.Scale(3, 3, 3);
 	RenderMesh(meshList[GEO_SPIRAL], true);
 	modelStack.PopMatrix();
@@ -2127,9 +2148,27 @@ void Sp2Scene::Render()
 
 		if (gameStates == states::menu)
 		{
+
 			RenderSpaceshipQuad();
 			RenderMenuPortal();
 			RenderSpiral();
+
+			RenderTextOnScreen(meshList[GEO_TEXT], "GAME NAME", Color(0.8, 0.8, 0), 5, 5, 10);
+
+			modelStack.PushMatrix();
+			modelStack.Translate(40, 25, -12);
+			modelStack.Rotate(-90, 0, 1, 0);
+			modelStack.Scale(2, 2, 2);
+			RenderText(meshList[GEO_TEXT], "EXTERMINATION", Color(1, 1, 1));
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			modelStack.Translate(-10, 25, -40);
+			modelStack.Scale(2, 2, 2);
+			RenderText(meshList[GEO_TEXT], "EXCAVATION", Color(1, 1, 1));
+			modelStack.PopMatrix();
+
+			
 		}
 		if (gameStates == states::outside)
 		{
@@ -2169,7 +2208,7 @@ void Sp2Scene::Render()
 			RenderTextOnScreen(meshList[GEO_TEXT], "PRESS E TO TELEPORT", Color(0, 1, 0), 3, 4, 15);
 			}*/
 
-			if (Application::IsKeyPressed(VK_RBUTTON) || reloaded == false || Application::IsKeyPressed(VK_SHIFT))
+			if (Application::IsKeyPressed(VK_RBUTTON) && equipSniper1 == true || reloaded == false || Application::IsKeyPressed(VK_SHIFT))
 			{
 			}
 			else
@@ -2290,36 +2329,83 @@ void Sp2Scene::Render()
 	
 	
 	
-			//Render Frame rate on screen
-			RenderTextOnScreen(meshList[GEO_TEXT], "FPS: " + std::to_string(framerate), Color(1, 0, 0), 2, 1, 25);
 
-			//Render camera position on screen
-			std::ostringstream oss;
-			oss << "X: " << camera.position.x << " Y: " << camera.position.y << "Z: " << camera.position.z;
-			string var = oss.str();
-			RenderTextOnScreen(meshList[GEO_TEXT], oss.str(), Color(0, 1, 0), 2, 2, 28);
 
-			RenderTextOnScreen(meshList[GEO_TEXT], "Minerals: " + std::to_string(play.getMinerals()), Color(0.7, 0.7, 0.3), 3, 13, 15);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Minerals: " + std::to_string(play.getMinerals()), Color(0.7, 0.7, 0.3), 2, 1, 28);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Base Dist: " + std::to_string(baseDist), Color(0.7, 0.7, 0.3), 2, 1, 27);
 
 			if (play.getHp() <= 30)
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.8, 0.3, 0.3), 3, 1, 15);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.5, 0.2, 0.2), 3, 1, 1);
 			}
 			else
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.3, 0.8, 0.3), 3, 1, 15);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.2, 0.5, 0.2), 3, 1, 1);
 			}
 
-			RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(obj.getProgress()) + "/" + std::to_string(obj.getObjective()), Color(0.7, 0.7, 0.3), 3, 10, 17);
-			if (obj.objComplete() == true)
+			if (objective::chooseObj == 1)
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "U WIN", Color(0, 0.5, 0), 5, 6, 5);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(obj.getProgress()) + "/" + std::to_string(obj.getObjective()), Color(0.7, 0.7, 0.3), 2, 25, 28);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Enemy Kills", Color(0.7, 0.7, 0.3), 2, 25, 27);
 			}
-			else if (play.isDead() == true)
+			if (objective::chooseObj == 2)
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "U DIEDED", Color(0.5, 0, 0), 5, 5, 5);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(obj.getProgress()) + "/" + std::to_string(obj.getObjective()), Color(0.7, 0.7, 0.3), 2, 25, 28);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Mineral Deposits", Color(0.7, 0.7, 0.3), 2, 25, 27);
 			}
+			
 		}
+
+		if (obj.objComplete() == true)
+		{
+			Camera3::inMenu = true;
+			showWin = 300;
+			camera.Init(Vector3(1, 10, 1), Vector3(1, 10, 0), Vector3(0, 1, 0));
+			play.healHp(110);
+			objective::chooseObj = 0;
+		}
+		else if (play.isDead() == true)
+		{
+			Camera3::inMenu = true;
+			showLose = 300;
+			camera.Init(Vector3(1, 10, 1), Vector3(1, 10, 0), Vector3(0, 1, 0));
+			play.healHp(110);
+		}
+		else if (Application::IsKeyPressed('P') && Camera3::inMenu == false)
+		{
+			Camera3::inMenu = true;
+			showRQ = 300;
+			camera.Init(Vector3(1, 10, 1), Vector3(1, 10, 0), Vector3(0, 1, 0));
+			play.healHp(110);
+		}
+
+		if (showLose > 0)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "U DIEDED", Color(0.8, 0.2, 0.2), 5, 5, 7);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Score: " + std::to_string(obj.getProgress()), Color(0.8, 0.2, 0.2), 5, 5, 5);
+			showLose--;
+		}
+
+		if (showRQ > 0)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "U RAGEQUIT", Color(0.8, 0.2, 0.2), 5, 5, 7);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Score: " + std::to_string(obj.getProgress()), Color(0.8, 0.2, 0.2), 5, 5, 5);
+			showRQ--;
+		}
+
+		if (showWin > 0)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "U WIN", Color(0.2, 0.8, 0.2), 5, 5, 5);
+			showWin--;
+		}
+
+		//Render camera position on screen
+		std::ostringstream oss;
+		oss << "X: " << camera.position.x << " Y: " << camera.position.y << "Z: " << camera.position.z;
+		string var = oss.str();
+		RenderTextOnScreen(meshList[GEO_TEXT], oss.str(), Color(0, 1, 0), 2, 2, 29);
+
+		RenderTextOnScreen(meshList[GEO_TEXT], "FPS: " + std::to_string(framerate), Color(1, 0, 0), 2, 32, 29);
 
 		modelStack.PopMatrix();
 		modelStack.PushMatrix();
@@ -2364,11 +2450,6 @@ void Sp2Scene::RenderPistol1()
 			modelStack.Translate(0, -10, -10);
 			modelStack.Rotate(-60, 0, 1, 0);
 		}
-		else if (Application::IsKeyPressed(VK_RBUTTON) == true)
-		{
-			modelStack.Translate(0, -7.1, -10);
-			modelStack.Rotate(-90, 0, 1, 0);
-		}
 		else
 		{
 			modelStack.Translate(5, -10, -15);
@@ -2376,19 +2457,18 @@ void Sp2Scene::RenderPistol1()
 		}
 		RenderMesh(meshList[GEO_PISTOL1], true);
 		modelStack.PopMatrix();
-
 		modelStack.PopMatrix();
 	}
 	if (pis.ammo < 5)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0.8, 0.3, 0.3), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0.5, 0.2, 0.2), 3, 19, 1);
 		modelStack.PopMatrix();
 	}
 	else
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0.3, 0.8,0.3), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(pis.ammo), Color(0.2, 0.5,0.2), 3, 19, 1);
 		modelStack.PopMatrix();
 	}
 }
@@ -2453,10 +2533,6 @@ void Sp2Scene::RenderRifle1()
 		{
 			modelStack.Translate(0, -10, -10);
 		}
-		else if (Application::IsKeyPressed(VK_RBUTTON) == true)
-		{
-			modelStack.Translate(0, -8.1, -10);
-		}
 		else
 		{
 			modelStack.Translate(5, -10, -15);
@@ -2478,13 +2554,13 @@ void Sp2Scene::RenderRifle1()
 	if (rif.ammo < 11)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0.8, 0.3, 0.3), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0.5, 0.2, 0.2), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 	else
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0.3, 0.8, 0.3), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(rif.ammo), Color(0.2, 0.5, 0.2), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 }
@@ -2529,13 +2605,13 @@ void Sp2Scene::RenderSniper1()
 	if (sr.ammo < 4)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), (0.8, 0.3, 0.3), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), (0.5, 0.2, 0.2), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 	else
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0.3, 0.8, 0.3), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sr.ammo), Color(0.2, 0.5, 0.2), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 }
@@ -2552,10 +2628,6 @@ void Sp2Scene::RenderShotgun1()
 		if (Application::IsKeyPressed(VK_SHIFT) == true || gameStates == states::base || Camera3::location.x  < -330 && Camera3::location.x  > -470 && Camera3::location.z > -10 && Camera3::location.z < 80)
 		{
 			modelStack.Translate(0, -10, -15);
-		}
-		else if (Application::IsKeyPressed(VK_RBUTTON) == true)
-		{
-			modelStack.Translate(0, -7, -10);
 		}
 		else
 		{
@@ -2580,13 +2652,13 @@ void Sp2Scene::RenderShotgun1()
 	if (sg.ammo < 3)
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0.8, 0.3, 0.3), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0.5, 0.2, 0.2), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 	else
 	{
 		modelStack.PushMatrix();
-		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0.3, 0.8, 0.3), 3, 18, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: " + std::to_string(sg.ammo), Color(0.2, 0.5, 0.2), 3, 18, 1);
 		modelStack.PopMatrix();
 	}
 }

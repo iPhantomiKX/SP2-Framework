@@ -247,7 +247,7 @@ void Camera3::Update(double dt)
 		location = position;
 		//direction2 = view * dt * speed;
 		direction = (view*dt*speed) * 2;
-		if (inBase == true)
+		if (inBase == true || inMenu == true)
 		{
 			if (Application::IsKeyPressed('W'))
 			{
@@ -342,7 +342,7 @@ void Camera3::Update(double dt)
 		else if (inBase == false)
 		{
 
-			if (Application::IsKeyPressed(VK_RBUTTON))
+			if (Application::IsKeyPressed(VK_RBUTTON) && scopedWep == true)
 			{
 				if (Application::IsKeyPressed('W'))
 				{
@@ -627,7 +627,11 @@ void Camera3::Update(double dt)
 				position.z -= (view.z * dt * speed) * 10;
 			}
 		}
-	teleport();
+		if (inMenu == false)
+		{
+			teleport();
+		}
+	
 
 	kb = (right * dt * speed);
 	if (camerarotation.x > maxCameraX)
@@ -639,11 +643,50 @@ void Camera3::Update(double dt)
 		camerarotation.x = -maxCameraX;
 	}
 
+	std::cout << inMenu << std::endl;
+
 	//Changing target
 	target = Vector3(sin(DegreeToRadian(camerarotation.y))*cos(DegreeToRadian(camerarotation.x)) + this->position.x, -sin(DegreeToRadian(camerarotation.x)) + this->position.y,
 		cos(DegreeToRadian(camerarotation.y))*cos(DegreeToRadian(camerarotation.x)) + this->position.z);
 
 }
+
+bool Camera3::startKillGM()
+{
+	Vector3 kMin = minPos(Vector3(40, 10, 0), 15, 10, 15);
+	Vector3 kMax = maxPos(Vector3(40, 10, 0), 15, 10, 15);
+
+
+	if (location.x > kMin.x && location.y > kMin.y && location.z > kMin.z
+		&& location.x < kMax.x && location.y  < kMax.y && location.z < kMax.z)
+	{
+		//inMenu = false;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool Camera3::startCollectGM()
+{
+	Vector3 kMin = minPos(Vector3(0, 10, -40), 15, 10, 15);
+	Vector3 kMax = maxPos(Vector3(0, 10, -40), 15, 10, 15);
+
+
+	if (location.x > kMin.x && location.y > kMin.y && location.z > kMin.z
+		&& location.x < kMax.x && location.y  < kMax.y && location.z < kMax.z)
+	{
+		//inMenu = false;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 
 Vector3 Camera3::setPos()
 {
@@ -732,7 +775,7 @@ void Camera3::teleport()
 	{
 		position.x = -400; 
 		position.y = 10; 
-		position.z = 1;
+		position.z = 50;
 		inBase = false;
 	}
 }

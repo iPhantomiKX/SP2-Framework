@@ -99,6 +99,7 @@ class Sp2Scene : public Scene
 		GEO_SCOPE,
 		GEO_AMMO,
 		GEO_THECUBE,
+
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -178,9 +179,18 @@ private:
 	int tempx[50];
 	int tempz[50];
 
+	int showLose;
+	int showWin;
+	int showRQ;
+
 	float translateY;
 	float translateX;
 	float translateZ;
+
+	float baseDist;
+	float xDist;
+	float zDist;
+	float totalTranslateDist;
 
 	float rotateGunX;
 	float rotateGunY;
@@ -260,6 +270,8 @@ private:
 	void RenderTable();
 	void RenderHealthPack();
 	void RenderOres();
+	void RenderMenuPortal();
+	void RenderSpiral();
 
 	
 

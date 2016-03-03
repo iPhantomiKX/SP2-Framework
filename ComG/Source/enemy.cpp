@@ -40,6 +40,12 @@ void enemy::respawnEnemy(int x, int y, int z)
 	isDieded = false;
 }
 
+void enemy::enemyReset()
+{
+	upgradeCount = 0;
+	enemyUpgrade = 0;
+}
+
 //void enemy::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 //{
 //	maxRotationX = 49.99f;

@@ -50,11 +50,13 @@ public:
 	Vector3 directionRotation;
 	int cRecoilCd;
 	static bool inBase;
+	static bool inMenu;
 	static bool knockback;
 	int stamina;
 	int staminaDelay;
 	static float gunRotatex;
 	static float gunRotatey;
+	static bool scopedWep;
 
 
 	Vector3 diffx;
@@ -75,6 +77,8 @@ public:
 	/*bool checkcollisionwithTricker(Vector3& otherObjectposition, float sizex, float sizey, float sizez);
 	bool checkcollisionwithOtherObject(Vector3& otherObjectposition, float sizex, float sizey, float sizez);*/
 	void teleport();
+	bool startKillGM();
+	bool startCollectGM();
 	//bool checkcollisionwithOres();
 	Vector3 kb;
 	bool craftUi();
