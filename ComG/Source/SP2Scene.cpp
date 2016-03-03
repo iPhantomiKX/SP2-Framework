@@ -13,6 +13,7 @@
 #include "enemy.h"
 #include "player.h"
 #include "objective.h"
+#include "gun2.h"
 #include <iostream>
 
 using std::cout;
@@ -261,6 +262,12 @@ void Sp2Scene::Init()
 	//HealthPack Image
 	meshList[GEO_HEALTHPACK] = MeshBuilder::GenerateOBJ("healthpack", "OBJ//HealthPack.obj");
 	meshList[GEO_HEALTHPACK]->textureID = LoadTGA("Image//HealthPackUV.tga");
+
+	meshList[GEO_HEALTHUI] = MeshBuilder::GenerateOBJ("healthui", "OBJ//healthUI.obj");
+	meshList[GEO_HEALTHUI]->textureID = LoadTGA("Image//healthUV.tga");
+
+	meshList[GEO_HUD] = MeshBuilder::GenerateOBJ("hud", "OBJ//HUDUV.obj");
+	meshList[GEO_HUD]->textureID = LoadTGA("Image//HUDUV.tga");
 
 	//Minerals Image
 	meshList[GEO_MINERALS] = MeshBuilder::GenerateOBJ("gold_mineral", "OBJ//GoldMineral.obj");
@@ -1528,6 +1535,38 @@ void Sp2Scene::RenderImageOnScreen(Mesh * mesh, float size, float x, float y)
 	modelStack.PopMatrix();
 	glEnable(GL_DEPTH_TEST);
 }
+void Sp2Scene::RenderImageOnScreen2(Mesh * mesh, float size, float x, float y)
+{
+	glDisable(GL_DEPTH_TEST);
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -10, 10); //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity(); //No need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity(); //Reset modelStack
+	modelStack.Scale(size, size, size);
+	modelStack.Translate(x, y, 1);
+	modelStack.Rotate(rotateAngle, 0, 1, 0);
+	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+
+	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+	mesh->Render();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+	glEnable(GL_DEPTH_TEST);
+}
 
 void Sp2Scene::RenderMesh(Mesh *mesh, bool enablelight)
 {
@@ -2032,7 +2071,7 @@ void Sp2Scene::Render()
 			RenderMenuPortal();
 			RenderSpiral();
 
-			RenderTextOnScreen(meshList[GEO_TEXT], "GAME NAME", Color(0.8, 0.8, 0), 5, 5, 10);
+			RenderTextOnScreen(meshList[GEO_TEXT], "SPACE SIMULATOR", Color(0.8, 0.8, 0), 4, 4, 11);
 
 			modelStack.PushMatrix();
 			modelStack.Translate(40, 25, -12);
@@ -2092,6 +2131,9 @@ void Sp2Scene::Render()
 			modelStack.PushMatrix();
 			RenderTextOnScreen(meshList[GEO_TEXT], "PRESS E TO TELEPORT", Color(0, 1, 0), 3, 4, 15);
 			}*/
+
+			//Render HUD before anything else
+			RenderImageOnScreen(meshList[GEO_HUD], 6, 6.9, 5);
 
 			if (Application::IsKeyPressed(VK_RBUTTON) && equipSniper1 == true || reloaded == false || Application::IsKeyPressed(VK_SHIFT))
 			{
@@ -2162,7 +2204,7 @@ void Sp2Scene::Render()
 			if (equipPistol1 == true)
 			{
 				RenderPistol1();
-				RenderImageOnScreen(meshList[GEO_PISTOL1], 0.5, 25, 15);
+				RenderImageOnScreen(meshList[GEO_PISTOL1], 0.5, 130, 15);
 			}
 			//if (equipPistol2 == true)
 			//{
@@ -2173,18 +2215,18 @@ void Sp2Scene::Render()
 			else if (equipRifle1 == true)
 			{
 				RenderRifle1();
-				RenderImageOnScreen(meshList[GEO_RIFLE1], 4, 4, 2.5);
+				RenderImageOnScreen(meshList[GEO_RIFLE1], 4, 16, 2.5);
 			}
 			else if (equipSniper1 == true)
 			{
 				RenderSniper1();
-				RenderImageOnScreen(meshList[GEO_SNIPER1], 1, 15, 10);
+				RenderImageOnScreen(meshList[GEO_SNIPER1], 1, 65, 10);
 
 			}
 			else if (equipShotgun1 == true)
 			{
 				RenderShotgun1();
-				RenderImageOnScreen(meshList[GEO_SHOTGUN1], 0.5, 26, 18);
+				RenderImageOnScreen(meshList[GEO_SHOTGUN1], 0.5, 130, 18);
 			}
 
 	if (gameStates == states::base)
@@ -2216,16 +2258,20 @@ void Sp2Scene::Render()
 	
 
 
-			RenderTextOnScreen(meshList[GEO_TEXT], "Minerals: " + std::to_string(play.getMinerals()), Color(0.7, 0.7, 0.3), 2, 1, 28);
+			RenderImageOnScreen2(meshList[GEO_MINERALS], 2, 3, 2);
+			RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(play.getMinerals()), Color(0.7, 0.7, 0.3), 3, 4, 1.2);
+
 			RenderTextOnScreen(meshList[GEO_TEXT], "Base Dist: " + std::to_string(baseDist), Color(0.7, 0.7, 0.3), 2, 1, 27);
 
 			if (play.getHp() <= 30)
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.5, 0.2, 0.2), 3, 1, 1);
+				RenderImageOnScreen2(meshList[GEO_HEALTHUI], 1, 3, 45);
+				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(play.getHp()), Color(0.8, 0.3, 0.3), 3, 3, 15);
 			}
 			else
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "Health: " + std::to_string(play.getHp()), Color(0.2, 0.5, 0.2), 3, 1, 1);
+				RenderImageOnScreen2(meshList[GEO_HEALTHUI], 1, 35, 6);
+				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(play.getHp()), Color(0.3, 0.8, 0.3), 3, 14, 2);
 			}
 
 			if (objective::chooseObj == 1)

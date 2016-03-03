@@ -86,6 +86,8 @@ class Sp2Scene : public Scene
 		GEO_PORTAL2,
 		GEO_TABLE,
 		GEO_HEALTHPACK,
+		GEO_HEALTHUI,
+		GEO_HUD,
 		GEO_MINERALS,
 		GEO_ORES,
 
@@ -155,7 +157,7 @@ private:
 	void RenderText(Mesh * mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh * mesh, std::string text, Color color, float size, float x, float y);
 	void RenderImageOnScreen(Mesh * mesh, float sizex, float x, float y);
-	void RenderImageOnScreen(Mesh * mesh, float sizex, float sizey, float sizez, float x, float y);
+	void RenderImageOnScreen2(Mesh * mesh, float sizex, float x, float y);
 	unsigned m_vertexArrayID;
 	Mesh *meshList[NUM_GEOMETRY];
 
