@@ -79,6 +79,7 @@ public:
 	void teleport();
 	bool startKillGM();
 	bool startCollectGM();
+	bool startBossGM();
 	//bool checkcollisionwithOres();
 	Vector3 kb;
 	bool craftUi();

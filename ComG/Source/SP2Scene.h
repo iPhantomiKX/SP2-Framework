@@ -10,6 +10,7 @@
 #include "gun.h"
 #include "gun2.h"
 #include "player.h"
+#include "boss.h"
 #include <vector>
 #include <sstream>
 #include <string>
@@ -99,6 +100,7 @@ class Sp2Scene : public Scene
 		GEO_SCOPE,
 		GEO_AMMO,
 		GEO_THECUBE,
+		GEO_THEBOSS,
 
 		NUM_GEOMETRY,
 	};
@@ -135,6 +137,7 @@ class Sp2Scene : public Scene
 		menu,
 		base,
 		outside,
+		bossbattle,
 	};
 
 public:
@@ -208,7 +211,6 @@ private:
 	int sRecoilCd;
 	bool reloaded = false;
 	void bulletRNG(int spray);
-	void aimBulletRNG(int spray);
 	bool bulletObjectCollision(Vector3 bulletPos);
 	bool AICheckCollisionObject(Vector3 AIposition);
 	bool ingame;
@@ -241,6 +243,9 @@ private:
 	bool testPortal = false;
 	bool testPortalsign = false;
 
+	bool boss50 = false;
+	bool boss20 = false;
+
 	int buttonCd;
 	int heals;
 
@@ -254,9 +259,12 @@ private:
 	void RenderShotgun1();
 	void RenderElements();
 	void RenderEnemy();
+	void RenderBoss();
 
 	bool bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation);
+	bool bulletBossCollision(Vector3 bulletPos, Vector3 targetLocation);
 	void Sp2Scene::EnemyAttack(Vector3 targetLocation);
+	void bossAttack(Vector3 targetLocation);
 	int atkCd;
 	/*static bool test4;
 	static bool test5;*/

@@ -8,8 +8,7 @@ private:
 	int maxEnemiesDieded;
 	int resourcesCollected;
 	int maxResourcesCollected;
-	int bossDefeated;
-	int specialItemCollected;
+	bool bossDefeated;
 
 public:
 	static int chooseObj;

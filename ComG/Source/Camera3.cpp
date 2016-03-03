@@ -45,6 +45,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	cRecoilCd = 0;
 	stamina = 300;
 	staminaDelay = 0;
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	///for hitboxes///
 	/*minVectors.push_back(minPos(Vector3(400, 60, 0), 100, 20, 100));
@@ -113,22 +114,22 @@ void Camera3::Update(double dt)
 	prevPosition = position;
 	Vector3 view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
-	if (Application::IsKeyPressed('Q') && mouseControl == false && delay2 == 0)
-	{
-		mouseControl = true;
-		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		delay2 = 10;
-	}
-	else if (Application::IsKeyPressed('Q') && mouseControl == true && delay2 == 0)
-	{
-		mouseControl = false;
-		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		delay2 = 10;
-	}
-	if (delay2 > 0)
+	//if (Application::IsKeyPressed('Q') && mouseControl == false && delay2 == 0)
+	//{
+	//	mouseControl = true;
+	//	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//	delay2 = 10;
+	//}
+	//else if (Application::IsKeyPressed('Q') && mouseControl == true && delay2 == 0)
+	//{
+	//	mouseControl = false;
+	//	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	//	delay2 = 10;
+	//}
+	/*if (delay2 > 0)
 	{
 		delay2--;
-	}
+	}*/
 	Mtx44 rotation;
 	if (mouseControl == true && Application::IsKeyPressed(VK_RBUTTON) && inBase == false)
 	{
@@ -673,6 +674,24 @@ bool Camera3::startCollectGM()
 {
 	Vector3 kMin = minPos(Vector3(0, 10, -40), 15, 10, 15);
 	Vector3 kMax = maxPos(Vector3(0, 10, -40), 15, 10, 15);
+
+
+	if (location.x > kMin.x && location.y > kMin.y && location.z > kMin.z
+		&& location.x < kMax.x && location.y  < kMax.y && location.z < kMax.z)
+	{
+		//inMenu = false;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool Camera3::startBossGM()
+{
+	Vector3 kMin = minPos(Vector3(-40, 10, 0), 15, 10, 15);
+	Vector3 kMax = maxPos(Vector3(-40, 10, 0), 15, 10, 15);
 
 
 	if (location.x > kMin.x && location.y > kMin.y && location.z > kMin.z

@@ -6,6 +6,7 @@ objective::objective()
 	maxEnemiesDieded = 30;
 	resourcesCollected = 0;
 	maxResourcesCollected = 10;
+	bossDefeated = 0;
 }
 
 
@@ -23,6 +24,10 @@ int objective::getProgress()
 	{
 		return resourcesCollected;
 	}
+	else if (chooseObj == 3)
+	{
+		return bossDefeated;
+	}
 }
 int objective::getObjective()
 {
@@ -34,12 +39,17 @@ int objective::getObjective()
 	{
 		return maxResourcesCollected;
 	}
+	else if (chooseObj == 3)
+	{
+		return 1;
+	}
 }
 
 void objective::resetObjective()
 {
 	enemiesDieded = 0;
 	resourcesCollected = 0;
+	bossDefeated = 0;
 }
 
 void objective::objectiveProgress(int amt)
@@ -51,6 +61,10 @@ void objective::objectiveProgress(int amt)
 	else if (chooseObj == 2)
 	{
 		resourcesCollected += amt;
+	}
+	else if (chooseObj == 3)
+	{
+		bossDefeated = true;
 	}
 }
 bool objective::objComplete()
@@ -69,6 +83,17 @@ bool objective::objComplete()
 	if (chooseObj == 2)
 	{
 		if (resourcesCollected == maxResourcesCollected)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	if (chooseObj == 3)
+	{
+		if (bossDefeated == true)
 		{
 			return true;
 		}

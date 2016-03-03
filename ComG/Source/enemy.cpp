@@ -22,12 +22,12 @@ enemy::enemy(int health, float x, float y, float z, int s)
 
 void enemy::respawnEnemy(int x, int y, int z)
 {
-	upgradeCount++;
-	if (upgradeCount == 5)
-	{
-		upgradeCount = 0;
+	//upgradeCount++;
+	//if (upgradeCount == 5)
+	//{
+		//upgradeCount = 0;
 		enemyUpgrade++;
-	}
+	//}
 	if (x < -300 && x > -500 && z > -30 && z < 100)
 	{
 		x = 0;
@@ -40,10 +40,12 @@ void enemy::respawnEnemy(int x, int y, int z)
 	isDieded = false;
 }
 
-void enemy::enemyReset()
+void enemy::enemyReset(float x, float y, float z)
 {
-	upgradeCount = 0;
 	enemyUpgrade = 0;
+	hp = 10;
+	attackPow = 1;
+	pos = Vector3(x, y, z);
 }
 
 //void enemy::Init(const Vector3& pos, const Vector3& target, const Vector3& up)

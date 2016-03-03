@@ -1,5 +1,5 @@
-#ifndef ENEMY_H
-#define ENEMY_H
+#ifndef BOSS_H
+#define BOSS_H
 #include "Vector3.h"
 #include "Application.h"
 #include "Camera3.h"
@@ -12,24 +12,18 @@
 
 using std::string;
 
-struct target
-{
-	int hp = 10;
-	bool isDead = false;
-};
-
-class enemy
+class boss
 {
 public:
-	enemy();
-	enemy(int health, float x, float y, float z, int s);
+	boss();
+	boss(int health, float x, float y, float z, int s);
 	void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
-	virtual ~enemy();
+	virtual ~boss();
 	bool isDead();
 	void Update(double dt, Camera3 camera);
 	void Render();
-	void respawnEnemy(int x, int y, int z);
-	void enemyReset(float x, float y, float z);
+	void upgradeboss();
+	void bossReset(float x, float y, float z);
 	Vector3 returnPos();
 	static Vector3 kB;
 	//void AIRotation(Vector3 Player);
@@ -40,11 +34,12 @@ public:
 	int speed;
 	float Degree;
 	static int attackPow;
-	float enemyUpgrade = 0;
+	float bossUpgrade = 0;
 	int upgradeCount = 0;
 	Vector3 aim;
 	static std::vector<Vector3> bulletPos;
 	static std::vector<Vector3> bulletDir;
+	float sizeIncrease;
 };
 
 #endif

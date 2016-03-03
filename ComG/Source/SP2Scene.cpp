@@ -39,6 +39,7 @@ Vector3 Camera3::location2 = (0, 0, 0);
 Vector3 Camera3::direction = (0, 0, 0);
 Vector3 enemy::kB = (0, 0, 0);
 int enemy::attackPow = 1;
+int boss::attackPow = 5;
 pistol pis;
 rifle rif;
 sniper sr;
@@ -48,10 +49,11 @@ enemy en;
 player play;
 objective obj;
 int objective::chooseObj = 0;
+std::vector<Vector3> Camera3::MineralVectors;
 enemy thecube(10, -100.f, 0, -100.f, 50);
 enemy thecube2(10, 200.f, 0, -300.f, 50);
 enemy thecube3(10, -300.f, 0, 200.f, 50);
-std::vector<Vector3> Camera3::MineralVectors;
+boss theboss(1000, -300.f, 0, 300.f, 50);
 
 
 Sp2Scene::Sp2Scene()
@@ -299,6 +301,9 @@ meshList[GEO_TARGETHIT] = MeshBuilder::GenerateCube("target2", Color(0, 1, 0));
 
 meshList[GEO_THECUBE] = MeshBuilder::GenerateOBJ("thecube", "OBJ//MaleRobot.obj");
 
+meshList[GEO_THEBOSS] = MeshBuilder::GenerateOBJ("theboss", "OBJ//Boss.obj");
+meshList[GEO_THEBOSS]->textureID = LoadTGA("Image//BossUV.tga");
+
 Mtx44 projection;
 projection.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
 projectionStack.LoadMatrix(projection);
@@ -385,10 +390,15 @@ void Sp2Scene::Update(double dt)
 	}
 	if (gameStates == states::menu)
 	{
+		thecube.~enemy();
+		thecube2.~enemy();
+		thecube3.~enemy();
+		theboss.~boss();
 		if (c3.startKillGM() == true)
 		{
 			camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));
 			Camera3::inMenu = false;
+			Camera3::inBase = false;
 			objective::chooseObj = 1;
 			rotateGunX = 0;
 			rotateGunY = 0;
@@ -399,14 +409,20 @@ void Sp2Scene::Update(double dt)
 			boughtRifle1 = false;
 			boughtSniper1 = false;
 			boughtShotgun1 = false;
+			rifle1Avail = false;
+			sniper1Avail = false;
+			shotgun1Avail = false;
 			obj.resetObjective();
-			en.enemyReset();
 			play.earnMinerals(-10000);
+			thecube.enemyReset(-100.f, 0, -100.f);
+			thecube2.enemyReset(200.f, 0, -300.f);
+			thecube3.enemyReset(-300.f, 0, 200.f);
 		}
 		if (c3.startCollectGM() == true)
 		{
 			camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));
 			Camera3::inMenu = false;
+			Camera3::inBase = false;
 			objective::chooseObj = 2;
 			rotateGunX = 0;
 			rotateGunY = 0;
@@ -417,9 +433,39 @@ void Sp2Scene::Update(double dt)
 			boughtRifle1 = false;
 			boughtSniper1 = false;
 			boughtShotgun1 = false;
+			rifle1Avail = false;
+			sniper1Avail = false;
+			shotgun1Avail = false;
 			obj.resetObjective();
-			en.enemyReset();
 			play.earnMinerals(-10000);
+			thecube.enemyReset(-100.f, 0, -100.f);
+			thecube2.enemyReset(200.f, 0, -300.f);
+			thecube3.enemyReset(-300.f, 0, 200.f);
+		}
+		if (c3.startBossGM() == true)
+		{
+			camera.Init(Vector3(-400, 10, 50), Vector3(1, 10, 0), Vector3(0, 1, 0));
+			Camera3::inMenu = false;
+			Camera3::inBase = false;
+			objective::chooseObj = 3;
+			rotateGunX = 0;
+			rotateGunY = 0;
+			equipPistol1 = true;
+			equipRifle1 = false;
+			equipSniper1 = false;
+			equipShotgun1 = false;
+			boughtRifle1 = false;
+			boughtSniper1 = false;
+			boughtShotgun1 = false;
+			rifle1Avail = false;
+			sniper1Avail = false;
+			shotgun1Avail = false;
+			obj.resetObjective();
+			play.earnMinerals(-10000);
+			thecube.enemyReset(-100.f, 0, -100.f);
+			thecube2.enemyReset(200.f, 0, -300.f);
+			thecube3.enemyReset(-300.f, 0, 200.f);
+			theboss.bossReset(-300, 0, 300);
 		}
 	}
 
@@ -444,40 +490,15 @@ void Sp2Scene::Update(double dt)
 				rifle1Avail = true;
 				play.spendMinerals(1000);
 			}
-
-
-			/*if (boughtShotgun1 == false)
-			{
-			shotgun1Avail = false;
-			}
-
-			if (boughtSniper1 == false)
-			{
-			sniper1Avail = false;
-			}*/
 			if (Application::IsKeyPressed('3') && crafting == true && play.getMinerals() >= 2000 && boughtShotgun1 == false)
 			{
-				/*		if (boughtRifle1 == false)
-				{
-				rifle1Avail = false;
-				}*/
 				boughtShotgun1 = true;
 				shotgun1Avail = true;
-				
+
 				play.spendMinerals(2000);
 			}
 			if (Application::IsKeyPressed('4') && crafting == true && play.getMinerals() >= 3000 && boughtSniper1 == false)
 			{
-				/*if (boughtRifle1 == false)
-				{
-				rifle1Avail = false;
-				}
-
-				if (boughtShotgun1 == false)
-				{
-				shotgun1Avail = false;
-				}*/
-				//cout << "3" << std::endl;
 				boughtSniper1 = true;
 				sniper1Avail = true;
 				play.spendMinerals(3000);
@@ -509,36 +530,6 @@ void Sp2Scene::Update(double dt)
 			gunDir = -30;
 		}
 	}
-
-
-
-	//If pressed '1', switch to Pistol1
-
-
-
-	//if (Application::IsKeyPressed('E'))
-	//{
-	//	if (camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
-	//	{
-	//		crafting = true;
-	//	}
-
-	//}
-	//else if (!camera.checkcollisionwithObject(Vector3(399.667, 80, -38), 10, 15, 10))
-	//{
-	//	crafting = false;
-	//}
-
-
-	/*if (camera.craftUi() == true && Application::IsKeyPressed('E') == true)
-	{
-	crafting = true;
-	}
-	else
-	{
-	crafting = false;
-	}*/
-
 
 	//if (Application::IsKeyPressed('1')) //enable back face culling
 	//glDisable(GL_CULL_FACE);
@@ -577,50 +568,9 @@ void Sp2Scene::Update(double dt)
 	planet1RevAngle += (float)(2 * dt);
 	moon1RotAngle += (float)(50 * dt);
 
-		//if (Application::IsKeyPressed('1')) //enable back face culling
-		//glDisable(GL_CULL_FACE);
-		//if (Application::IsKeyPressed('2')) //disable back face culling
-		//glEnable(GL_CULL_FACE);
-		if (Application::IsKeyPressed('0'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
-		if (Application::IsKeyPressed('5'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
-
 
 	framerate = 1 / dt;
 
-	/*	for (int i = 0; i < 1000; i++)
-		{
-		rainpositiony[i] -= (float)(50 * dt);
-		if (rainpositiony[i] < -499.0f)
-		{
-		rainpositiony[i] = 499.0f;
-		rainpositionx[i] = rand() % 998 - 499;
-		rainpositionz[i] = rand() % 998 - 499;
-		}
-		if (Application::IsKeyPressed(VK_SPACE))
-		{
-		rainpositiony[i] -= (float)(150 * dt);
-		}
-		if (Application::IsKeyPressed('Q'))
-		{
-		rainpositiony[i] += (float)(150 * dt);
-		}
-		if (Application::IsKeyPressed('E'))
-		{
-		rainpositiony[i] += (float)(50 * dt);
-		}
-		if (Application::IsKeyPressed('G'))
-		{
-		rainpositionx[i] -= (float)(150 * dt);
-		}
-		if (Application::IsKeyPressed('H'))
-		{
-		rainpositionx[i] += (float)(150 * dt);
-		}
-		}*/
-	//test = c3.getShotsFired();
-	//std::cout << c3.getShotsFired() << "bang" <<  std::endl; // why 0
 	changeStates();
 	if (gameStates == states::outside)
 	{
@@ -656,9 +606,17 @@ void Sp2Scene::Update(double dt)
 		{
 			if (atkCd <= 0)
 			{
-				EnemyAttack(thecube.pos);
-				EnemyAttack(thecube2.pos);
-				EnemyAttack(thecube3.pos);
+				if (objective::chooseObj != 3)
+				{
+					EnemyAttack(thecube.pos);
+					EnemyAttack(thecube2.pos);
+					EnemyAttack(thecube3.pos);
+				}
+				else
+				{
+					bossAttack(theboss.pos);
+				}
+
 				atkCd = 30;
 			}
 			if (atkCd > 0)
@@ -867,73 +825,75 @@ void Sp2Scene::Update(double dt)
 							}
 						}
 					}
-
-				/*if (testHB == true)
-				{
-				targetReg = 100;
-				testHB = false;
-				}
-				else
-				{
-				if (targetReg > 0)
-				{
-				targetReg--;
-				}
-				}
-
-				if (t.hp <= 0)
-				{
-				t.isDead = true;
-				}
-				if (Application::IsKeyPressed('P'))
-				{
-				t.hp = 10;
-				t.isDead = false;
-				}*/
 				if (Camera3::location.x < -330 && Camera3::location.x > -470 && Camera3::location.z > -10 && Camera3::location.z < 80)
 				{
 				}
 				else
 				{
-					if (thecube.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
+					if (objective::chooseObj != 3)
 					{
-						thecube.Update(dt, camera);
+						if (thecube.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
+						{
+							thecube.Update(dt, camera);
+						}
+						else
+						{
+							if (objective::chooseObj == 1)
+							{
+								obj.objectiveProgress(1);
+							}
+							play.earnMinerals(100);
+							thecube.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
+						}
+						if (thecube2.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
+						{
+							thecube2.Update(dt, camera);
+						}
+						else
+						{
+							if (objective::chooseObj == 1)
+							{
+								obj.objectiveProgress(1);
+							}
+							play.earnMinerals(100);
+							thecube2.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
+						}
+						if (thecube3.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
+						{
+							thecube3.Update(dt, camera);
+						}
+						else
+						{
+							if (objective::chooseObj == 1)
+							{
+								obj.objectiveProgress(1);
+							}
+							play.earnMinerals(100);
+							thecube3.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
+						}
 					}
-					else
+					if (objective::chooseObj == 3)
 					{
-						if (objective::chooseObj == 1)
+						if (theboss.hp < 500 && boss50 == false)
+						{
+							boss50 = true;
+							theboss.upgradeboss();
+						}
+						else if (theboss.hp < 200 && boss20 == false)
+						{
+							boss20 = true;
+							theboss.upgradeboss();
+						}
+						if (theboss.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
+						{
+							theboss.Update(dt, camera);
+						}
+						else if (theboss.isDead() == true)
 						{
 							obj.objectiveProgress(1);
 						}
-						play.earnMinerals(100);
-						thecube.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
 					}
-					if (thecube2.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
-					{
-						thecube2.Update(dt, camera);
-					}
-					else
-					{
-						if (objective::chooseObj == 1)
-						{
-							obj.objectiveProgress(1);
-						}
-						play.earnMinerals(100);
-						thecube2.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
-					}
-					if (thecube3.isDead() == false /*&& thecube2.isDead() == false*/ && gameStates == states::outside)
-					{
-						thecube3.Update(dt, camera);
-					}
-					else
-					{
-						if (objective::chooseObj == 1)
-						{
-							obj.objectiveProgress(1);
-						}
-						play.earnMinerals(100);
-						thecube3.respawnEnemy(rand() % 1960 - 980, 0, rand() % 1960 - 980);
-					}
+					
 				}
 		}
 		if (Camera3::mouseControl == true)
@@ -1059,77 +1019,9 @@ void Sp2Scene::Update(double dt)
 	{
 		rotateGunX == 30;
 	}
-	//if (Application::IsKeyPressed('1') && equipPistol1 == false && reloaded == true)
-	//{
-	//	equipPistol1 = true;
-	//	equipRifle1 = false;
-	//	equipSniper1 = false;
-	//	equipShotgun1 = false;
-	//	
-	//}
-
-	//if (boughtRifle1 == true)
-	//{
-	//	//If pressed '2', switch to Rifle1
-	//	if (Application::IsKeyPressed('2') && equipRifle1 == false && reloaded == true && rifle1Avail == true)
-	//	{
-	//		equipPistol1 = false;
-	//		equipRifle1 = true;
-	//		if (sniper1Avail == true)
-	//		{
-	//			equipSniper1 = false;
-	//		}
-	//		if (shotgun1Avail = true)
-	//		{
-	//			equipShotgun1 = false;
-	//		}
-	//	}
-	//}
-
-	//if (boughtShotgun1 == true)
-	//{
-	//	//If pressed '3', switch to Sniper1
-	//	if (Application::IsKeyPressed('3') && equipShotgun1 == false && reloaded == true && shotgun1Avail == true)
-	//	{
-	//		equipPistol1 = false;
-	//		if (rifle1Avail == true)
-	//		{
-	//			equipRifle1 = false;
-	//		}
-
-	//		equipShotgun1 = true;
-
-	//		if (sniper1Avail == true)
-	//		{
-	//			equipSniper1 = false;
-	//		}
-	//	}
-	//}
-	//if (boughtSniper1 == true)
-	//{
-	//	if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
-	//	{
-	//		equipPistol1 = false;
-	//		if (rifle1Avail == true)
-	//		{
-	//			equipRifle1 = false;
-	//		}
-	//		if (shotgun1Avail == true)
-	//		{
-	//			equipShotgun1 = false;
-	//		}
-	//		equipSniper1 = true;
-	//	}
-	//}
 	
 	std::cout << thecube.hp << std::endl;
 
-			/*if (sniper1Avail == true)
-			{
-				equipSniper1 = false;
-			}
-		}
-	}*/
 	if (boughtSniper1 == true)
 	{
 		if (Application::IsKeyPressed('4') && equipSniper1 == false && reloaded == true && sniper1Avail == true)
@@ -1314,71 +1206,6 @@ void Sp2Scene::bulletRNG(int spray)
 		Camera3::direction.z += temp / 10;
 	}
 }
-//void Sp2Scene::aimBulletRNG(int spray)
-//{
-//	/*if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-//	{
-//		storeRand = rand() % (spray);
-//		storeRand2 = rand() % 2;
-//		if (storeRand2 == 1)
-//		{
-//			storeRand -= (storeRand + storeRand);
-//		}
-//		if (storeRand == 0)
-//		{
-//
-//		}
-//		else
-//		{
-//			Camera3::direction.x += storeRand / 10;
-//		}
-//	}
-//	if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-//	{
-//		storeRand = rand() % (spray);
-//		storeRand2 = rand() % 2;
-//		if (storeRand2 == 1)
-//		{
-//			storeRand -= (storeRand + storeRand);
-//		}
-//		if (storeRand == 0)
-//		{
-//
-//		}
-//		else
-//		{
-//			Camera3::direction.y += storeRand / 10;
-//		}
-//		if (Application::IsKeyPressed('W') || Application::IsKeyPressed('A') || Application::IsKeyPressed('S') || Application::IsKeyPressed('D'))
-//		{
-//			storeRand = rand() % (spray);
-//			storeRand2 = rand() % 2;
-//			if (storeRand2 == 1)
-//			{
-//				storeRand -= (storeRand + storeRand);
-//			}
-//			if (storeRand == 0)
-//			{
-//
-//			}
-//			else
-//			{
-//				Camera3::direction.z += storeRand / 10;
-//			}
-//		}
-//	}*/
-//	double temp = 0;
-//	int random = 0;
-//	random = (rand() % (spray));
-//	temp = (2 * (random)*(rand() % 2)) - (random);
-//	Camera3::direction.x += temp / 10;
-//	random = (rand() % (spray));
-//	temp = (2 * (random)*(rand() % 2)) - (random);
-//	Camera3::direction.y += temp / 10;
-//	random = (rand() % (spray));
-//	temp = (2 * (random)*(rand() % 2)) - (random);
-//	Camera3::direction.z += temp / 10;
-//}
 
 void Sp2Scene::bulletPos()
 {
@@ -1420,6 +1247,15 @@ void Sp2Scene::bulletPos()
 				count = shotsFired.erase(count);
 				count1 = shotsDir.erase(count1);
 				count2 = weaponDmg.erase(count2);
+			}
+			else if (bulletBossCollision(temp, theboss.pos) == true)
+			{
+				theboss.hp -= *count2;
+				std::cout << "hit" << std::endl;
+				count = shotsFired.erase(count);
+				count1 = shotsDir.erase(count1);
+				count2 = weaponDmg.erase(count2);
+				
 			}
 			else if (temp.y <= 0 || temp.x >= 1000 || temp.z >= 1000 || temp.y >= 1000 || temp.x <= -1000 || temp.z <= -1000 || temp.y <= -1000 || bulletObjectCollision(temp) == true)
 			{
@@ -1493,6 +1329,21 @@ bool Sp2Scene::bulletEnemyCollision(Vector3 bulletPos, Vector3 targetLocation)
 	}
 }
 
+bool Sp2Scene::bulletBossCollision(Vector3 bulletPos, Vector3 targetLocation)
+{
+	targetLocation.y += 10;
+	if (bulletPos.x > (targetLocation.x - (80 / 2)) && bulletPos.x < (targetLocation.x + (80 / 2)) &&
+		bulletPos.y >(targetLocation.y - (120 / 2)) && bulletPos.y < (targetLocation.y + (120 / 2)) &&
+		bulletPos.z >(targetLocation.z - (30 / 2)) && bulletPos.z < (targetLocation.z + (30 / 2)))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void Sp2Scene::EnemyAttack(Vector3 targetLocation)
 {
 	if (Camera3::location.x > (targetLocation.x - (30 / 2)) && Camera3::location.x < (targetLocation.x + (30 / 2)) &&
@@ -1501,6 +1352,17 @@ void Sp2Scene::EnemyAttack(Vector3 targetLocation)
 	{
 		play.getHit(enemy::attackPow);
 		Camera3::knockback = true;
+	}
+}
+
+void Sp2Scene::bossAttack(Vector3 targetLocation)
+{
+	if (Camera3::location.x >(targetLocation.x - (50 / 2)) && Camera3::location.x < (targetLocation.x + (50 / 2)) &&
+		Camera3::location.y >(targetLocation.y - (50 / 2)) && Camera3::location.y < (targetLocation.y + (50 / 2)) &&
+		Camera3::location.z >(targetLocation.z - (50 / 2)) && Camera3::location.z < (targetLocation.z + (50 / 2)))
+	{
+		play.getHit(boss::attackPow);
+		//Camera3::knockback = true;
 	}
 }
 
@@ -2074,6 +1936,19 @@ void Sp2Scene::RenderEnemy()
 		modelStack.PopMatrix();
 }
 
+void Sp2Scene::RenderBoss()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(theboss.pos.x, -5, theboss.pos.z);
+	modelStack.Rotate(theboss.Degree, 0, 1, 0);
+	//cout << Degree << std::endl;
+	modelStack.PushMatrix();
+	modelStack.Scale(theboss.sizeIncrease, theboss.sizeIncrease, theboss.sizeIncrease);
+	RenderMesh(meshList[GEO_THEBOSS], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
 void Sp2Scene::Render()
 {
 	// Render VBO here
@@ -2137,9 +2012,13 @@ void Sp2Scene::Render()
 		}*/
 
 		//modelStack.PushMatrix();
-		if (thecube.isDead() == false && gameStates == states::outside)
+		if (thecube.isDead() == false && gameStates == states::outside && objective::chooseObj != 3)
 		{
 			RenderEnemy();
+		}
+		if (theboss.isDead() == false && gameStates == states::outside && objective::chooseObj == 3)
+		{
+			RenderBoss();
 		}
 		modelStack.PushMatrix();
 
@@ -2163,12 +2042,18 @@ void Sp2Scene::Render()
 			modelStack.PopMatrix();
 
 			modelStack.PushMatrix();
+			modelStack.Translate(-40, 25, 12);
+			//modelStack.Rotate(180, 0, 1, 0);
+			modelStack.Rotate(90, 0, 1, 0);
+			modelStack.Scale(2, 2, 2);
+			RenderText(meshList[GEO_TEXT], "FIGHT DR OP", Color(1, 1, 1));
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
 			modelStack.Translate(-10, 25, -40);
 			modelStack.Scale(2, 2, 2);
 			RenderText(meshList[GEO_TEXT], "EXCAVATION", Color(1, 1, 1));
 			modelStack.PopMatrix();
-
-			
 		}
 		if (gameStates == states::outside)
 		{
@@ -2178,7 +2063,7 @@ void Sp2Scene::Render()
 			RenderTable();
 			RenderHealthPack();
 			RenderElements();
-			RenderEnemy();
+			//RenderEnemy();
 
 			modelStack.PushMatrix();
 			modelStack.Translate(0, 0, 0);
@@ -2353,7 +2238,11 @@ void Sp2Scene::Render()
 				RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(obj.getProgress()) + "/" + std::to_string(obj.getObjective()), Color(0.7, 0.7, 0.3), 2, 25, 28);
 				RenderTextOnScreen(meshList[GEO_TEXT], "Mineral Deposits", Color(0.7, 0.7, 0.3), 2, 25, 27);
 			}
-			
+			if (objective::chooseObj == 3)
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "Objective: " + std::to_string(theboss.hp) + "/1000" , Color(0.7, 0.7, 0.3), 2, 20, 28);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Boss HP", Color(0.7, 0.7, 0.3), 2, 25, 27);
+			}
 		}
 
 		if (obj.objComplete() == true)
